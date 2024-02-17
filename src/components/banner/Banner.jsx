@@ -1,13 +1,14 @@
 import React from "react";
 import Image from "../../utils/Image";
 import saifullahImg from "../../assets/saifullah.png";
+import kmsSvg from "../../assets/kms.svg";
 import "./banner.css";
 
 const Banner = () => {
   return (
-    <section className="bg-bannerBg relative pt-[200px] w-[100%]">
+    <section className="bg-bannerBg relative pt-[100px] w-[100%]">
       <div className="max-w-container mx-auto">
-        <div className="flex">
+        <div className="flex gap-x-[50px] items-center">
           <div>
             <h2 className="text-heading text-[54px] font-bold font-openSans leading-[140%] flex items-center">
               Hello World <span className="hi_animation">👋</span>
@@ -18,7 +19,7 @@ const Banner = () => {
             </h1>
             <p className="w-[616px] pt-[20px] pb-[32px] font-openSans font-normal text-base leading-[125%] text-textColor">
               Experienced MERN stack developer dedicated to creating captivating
-              web experiences, proficient in MongoDB, Express.js, React.js, and
+              web experiences proficient in MongoDB, Express.js, React.js and
               Node.js technologies.
             </p>
             <div className="flex gap-x-5">
@@ -30,10 +31,11 @@ const Banner = () => {
               </button>
             </div>
           </div>
-          <div>
+          <div className="w-[460px] h-[600px] overflow-hidden">
             <figure>
               <Image
-                imgSrc={saifullahImg}
+                className="h-full w-full object-cover"
+                imgSrc={kmsSvg}
                 altText="Khaled Md Saifullah Photo"
               />
             </figure>
