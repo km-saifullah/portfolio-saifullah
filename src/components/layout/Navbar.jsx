@@ -4,7 +4,7 @@ import { MdOutlineWbSunny } from "react-icons/md";
 
 const Navbar = () => {
   return (
-    <nav>
+    <nav className="absolute top-0 right-0 w-[100%] z-[555]">
       <div className="max-w-container mx-auto p-[30px]">
         <div className="flex items-center justify-between">
           <div>

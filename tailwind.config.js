@@ -16,6 +16,7 @@ export default {
         textColor: "rgba(47, 58, 69, 0.8)",
         bannerBg: "#ECF6FF",
         navLink: "#181818",
+        buttonColor: "#232D39",
       },
     },
   },
