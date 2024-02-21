@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "../../utils/Image";
-import saifullahImg from "../../assets/saifullah.png";
 import kmsSvg from "../../assets/kms.svg";
 import "./banner.css";
 
@@ -10,14 +9,14 @@ const Banner = () => {
       <div className="max-w-container mx-auto">
         <div className="flex gap-x-[50px] items-center">
           <div>
-            <h2 className="text-heading text-[54px] font-bold font-openSans leading-[140%] flex items-center">
+            <h2 className="text-heading text-[64px] font-bold font-openSans leading-[140%] flex items-center">
               Hello World <span className="hi_animation">👋</span>
             </h2>
-            <h1 className="py-[5px] w-[792px] text-heading text-[64px] font-bold font-openSans leading-[140%]">
-              I am Khaled Md Saifullah a{" "}
-              <span className="text-primary">MERN Stack Developer</span>
+            <h1 className="py-[5px] w-[600px] text-heading text-[48px] font-bold font-openSans leading-[140%]">
+              I'm Khaled Md Saifullah a{" "}
+              <span className="text-primary">Full-Stack Developer</span>
             </h1>
-            <p className="w-[616px] pt-[20px] pb-[32px] font-openSans font-normal text-base leading-[125%] text-textColor">
+            <p className="w-[616px] pt-[20px] pb-[32px] font-openSans font-normal text-base leading-[140%] text-textColor">
               Experienced MERN stack developer dedicated to creating captivating
               web experiences proficient in MongoDB, Express.js, React.js and
               Node.js technologies.

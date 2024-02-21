@@ -17,6 +17,8 @@ export default {
         bannerBg: "#ECF6FF",
         navLink: "#181818",
         buttonColor: "#232D39",
+        buttonText: "#EEF5FF",
+        whatsApp: "#4DC85A",
       },
     },
   },
