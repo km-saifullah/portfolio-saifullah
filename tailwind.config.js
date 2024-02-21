@@ -19,6 +19,7 @@ export default {
         buttonColor: "#232D39",
         buttonText: "#EEF5FF",
         whatsApp: "#4DC85A",
+        serviceBg: "rgba(1, 136, 255, 0.2)",
       },
     },
   },
