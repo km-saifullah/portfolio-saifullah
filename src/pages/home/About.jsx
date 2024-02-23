@@ -18,12 +18,12 @@ const About = () => {
     setShowQr(false);
   };
   return (
-    <section className="py-[120px] relative">
-      <div className="max-w-container mx-auto">
-        <div className="flex items-center gap-x-[150px]">
+    <section className="py-[50px] md:py-[120px] relative">
+      <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
+        <div className="flex items-center gap-x-[150px] flex-wrap lg:flex-nowrap gap-y-[20px] sm:gap-p-0">
           <div>
             <SectionHeading title="About Me" />
-            <p className="w-[585px] pt-5 pb-6 text-base text-textColor font-normal font-openSans leading-[135%]">
+            <p className="w-full xl:w-[585px] text-justify md:text-left pt-5 pb-6 text-base text-textColor font-normal font-openSans leading-[135%]">
               I'm a MERN stack developer who loves JavaScript and is fascinated
               by technology. When I'm not coding, I'm either traveling, watching
               TV series or experimenting with new technology. Let's connect and
@@ -39,7 +39,7 @@ const About = () => {
           </div>
           <div className="flex flex-col gap-y-5">
             <SectionHeading title="my skills" />
-            <div className="w-[350px] flex flex-wrap items-center gap-5">
+            <div className="w-full xl:w-[350px] flex flex-wrap items-center gap-5">
               {icons.map((icon) => (
                 <div
                   key={icon.id}

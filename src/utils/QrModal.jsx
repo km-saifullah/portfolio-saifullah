@@ -4,7 +4,7 @@ import Image from "./Image";
 
 const QrModal = ({ handleCloseModal }) => {
   return (
-    <div className="p-2 h-[260px] w-[270px] rounded-lg bg-whatsApp absolute top-[160px] left-[400px]">
+    <div className="p-2 h-[260px] w-[270px] rounded-lg bg-whatsApp absolute top-[160px] sm:left-[25px] md:left-[50px] lg:left-[200px]">
       <div className="w-[100%] h-[200px] overflow-hidden">
         <Image
           className="w-full h-full object-cover"
