@@ -32,7 +32,7 @@ const About = () => {
             <div className="flex items-center gap-x-[25px] transition-all ease-linear transition-opacity-1">
               <Button title="Contact Me" />
               <button onClick={handleWhatsApp} title="Click for QR Code">
-                <FaWhatsapp className="text-whatsApp h-[40px] w-[40px]" />
+                <FaWhatsapp className="text-whatsApp hover:text-primary transition-all ease-linear duration-300 h-[40px] w-[40px]" />
               </button>
               {showQr ? <QrModal handleCloseModal={handleCloseModal} /> : null}
             </div>
