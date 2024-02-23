@@ -1,6 +1,5 @@
 /* ===== Banner Style Start ==== */
 .hi_animation {
-  /* display: inline-block; */
   animation: hi 2s infinite;
   height: 100px;
   width: 100px;
