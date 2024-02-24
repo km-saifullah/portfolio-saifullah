@@ -28,7 +28,7 @@ const Contact = () => {
     e.preventDefault();
   };
   return (
-    <section className="">
+    <section className="pb-[110px]">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
         <div className="pb-8">
           <SectionHeading title="Contact Me" />
