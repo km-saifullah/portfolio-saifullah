@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import Button from "../../utils/Button";
+import { BiLogoGmail } from "react-icons/bi";
 import QrModal from "../../utils/QrModal";
 import SectionHeading from "../../utils/SectionHeading";
 import { icons } from "../../data/image";
@@ -30,7 +30,11 @@ const About = () => {
               go exploring together.
             </p>
             <div className="flex items-center gap-x-[25px] transition-all ease-linear transition-opacity-1">
-              <Button title="Contact Me" />
+              <a href="mailto:kmsaifullah16@gmail.com">
+                <button title="kmsaifullah16@gmail.com">
+                  <BiLogoGmail className="text-[#ff5d5d] hover:text-[#ff4343] transition-all ease-linear duration-300 h-[40px] w-[40px]" />
+                </button>
+              </a>
               <button onClick={handleWhatsApp} title="Click for QR Code">
                 <FaWhatsapp className="text-whatsApp hover:text-primary transition-all ease-linear duration-300 h-[40px] w-[40px]" />
               </button>

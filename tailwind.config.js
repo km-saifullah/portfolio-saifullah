@@ -29,6 +29,8 @@ export default {
         whatsApp: "#4DC85A",
         serviceBg: "rgba(1, 136, 255, 0.2)",
         footerBg: "#232D39",
+        contactBg: "#0189ffcc",
+        inputFieldBg: "#2f3a45b3",
       },
     },
   },
