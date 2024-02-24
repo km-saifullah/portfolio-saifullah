@@ -1,7 +1,86 @@
 import React from "react";
+import { FaFacebookF } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+import { RiTwitterXFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
-  return <div>Footer</div>;
+  return (
+    <footer className="bg-footerBg py-[50px]">
+      <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
+        <div className="flex items-center justify-between">
+          <div className=" flex gap-x-4 flex-col">
+            <h4 className="text-primary text-[25px] font-bold font-roboto leading-[140%] pb-3">
+              Social Links
+            </h4>
+            <div className="flex items-center gap-x-4">
+              <a
+                href="https://www.facebook.com/saifullah.monmoy"
+                className="text-xl"
+                target="_blank"
+              >
+                <div className="bg-buttonText text-heading hover:text-buttonText w-[40px] h-[40px] flex items-center justify-center hover:bg-primary">
+                  <FaFacebookF />
+                </div>
+              </a>
+              <a
+                href="https://github.com/km-saifullah"
+                className="text-xl"
+                target="_blank"
+              >
+                <div className="bg-buttonText text-heading hover:text-buttonText w-[40px] h-[40px] flex items-center justify-center hover:bg-primary">
+                  <FaGithub />
+                </div>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/kmsaifullah"
+                className="text-xl"
+                target="_blank"
+              >
+                <div className="bg-buttonText text-heading hover:text-buttonText w-[40px] h-[40px] flex items-center justify-center hover:bg-primary">
+                  <FaLinkedin />
+                </div>
+              </a>
+              <a
+                href="https://twitter.com/SaifullahMonmoy"
+                className="text-xl"
+                target="_blank"
+              >
+                <div className="bg-buttonText text-heading hover:text-buttonText w-[40px] h-[40px] flex items-center justify-center hover:bg-primary">
+                  <RiTwitterXFill />
+                </div>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h4 className="text-primary text-[25px] font-bold font-roboto leading-[140%] pb-3">
+              Pages
+            </h4>
+            <ul className="flex flex-col gap-y-3">
+              <li className="text-buttonText text-xl font-normal font-openSans leading-[135%]">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="text-buttonText text-xl font-normal font-openSans leading-[135%]">
+                <Link to="/blog">Blog</Link>
+              </li>
+              <li className="text-buttonText text-xl font-normal font-openSans leading-[135%]">
+                <Link to="/porjects">Projects</Link>
+              </li>
+              <li className="text-buttonText text-xl font-normal font-openSans leading-[135%]">
+                <Link to="/contact">Contact</Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="border-t-2">
+        <p className="pt-[44px] text-white text-center text-xl font-normal font-openSans leading-[120%] capitalize">
+          Copyright &copy; All rights reserved by Khaled Md Saifullah
+        </p>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

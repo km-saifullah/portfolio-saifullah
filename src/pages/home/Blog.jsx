@@ -6,12 +6,17 @@ import Button from "../../utils/Button";
 
 const Blog = () => {
   return (
-    <section className="">
+    <section className="py-[110px]">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
-        <SectionHeading title="Blogs" />
-        <div className="flex items-center gap-x-[50px] gap-y-[34px] flex-wrap rounded-t-lg">
+        <div className="pb-[32px]">
+          <SectionHeading title="Blogs" />
+        </div>
+        <div className="flex items-center gap-x-[50px] gap-y-[34px] flex-wrap">
           {blogs.map((blog, index) => (
-            <div className="bg-bannerBg w-[375px] pb-3" key={index}>
+            <div
+              className="bg-bannerBg w-[375px] pb-3 rounded-t-lg"
+              key={index}
+            >
               <div className="w-[375px] h-[200px] overflow-hidden rounded-t-lg trasnsition-all ease-linear duration-300 hover:scale-95">
                 <figure>
                   <Image
