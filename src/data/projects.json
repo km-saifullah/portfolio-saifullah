@@ -1,0 +1,21 @@
+[
+  {
+    "id": 0,
+    "projectImg": "",
+    "projectName": "dailyChat",
+    "description": "Introducing a dynamic chat application built with ReactJS and Firebase. This feature-rich platform enables seamless communication through real-time updates and user authentication. Using Firebase as a database ensures reliability and scalability, allowing users to have a seamless chatting experience.",
+    "technology": [
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/tailwind-css.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/firebase.svg"
+      }
+    ],
+    "githubLink": "https://github.com/km-saifullah/dailytalk",
+    "liveLink": ""
+  }
+]

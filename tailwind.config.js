@@ -32,6 +32,9 @@ export default {
         contactBg: "#0189ffcc",
         inputFieldBg: "#2f3a45b3",
       },
+      dropShadow: {
+        imgShadow: "0 0 1em #0189FF",
+      },
     },
   },
   plugins: [],
