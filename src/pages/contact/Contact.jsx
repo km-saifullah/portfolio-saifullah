@@ -13,110 +13,110 @@ const Contact = () => {
     e.preventDefault();
   };
   return (
-    <main className="py-[130px]">
+    <main className="py-14 md:py-[90px] lg:py-[100px] lg:pt-[120px]">
       <div className="max-w-container mx-auto">
-        <section className="flex gap-x-5">
-          <div className="bg-navLink p-10 space-y-8 rounded-lg">
-            <h2 className="text-white text-[35px] font-bold font-roboto leading-[140%] capitalize">
-              <span className="text-primary">#</span> Contact With Me
-            </h2>
-            <div className="w-[500px] h-[475px]">
+        <section className="flex items-center justify-center gap-4 flex-wrap lg:flex-nowrap">
+          <section className="w-full md:w-[500px] lg:w-[635px] p-5 lg:p-10 bg-navLink rounded-lg space-y-5 lg:space-y-8">
+            <div>
+              <h2 className="text-lg lg:text-[35px] text-white font-roboto font-bold leading-[140%] capitalize">
+                <span className="text-primary">#</span> contact with me
+              </h2>
+            </div>
+            <div className="h-[400] lg:h-[475px] w-full lg:w-[500px]">
               <Image
                 imgSrc={contactImg}
-                altText="Contact Image Not Found"
-                className="h-full w-full object-cover"
+                altText="Conatct Image Missing"
+                className="w-full h-full object-contain"
               />
             </div>
-            <h2 className="text-white text-[35px] font-bold font-roboto leading-[140%] capitalize">
-              <span className="text-primary">#</span> social media
-            </h2>
-            <div className="flex gap-x-3">
-              <a
-                href="https://www.facebook.com/saifullah.monmoy"
-                className="text-xl"
-                target="_blank"
-              >
-                <div className="bg-buttonText text-heading hover:text-buttonText w-[40px] h-[40px] flex items-center justify-center hover:bg-primary">
-                  <FaFacebookF />
+            <div className="space-y-5 lg:space-y-8">
+              <div>
+                <h2 className="text-lg lg:text-[35px] text-white font-roboto font-bold leading-[140%] capitalize">
+                  <span className="text-primary">#</span> social media
+                </h2>
+              </div>
+              <div className="flex gap-x-4">
+                <div className="h-[25px] lg:h-[40px] w-[25px] lg:w-[40px] bg-white flex items-center justify-center hover:bg-primary hover:text-white">
+                  <a
+                    href="https://facebook.com/saifullah.monmoy"
+                    target="_blank"
+                    className="text-base lg:text-xl"
+                  >
+                    <FaFacebookF />
+                  </a>
                 </div>
-              </a>
-              <a
-                href="https://github.com/km-saifullah"
-                className="text-xl"
-                target="_blank"
-              >
-                <div className="bg-buttonText text-heading hover:text-buttonText w-[40px] h-[40px] flex items-center justify-center hover:bg-primary">
-                  <FaGithub />
+                <div className="h-[25px] lg:h-[40px] w-[25px] lg:w-[40px] bg-white flex items-center justify-center hover:bg-primary hover:text-white">
+                  <a
+                    href="https://github.com/km-saifullah"
+                    target="_blank"
+                    className="text-base lg:text-xl"
+                  >
+                    <FaGithub />
+                  </a>
                 </div>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/kmsaifullah"
-                className="text-xl"
-                target="_blank"
-              >
-                <div className="bg-buttonText text-heading hover:text-buttonText w-[40px] h-[40px] flex items-center justify-center hover:bg-primary">
-                  <FaLinkedin />
+                <div className="h-[25px] lg:h-[40px] w-[25px] lg:w-[40px] bg-white flex items-center justify-center hover:bg-primary hover:text-white">
+                  <a
+                    href="https://www.linkedin.com/in/kmsaifullah"
+                    target="_blank"
+                    className="text-base lg:text-xl"
+                  >
+                    <FaLinkedin />
+                  </a>
                 </div>
-              </a>
-              <a
-                href="https://twitter.com/SaifullahMonmoy"
-                className="text-xl"
-                target="_blank"
-              >
-                <div className="bg-buttonText text-heading hover:text-buttonText w-[40px] h-[40px] flex items-center justify-center hover:bg-primary">
-                  <RiTwitterXFill />
-                </div>
-              </a>
+              </div>
             </div>
-          </div>
-          <div className="bg-primary p-10 space-y-8 rounded-lg">
-            <h2 className="text-white text-[35px] font-bold font-roboto leading-[140%] capitalize">
-              <span className="text-navLink">#</span> send your message
-            </h2>
-            <form>
-              <div className="space-y-7">
-                <div>
+          </section>
+          <section className="w-full md:w-[500px] lg:w-[635px] p-5 lg:p-10 bg-primary rounded-lg space-y-5 lg:space-y-8">
+            <div>
+              <h2 className="text-lg lg:text-[35px] text-white font-roboto font-bold leading-[140%] capitalize">
+                <span className="text-navLink">#</span> let's talk
+              </h2>
+            </div>
+            <div>
+              <form className="flex items-start justify-start gap-5 flex-col">
+                <div className="w-full">
                   <Input
-                    className="bg-inputFieldBg w-[525px] py-7 px-4 text-white text-base font-normal font-openSans leading-[140%] outline-none border-none"
+                    className="bg-inputFieldBg w-full py-7 px-5 border-none outline-none text-buttonText text-base lg:text-xl font-normal font-openSans leading-[135%]"
                     type="text"
-                    name=""
+                    name="fullname"
                     // value=""
                     onChange={handleInput}
                     placeholder="Enter Your Fullname"
                   />
                 </div>
-                <div>
+                <div className="w-full">
                   <Input
-                    className="bg-inputFieldBg w-[525px] py-7 px-4 text-white text-base font-normal font-openSans leading-[140%] outline-none border-none"
+                    className="bg-inputFieldBg w-full py-7 px-5 border-none outline-none text-buttonText text-base lg:text-xl font-normal font-openSans leading-[135%]"
                     type="email"
-                    name=""
+                    name="email"
                     // value=""
                     onChange={handleInput}
                     placeholder="Enter Your Email"
                   />
                 </div>
-                <div>
+                <div className="w-full">
                   <textarea
-                    rows="10"
-                    className="bg-inputFieldBg w-[525px] py-7 px-4 text-white text-base font-normal font-openSans leading-[140%] outline-none border-none"
+                    cols="30"
+                    rows="9"
+                    className="bg-inputFieldBg w-full py-7 px-5 border-none outline-none text-buttonText text-base lg:text-xl font-normal font-openSans leading-[135%]"
                     type="text"
                     name="message"
                     // value=""
                     onChange={handleInput}
-                    placeholder="Your Message"
+                    placeholder="Enter Your Message"
                   ></textarea>
                 </div>
-                <div>
+                <div className="w-full">
                   <button
-                    className="bg-inputFieldBg w-[525px] py-7 px-4 text-white text-xl uppercase font-bold font-openSans leading-[140%] outline-none border-none"
+                    className="w-full py-7 px-5 text-buttonText text-lg lg:text-xl font-semibold font-openSans leading-[135%] bg-inputFieldBg border-none outline-none"
                     onClick={handleSendMessage}
                   >
                     Send Message
                   </button>
                 </div>
-              </div>
-            </form>
-          </div>
+              </form>
+            </div>
+          </section>
         </section>
       </div>
     </main>
