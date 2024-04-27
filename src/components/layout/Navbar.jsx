@@ -20,19 +20,19 @@ const Navbar = () => {
           </div>
           <div>
             <ul className="hidden lg:flex items-center md:gap-x-[30px] xl:gap-x-[60px]">
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor uppercase">
+              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
                 <NavLink to="/">Home</NavLink>
               </li>
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor uppercase">
+              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
                 <NavLink to="/about">About</NavLink>
               </li>
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor uppercase">
+              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
                 <NavLink to="/services">Services</NavLink>
               </li>
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor uppercase">
+              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
                 <NavLink to="/blogs">Blogs</NavLink>
               </li>
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor uppercase">
+              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
                 <NavLink to="/contact">Contact</NavLink>
               </li>
             </ul>

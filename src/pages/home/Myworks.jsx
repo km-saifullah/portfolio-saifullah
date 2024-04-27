@@ -25,17 +25,20 @@ const Myworks = () => {
         <h3 className="text-[35px] text-white font-bold font-roboto leading-[140%] capitalize pb-8">
           <span className="text-primary">#</span> My Works
         </h3>
-        <div className="flex gap-12  flex-wrap">
+        <div className="flex gap-12 flex-wrap">
           <div className="flex gap-x-[64px] flex-wrap">
-            <div className="w-[550px] h-[300px] overflow-hidden hover:drop-shadow-imgShadow rounded">
-              {/* <Image imgSrc={chatImg} altText="project image" /> */}
-              <img src={dailyTalkImg} alt="" className="rounded" />
+            <div className="w-[320px] lg:w-[550px] lg:h-[300px] overflow-hidden hover:drop-shadow-imgShadow pb-3">
+              <img
+                src={dailyTalkImg}
+                alt=""
+                className="w-full h-full object-cover rounded"
+              />
             </div>
             <div className="space-y-4">
               <h3 className="text-primary font-bold font-roboto leading-[140%] text-[25px]">
                 dailyChat
               </h3>
-              <p className="w-[640px] text-white font-normal font-openSans text-base leading-[135%]">
+              <p className="w-full lg:w-[640px] text-white font-normal font-openSans text-base leading-[135%]">
                 Introducing a dynamic chat application built with ReactJS and
                 Firebase. This feature-rich platform enables seamless
                 communication through real-time updates and user authentication.
@@ -70,8 +73,12 @@ const Myworks = () => {
             </div>
           </div>
           <div className="flex gap-x-[64px] flex-wrap">
-            <div className="w-[550px] h-[300px] overflow-hidden hover:drop-shadow-imgShadow order-2">
-              <Image imgSrc={chatImg} altText="project image" />
+            <div className="w-[320px] lg:w-[550px] lg:h-[300px] overflow-hidden hover:drop-shadow-imgShadow order-2 pt-3 rounded">
+              <Image
+                imgSrc={chatImg}
+                altText="project image"
+                className="w-full h-full object-cover rounded"
+              />
             </div>
             <div className="space-y-4 order-1">
               <h3 className="text-primary font-bold font-roboto leading-[140%] text-[25px]">

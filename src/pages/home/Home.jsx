@@ -14,7 +14,7 @@ const Home = () => {
       <Services />
       <Blog />
       <Myworks />
-      <Contact />
+      {/* <Contact /> */}
     </>
   );
 };
