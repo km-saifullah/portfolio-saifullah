@@ -28,13 +28,13 @@ const Contact = () => {
     e.preventDefault();
   };
   return (
-    <section className="pb-[110px]">
+    <section className="pb-[20px] lg:pb-[110px]">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
         <div className="pb-8">
           <SectionHeading title="Contact Me" />
         </div>
-        <div className="flex items-center gap-x-[100px]">
-          <div className="h-[475px] w-[500px] overflow-hidden">
+        <div className="flex items-center justify-center lg:justify-start gap-x-[100px] flex-wrap lg:flex-nowrap">
+          <div className="lg:h-[475px] w-full md:w-[450px] lg:w-[500px] overflow-hidden pb-4 lg:pb-0">
             <figure>
               <Image
                 className="h-full w-full object-cover"
@@ -43,7 +43,7 @@ const Contact = () => {
               />
             </figure>
           </div>
-          <div className="bg-contactBg py-16 px-10 rounded-lg">
+          <div className="w-full lg:max-w-fit bg-contactBg py-4 lg:py-16 px-10 rounded-lg">
             <form>
               <div className="flex items-start justify-start flex-col gap-y-3 pb-3">
                 <label
@@ -53,7 +53,7 @@ const Contact = () => {
                   Full Name
                 </label>
                 <input
-                  className="w-[560px] bg-inputFieldBg py-4 px-3 outline-none border-none text-white text-base font-normal font-openSans leading-[140%]"
+                  className="w-full lg:w-[560px] bg-inputFieldBg py-4 px-3 outline-none border-none text-white text-base font-normal font-openSans leading-[140%]"
                   type="text"
                   name="fullName"
                   value={formData.fullName}
@@ -69,7 +69,7 @@ const Contact = () => {
                   Email
                 </label>
                 <input
-                  className="w-[560px] bg-inputFieldBg py-4 px-3 outline-none border-none text-white text-base font-normal font-openSans leading-[140%]"
+                  className="w-full lg:w-[560px] bg-inputFieldBg py-4 px-3 outline-none border-none text-white text-base font-normal font-openSans leading-[140%]"
                   type="email"
                   name="email"
                   value={formData.email}
@@ -85,7 +85,7 @@ const Contact = () => {
                   Message
                 </label>
                 <textarea
-                  className="w-[560px] h-[200px] bg-inputFieldBg py-4 px-3 outline-none border-none text-white text-base font-normal font-openSans leading-[140%]"
+                  className="w-full lg:w-[560px] h-[100px] lg:h-[200px] bg-inputFieldBg py-4 px-3 outline-none border-none text-white text-base font-normal font-openSans leading-[140%]"
                   name="message"
                   type="text"
                   value={formData.message}
@@ -96,7 +96,7 @@ const Contact = () => {
               <div className="flex items-start justify-start flex-col gap-y-3">
                 <button
                   onClick={handleMessage}
-                  className="bg-inputFieldBg px-5 py-2 text-white text-[18px] font-bold font-roboto leading-[135%] capitalize hover:text-heading hover:bg-buttonText transition-all ease-linear duration-300"
+                  className="bg-inputFieldBg px-5 py-2 text-white text-base lg:text-lg font-semibold font-roboto leading-[135%] capitalize hover:text-heading hover:bg-buttonText transition-all ease-linear duration-300"
                 >
                   Send Message
                 </button>

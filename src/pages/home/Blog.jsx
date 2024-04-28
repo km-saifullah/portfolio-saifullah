@@ -6,18 +6,20 @@ import Button from "../../utils/Button";
 
 const Blog = () => {
   return (
-    <section className="py-[110px]">
+    <section className="py-[20px] lg:py-[110px]">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
-        <div className="pb-[32px]">
+        <div className="pb-[20px] lg:pb-[32px]">
           <SectionHeading title="Blogs" />
         </div>
-        <div className="flex items-center gap-x-[50px] gap-y-[34px] flex-wrap">
+        <div className="flex items-center justify-around gap-x-[50px] gap-y-[34px] flex-wrap">
           {blogs.map((blog, index) => (
             <div
-              className="bg-bannerBg w-[375px] pb-3 rounded-t-lg"
-              key={index}
+              className={`${
+                blog.id % 2 == 0 ? "bg-bannerBg" : "bg-inputFieldBg"
+              } w-[375px] pb-3 rounded-t-lg`}
+              key={blog.id}
             >
-              <div className="w-[375px] h-[200px] overflow-hidden rounded-t-lg trasnsition-all ease-linear duration-300 hover:scale-95">
+              <div className="w-full lg:w-[375px] h-[200px] overflow-hidden rounded-t-lg trasnsition-all ease-linear duration-300 hover:scale-95">
                 <figure>
                   <Image
                     imgSrc={blog.blogThumbnail}
@@ -27,11 +29,25 @@ const Blog = () => {
                 </figure>
               </div>
               <div className="p-3 pb-3">
-                <p className="text-base text-textColor font-normal font-openSans leading-[135%]">
+                <p
+                  className={`text-base ${
+                    blog.id % 2 == 0 ? "text-textColor" : "text-white"
+                  } font-normal font-openSans leading-[135%]`}
+                >
                   {blog.postAt} |{" "}
-                  <span className="text-primary">{blog.blogTag}</span>
+                  <span
+                    className={`${
+                      blog.id % 2 == 0 ? "text-primary" : "text-white"
+                    }`}
+                  >
+                    {blog.blogTag}
+                  </span>
                 </p>
-                <h4 className="pt-3 pb-3 text-heading text-[25px] font-semibold font-roboto leading-[140%] capitalize">
+                <h4
+                  className={`pt-3 pb-3 ${
+                    blog.id % 2 != 0 ? "text-white" : "text-heading"
+                  } text-xl lg:text-[25px] font-semibold font-roboto leading-[140%] capitalize`}
+                >
                   {blog.title}
                 </h4>
                 <a

@@ -7,7 +7,7 @@ export const blogs = [
     blogLink:
       "https://medium.com/@kmsaifullah16/setup-tailwind-css-project-in-5-second-using-bash-script-5d6cfc7d8ac1",
     blogThumbnail:
-      "https://miro.medium.com/v2/resize:fit:720/format:webp/1*RKXE8Fi34TiSVYL9J7QCNw.png",
+      "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*RKXE8Fi34TiSVYL9J7QCNw.png",
   },
   {
     id: 1,
