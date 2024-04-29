@@ -20,20 +20,65 @@ const Navbar = () => {
           </div>
           <div>
             <ul className="hidden lg:flex items-center md:gap-x-[30px] xl:gap-x-[60px]">
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
-                <NavLink to="/">Home</NavLink>
+              <li>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `${
+                      isActive ? "text-primary" : "text-navLink"
+                    } text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 capitalize`
+                  }
+                >
+                  Home
+                </NavLink>
               </li>
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
-                <NavLink to="/about">About</NavLink>
+              <li>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) =>
+                    `${
+                      isActive ? "text-primary" : "text-navLink"
+                    } text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 capitalize`
+                  }
+                >
+                  About
+                </NavLink>
               </li>
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
-                <NavLink to="/services">Services</NavLink>
+              <li>
+                <NavLink
+                  to="/services"
+                  className={({ isActive }) =>
+                    `${
+                      isActive ? "text-primary" : "text-navLink"
+                    } text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 capitalize`
+                  }
+                >
+                  Services
+                </NavLink>
               </li>
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
-                <NavLink to="/blogs">Blogs</NavLink>
+              <li>
+                <NavLink
+                  to="/blogs"
+                  className={({ isActive }) =>
+                    `${
+                      isActive ? "text-primary" : "text-navLink"
+                    } text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 capitalize`
+                  }
+                >
+                  Blogs
+                </NavLink>
               </li>
-              <li className="text-navLink text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 hover:text-textColor capitalize">
-                <NavLink to="/contact">Contact</NavLink>
+              <li>
+                <NavLink
+                  to="/contact"
+                  className={({ isActive }) =>
+                    `${
+                      isActive ? "text-primary" : "text-navLink"
+                    } text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 capitalize`
+                  }
+                >
+                  Contact
+                </NavLink>
               </li>
             </ul>
           </div>
