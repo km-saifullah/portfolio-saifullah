@@ -3,12 +3,16 @@
     "id": 1,
     "projectName": "docThread",
     "projectDetail": "DocThread is a web application built using ReactJS and Firebase, aimed at facilitating doctor-patient interactions and appointments scheduling online. It provides a user-friendly interface for users to make appointments and access healthcare services remotely.",
+    "category": "Front-end",
     "projectIcons": [
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/tailwind-css.svg"
       },
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/redux.svg"
       },
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/firebase.svg"
@@ -22,12 +26,16 @@
     "id": 2,
     "projectName": "dailyTalk",
     "projectDetail": "DailyTalk is a project aimed at facilitating daily communication and interaction among users through a web-based platform. Whether it's for team collaboration, informal discussions, or sharing updates, DailyTalk provides a convenient space for users to engage in conversation share multimedia content and stay connected.",
+    "category": "Front-end",
     "projectIcons": [
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/tailwind-css.svg"
       },
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/redux.svg"
       },
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/firebase.svg"
@@ -41,6 +49,7 @@
     "id": 3,
     "projectName": "Estatein",
     "projectDetail": "This is a very basic application of real-state business. This project is fully based on ReactJS.",
+    "category": "Front-end",
     "projectIcons": [
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
@@ -49,8 +58,49 @@
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/css.svg"
       }
     ],
-    "projectImage": "https://raw.githubusercontent.com/km-saifullah/dailytalk/main/src/assets/images/dailyTalk.png",
-    "projectLink": "https://github.com/km-saifullah/dailytalk",
+    "projectImage": "",
+    "projectLink": "https://github.com/km-saifullah/realstate_app",
     "projectDemo": "https://apprealstate.netlify.app"
+  },
+  {
+    "id": 4,
+    "projectName": "dragonWorld",
+    "category": "Front-end",
+    "projectDetail": "Dragon World is a drogn fruit selling website. This is single page application based on ReactJS and Firebase. Here, in this project I demonstrate how we can make a react project from a Figma file.",
+    "projectIcons": [
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/css.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/firebase.svg"
+      }
+    ],
+    "projectImage": "",
+    "projectLink": "https://github.com/km-saifullah/dragonWorld",
+    "projectDemo": "https://dragonworld.netlify.app",
+    "figmaFile": ""
+  },
+  {
+    "id": 5,
+    "projectName": "NoteApp",
+    "category": "Front-end",
+    "projectDetail": "Dragon World is a drogn fruit selling website. This is single page application based on ReactJS and Firebase. Here, in this project I demonstrate how we can make a react project from a Figma file.",
+    "projectIcons": [
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/html.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/css.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/js.svg"
+      }
+    ],
+    "projectImage": "",
+    "projectLink": "https://github.com/km-saifullah/noteApp",
+    "projectDemo": "https://km-saifullah.github.io/noteApp"
   }
 ]

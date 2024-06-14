@@ -1,6 +1,5 @@
 import React from "react";
 import { FaFacebookF, FaGithub, FaLinkedin } from "react-icons/fa";
-import { RiTwitterXFill } from "react-icons/ri";
 import Image from "../../utils/Image";
 import contactImg from "../../assets/contact_img.png";
 import Input from "../../utils/Input";
