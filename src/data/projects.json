@@ -39,21 +39,18 @@
   },
   {
     "id": 3,
-    "projectName": "dailyTalk",
-    "projectDetail": "DailyTalk is a project aimed at facilitating daily communication and interaction among users through a web-based platform. Whether it's for team collaboration, informal discussions, or sharing updates, DailyTalk provides a convenient space for users to engage in conversation share multimedia content and stay connected.",
+    "projectName": "Estatein",
+    "projectDetail": "This is a very basic application of real-state business. This project is fully based on ReactJS.",
     "projectIcons": [
-      {
-        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/tailwind-css.svg"
-      },
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
       },
       {
-        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/firebase.svg"
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/css.svg"
       }
     ],
     "projectImage": "https://raw.githubusercontent.com/km-saifullah/dailytalk/main/src/assets/images/dailyTalk.png",
     "projectLink": "https://github.com/km-saifullah/dailytalk",
-    "projectDemo": ""
+    "projectDemo": "https://apprealstate.netlify.app"
   }
 ]

@@ -12,7 +12,7 @@ const Blog = () => {
           <SectionHeading title="Blogs" />
         </div>
         <div className="flex items-center justify-around gap-x-[50px] gap-y-[34px] flex-wrap">
-          {blogs.map((blog, index) => (
+          {blogs.map((blog) => (
             <div
               className={`${
                 blog.id % 2 == 0 ? "bg-bannerBg" : "bg-inputFieldBg"
@@ -46,7 +46,7 @@ const Blog = () => {
                 <h4
                   className={`pt-3 pb-3 ${
                     blog.id % 2 != 0 ? "text-white" : "text-heading"
-                  } text-xl lg:text-[25px] font-semibold font-roboto leading-[140%] capitalize`}
+                  } text-lg lg:text-[18px] font-semibold font-roboto leading-[140%] capitalize`}
                 >
                   {blog.title}
                 </h4>

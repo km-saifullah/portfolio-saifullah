@@ -12,7 +12,7 @@ const ServiceCard = ({ img, text }) => {
         />
       </div>
       <div>
-        <h3 className="text-base lg:text-2xl font-semibold font-openSans leading-[135%]">
+        <h3 className="text-base lg:text-xl font-semibold font-openSans leading-[135%]">
           {text}
         </h3>
       </div>

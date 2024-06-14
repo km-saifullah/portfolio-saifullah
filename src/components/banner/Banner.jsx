@@ -10,12 +10,12 @@ const Banner = () => {
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
         <div className="lg:flex gap-x-[50px] items-center flex-wrap lg:flex-nowrap">
           <div>
-            <h2 className="text-heading text-3xl sm:text-[64px] font-bold font-openSans leading-[90%] sm:leading-[140%] flex items-center justify-center sm:justify-normal">
+            <h2 className="text-heading text-lg sm:text-[50px] font-bold font-openSans leading-[90%] sm:leading-[140%] flex items-center justify-center sm:justify-normal">
               Hello World <span className="hi_animation">👋</span>
             </h2>
-            <h1 className="py-[5px] w-[100%] md:w-[600px] text-heading text-2xl sm:text-[48px] font-bold font-openSans leading-[140%] text-center sm:text-left">
-              I'm Khaled Md Saifullah a{" "}
-              <span className="text-primary">Full-Stack Developer</span>
+            <h1 className="py-[5px] w-[100%] md:w-[600px] text-heading text-lg sm:text-[30px] font-bold font-openSans leading-[140%] text-center sm:text-left">
+              I'm Khaled Md Saifullah a
+              <span className="text-primary"> MERN-Stack Developer</span>
             </h1>
             <p className="w-[100%] md:w-[616px] pt-[10px] sm:pt-[20px] pb-[32px] font-openSans font-normal text-base leading-[140%] text-textColor text-center sm:text-left">
               Experienced MERN stack developer dedicated to creating captivating

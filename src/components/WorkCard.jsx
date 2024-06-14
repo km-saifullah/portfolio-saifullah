@@ -16,7 +16,7 @@ const WorkCard = ({
     <section>
       <div className="space-y-4 flex items-center gap-x-12 gap-y-6 flex-wrap lg:flex-nowrap">
         <div
-          className={`w-full h-[250px] rounded-lg overflow-hidden xl:w-[550px] ${
+          className={`w-full h-[220px] rounded-lg overflow-hidden xl:w-[550px] ${
             id % 2 == 0 && "order-2"
           } hover:drop-shadow-imgShadow`}
         >

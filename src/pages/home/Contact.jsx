@@ -48,7 +48,7 @@ const Contact = () => {
               <div className="flex items-start justify-start flex-col gap-y-3 pb-3">
                 <label
                   htmlFor="fullName"
-                  className="text-white text-xl font-semibold font-roboto leading-[140%]"
+                  className="text-white text-lg font-semibold font-roboto leading-[140%]"
                 >
                   Full Name
                 </label>
@@ -64,7 +64,7 @@ const Contact = () => {
               <div className="flex items-start justify-start flex-col gap-y-3 pb-3">
                 <label
                   htmlFor="email"
-                  className="text-white text-xl font-semibold font-roboto leading-[140%]"
+                  className="text-white text-lg font-semibold font-roboto leading-[140%]"
                 >
                   Email
                 </label>
@@ -80,7 +80,7 @@ const Contact = () => {
               <div className="flex items-start justify-start flex-col gap-y-3 pb-3">
                 <label
                   htmlFor="message"
-                  className="text-white text-xl font-semibold font-roboto leading-[140%]"
+                  className="text-white text-lg font-semibold font-roboto leading-[140%]"
                 >
                   Message
                 </label>
@@ -96,7 +96,7 @@ const Contact = () => {
               <div className="flex items-start justify-start flex-col gap-y-3">
                 <button
                   onClick={handleMessage}
-                  className="bg-inputFieldBg px-5 py-2 text-white text-base lg:text-lg font-semibold font-roboto leading-[135%] capitalize hover:text-heading hover:bg-buttonText transition-all ease-linear duration-300"
+                  className="bg-inputFieldBg px-5 py-2 text-white text-base lg:text-base font-semibold font-roboto leading-[135%] capitalize hover:text-heading hover:bg-buttonText transition-all ease-linear duration-300"
                 >
                   Send Message
                 </button>
