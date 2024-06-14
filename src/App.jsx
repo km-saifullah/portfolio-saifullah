@@ -6,9 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
-import Home from "./pages/home/Home";
-import Contact from "./pages/contact/Contact";
-import NotFound from "./pages/notfound/NotFound";
+import { Contact, Home, NotFound, Projects } from "./pages";
 
 // All Routes
 const router = createBrowserRouter(
@@ -16,6 +14,7 @@ const router = createBrowserRouter(
     <>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
       <Route path="*" element={<NotFound />} />

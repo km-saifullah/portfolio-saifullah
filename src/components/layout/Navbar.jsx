@@ -11,7 +11,7 @@ const Navbar = () => {
           <div>
             <Link to="/">
               <h3 className="font-roboto text-base sm:text-xl md:text-2xl lg:text-[25px] text-heading leading-[140%] font-semibold transition-all ease-linear duration-300 hover:text-primary">
-                Khaled Md{" "}
+                Khaled Md
                 <span className="text-primary transition-all ease-linear duration-300 hover:text-heading">
                   Saifullah
                 </span>
@@ -70,6 +70,18 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
+                  to="/projects"
+                  className={({ isActive }) =>
+                    `${
+                      isActive ? "text-primary" : "text-navLink"
+                    } text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 capitalize`
+                  }
+                >
+                  Projects
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/contact"
                   className={({ isActive }) =>
                     `${
@@ -82,14 +94,14 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-          <div className="flex items-center justify-center gap-x-4">
+          {/* <div className="flex items-center justify-center gap-x-4">
             <div className="flex items-center justify-center text-[#EEF5FF] text-base sm:text-xl md:text-[35px] cursor-pointer bg-[rgba(34,34,34,0.75)] w-[40px] sm:w-[50px] md:w-[70px] lg:w-[100px]  h-[20px] sm:h-[30px] md:h-[40px] lg:h-[50px] rounded-[60px]">
               <MdOutlineWbSunny />
             </div>
             <div className="block lg:hidden text-3xl md:text-4xl cursor-pointer text-heading transition-all ease-linera duration-300 hover:text-textColor">
               <HiOutlineBars3BottomLeft />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>
