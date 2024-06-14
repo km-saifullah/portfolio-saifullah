@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Banner = () => {
   return (
-    <section className="bg-bannerBg relative pt-[50px] sm:pt-[100px] w-[100%]">
+    <section className="bg-bannerBg relative pt-[50px] sm:pt-[20px] w-[100%]">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
         <div className="lg:flex gap-x-[50px] items-center flex-wrap lg:flex-nowrap">
           <div>

@@ -7,7 +7,7 @@ const Myworks = () => {
   let myProjects = projects.slice(0, 2);
   const navigate = useNavigate();
   return (
-    <section className="mb-[20px] lg:mb-[120px] bg-heading py-5">
+    <section className="mb-[20px] lg:mb-[40px] bg-heading py-5">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
         <div>
           <h3 className="text-2xl lg:text-[35px] text-white font-bold font-roboto leading-[140%] capitalize mb-4">

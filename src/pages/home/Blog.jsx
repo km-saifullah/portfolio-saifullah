@@ -6,7 +6,7 @@ import Button from "../../utils/Button";
 
 const Blog = () => {
   return (
-    <section className="py-[20px] lg:py-[110px]">
+    <section className="py-[20px] lg:py-[30px]">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
         <div className="pb-[20px] lg:pb-[32px]">
           <SectionHeading title="Blogs" />

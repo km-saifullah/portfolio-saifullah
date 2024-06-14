@@ -8,7 +8,7 @@ import ServiceCard from "../../components/ServiceCard";
 
 const Services = () => {
   return (
-    <section className="py-[20px] lg:py-[64px] bg-serviceBg">
+    <section className="py-[20px] lg:py-[30px] bg-serviceBg">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
         <div className="pb-[35px]">
           <SectionHeading title="Services" className="" />

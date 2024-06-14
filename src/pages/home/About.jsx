@@ -18,7 +18,7 @@ const About = () => {
     setShowQr(false);
   };
   return (
-    <section className="py-[50px] md:py-[120px] relative">
+    <section className="py-[50px] md:py-[30px] relative">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
         <div className="flex items-center gap-x-[150px] flex-wrap lg:flex-nowrap gap-y-[20px] sm:gap-p-0">
           <div>
