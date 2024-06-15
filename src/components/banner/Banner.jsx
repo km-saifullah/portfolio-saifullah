@@ -24,13 +24,18 @@ const Banner = () => {
             </p>
             <div className="flex gap-x-5 items-center justify-center sm:justify-normal sm:items-start">
               <Link to="/contact">
-                <button className="px-4 sm:px-5 py-2 sm:py-3 bg-primary text-[#EEF5FF] uppercase text-base sm:text-xl leading-[135%] font-openSans font-bold border border-solid border-primary transition-all ease-linear duration-300 hover:text-buttonColor hover:bg-[#EEF5FF]">
+                <button className="px-4 sm:px-5 py-2 sm:py-2 bg-primary text-[#EEF5FF] uppercase text-base sm:text-lg leading-[135%] font-openSans font-medium border border-solid border-primary transition-all ease-linear duration-300 hover:text-buttonColor hover:bg-[#EEF5FF]">
                   Contact Me
                 </button>
               </Link>
-              <button className="px-4 sm:px-5 py-2 sm:py-3 bg-white text-buttonColor uppercase text-base sm:text-xl leading-[135%] font-openSans font-bold border border-solid border-primary transition-all ease-linear duration-300 hover:text-[#EEF5FF] hover:bg-primary">
-                Download CV{" "}
-              </button>
+              <Link
+                to="https://drive.google.com/file/d/1eraPL7zbPYHUzAMZbDhkRYJ95Yzf4Vmf/view?usp=drive_link"
+                target="_blank"
+              >
+                <button className="px-4 sm:px-5 py-2 sm:py-2 bg-white text-buttonColor uppercase text-base sm:text-lg leading-[135%] font-openSans font-medium border border-solid border-primary transition-all ease-linear duration-300 hover:text-[#EEF5FF] hover:bg-primary">
+                  Download CV{" "}
+                </button>
+              </Link>
             </div>
           </div>
           <div className="w-[95%] sm:w-[460px] h-[460px] sm:h-[560px] md:h-[580px] lg:h-[600px] overflow-hidden mx-auto lg:mx-0">

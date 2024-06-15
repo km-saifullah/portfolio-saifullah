@@ -46,18 +46,6 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to="/services"
-                  className={({ isActive }) =>
-                    `${
-                      isActive ? "text-primary" : "text-navLink"
-                    } text-[18px] font-roboto font-medium leading-[140%] transition-all ease-linear duration-300 capitalize`
-                  }
-                >
-                  Services
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
                   to="/blogs"
                   className={({ isActive }) =>
                     `${
