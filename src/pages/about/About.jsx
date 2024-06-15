@@ -16,8 +16,8 @@ const About = () => {
         {/* ========== About Me Start =========== */}
         <div className="pb-5 px-1">
           <SectionHeading title="About Me" />
-          <div className="px-4">
-            <h3 className="text-heading text-lg font-bold font-roboto">
+          <div className="px-4 pt-3">
+            <h3 className="text-heading text-xl font-bold font-roboto">
               Khaled Md Saifullah
             </h3>
             <h5 className="text-textColor text-base font-normal font-openSans py-1">

@@ -48,7 +48,7 @@ const Blog = () => {
                 <h4
                   className={`pt-3 pb-3 ${
                     blog.id % 2 != 0 ? "text-white" : "text-heading"
-                  } text-lg lg:text-[18px] font-semibold font-roboto leading-[140%] capitalize`}
+                  } text-lg lg:text-[22px] font-semibold font-roboto leading-[140%] capitalize`}
                 >
                   {blog.title}
                 </h4>

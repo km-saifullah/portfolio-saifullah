@@ -63,10 +63,10 @@ const Footer = () => {
                 <Link to="/">Home</Link>
               </li>
               <li className="text-buttonText text-sm lg:text-xl font-normal font-openSans leading-[135%]">
-                <Link to="/blog">Blog</Link>
+                <Link to="/blogs">Blogs</Link>
               </li>
               <li className="text-buttonText text-sm lg:text-xl font-normal font-openSans leading-[135%]">
-                <Link to="/porjects">Projects</Link>
+                <Link to="/projects">Projects</Link>
               </li>
               <li className="text-buttonText text-sm lg:text-xl font-normal font-openSans leading-[135%]">
                 <Link to="/contact">Contact</Link>
