@@ -12,7 +12,7 @@ const Projects = () => {
         <div className="py-3 flex items-center justify-between flex-col gap-12">
           {projects.map((item, index) => (
             <div
-              className="flex itmes-center justify-between gap-3 shadow-lg rounded-lg pt-6 border"
+              className="flex itmes-center justify-between gap-3 shadow-lg rounded-lg pt-6"
               key={item.id}
             >
               <div className="w-[50%] h-[260px] xl:w-[550px] bg-red-300 rounded-l-lg overflow-hidden ">
