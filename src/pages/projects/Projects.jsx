@@ -22,7 +22,7 @@ const Projects = () => {
               className="flex itmes-center justify-between flex-wrap lg:flex-nowrap gap-3 shadow-none lg:shadow-md rounded-lg px-2 lg:px-0"
               key={item.id}
             >
-              <div className="w-full lg:w-[50%] h-[150px] lg:h-[268px] bg-red-300 lg:rounded-l-lg overflow-hidden ">
+              <div className="w-full lg:w-[50%] h-[150px] lg:h-[268px] lg:rounded-l-lg overflow-hidden ">
                 <Image
                   imgSrc={item.projectImage}
                   altText={`${item.projectName} image missing`}
