@@ -25,7 +25,7 @@ const Projects = () => {
               <div className="w-full lg:w-[50%] h-[150px] lg:h-[268px] bg-red-300 lg:rounded-l-lg overflow-hidden ">
                 <Image
                   imgSrc={item.projectImage}
-                  altText="Project Image Missing"
+                  altText={`${item.projectName} image missing`}
                   className="w-full h-full object-cover"
                 />
               </div>
