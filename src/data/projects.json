@@ -18,7 +18,7 @@
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/firebase.svg"
       }
     ],
-    "projectImage": "https://raw.githubusercontent.com/km-saifullah/doc-thread/main/src/assets/images/home.png",
+    "projectImage": "./../assets/docthread.png",
     "projectLink": "https://github.com/km-saifullah/doc-thread",
     "projectDemo": "https://doc-thread.netlify.app"
   },
