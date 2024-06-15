@@ -47,18 +47,18 @@ const WorkCard = ({
           <div className="flex items-center gap-x-3 pt-2">
             <a
               href={projectLink}
-              className="flex items-center gap-x-2 bg-primary px-4 py-2 text-white text-base lg:text-xl font-roboto font-medium leading-[120%] capitalize"
+              className="flex items-center gap-x-2 bg-primary px-4 py-2 text-white text-base lg:text-md font-roboto font-medium leading-[120%] capitalize"
               target="_blank"
             >
               <FaGithub />
-              Gihtub Link
+              Github Link
             </a>
             <a
               href={projectDemo}
-              className="flex items-center gap-x-2 bg-primary px-4 py-2 text-white text-base lg:text-xl font-roboto font-medium leading-[120%] capitalize"
+              className="flex items-center gap-x-2 bg-primary px-4 py-2 text-white text-base lg:text-md font-roboto font-medium leading-[120%] capitalize"
               target="_blank"
             >
-              <CgMediaLive /> Live Demo
+              <CgMediaLive /> Live Site
             </a>
           </div>
         </div>

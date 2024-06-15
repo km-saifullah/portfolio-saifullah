@@ -20,7 +20,8 @@
     ],
     "projectImage": "https://raw.githubusercontent.com/km-saifullah/portfolio-saifullah/main/src/assets/images/docthread.png",
     "projectLink": "https://github.com/km-saifullah/doc-thread",
-    "projectDemo": "https://doc-thread.netlify.app"
+    "projectDemo": "https://doc-thread.netlify.app",
+    "demoVideo": ""
   },
   {
     "id": 2,
@@ -43,7 +44,8 @@
     ],
     "projectImage": "https://raw.githubusercontent.com/km-saifullah/portfolio-saifullah/main/src/assets/images/dailyTalk.png",
     "projectLink": "https://github.com/km-saifullah/dailytalk",
-    "projectDemo": ""
+    "projectDemo": "",
+    "demoVideo": ""
   },
   {
     "id": 3,
@@ -60,7 +62,8 @@
     ],
     "projectImage": "https://raw.githubusercontent.com/km-saifullah/portfolio-saifullah/main/src/assets/images/estetain.png",
     "projectLink": "https://github.com/km-saifullah/realstate_app",
-    "projectDemo": "https://apprealstate.netlify.app"
+    "projectDemo": "https://apprealstate.netlify.app",
+    "demoVideo": ""
   },
   {
     "id": 4,
@@ -81,7 +84,8 @@
     "projectImage": "https://raw.githubusercontent.com/km-saifullah/portfolio-saifullah/main/src/assets/images/dragonWorld.png",
     "projectLink": "https://github.com/km-saifullah/dragonWorld",
     "projectDemo": "https://dragonworld.netlify.app",
-    "figmaFile": ""
+    "figmaFile": "",
+    "demoVideo": ""
   },
   {
     "id": 5,
@@ -101,7 +105,8 @@
     ],
     "projectImage": "https://raw.githubusercontent.com/km-saifullah/portfolio-saifullah/main/src/assets/images/noteApp.png",
     "projectLink": "https://github.com/km-saifullah/noteApp",
-    "projectDemo": "https://km-saifullah.github.io/noteApp"
+    "projectDemo": "https://km-saifullah.github.io/noteApp",
+    "demoVideo": ""
   },
   {
     "id": 6,
@@ -119,8 +124,9 @@
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/js.svg"
       }
     ],
-    "projectImage": "https://raw.githubusercontent.com/km-saifullah/portfolio-saifullah/main/src/assets/images/noteApp.png",
+    "projectImage": "https://raw.githubusercontent.com/km-saifullah/portfolio-saifullah/main/src/assets/images/randomColor.png",
     "projectLink": "https://github.com/km-saifullah/randomColorGenerator",
-    "projectDemo": "https://km-saifullah.github.io/randomColorGenerator"
+    "projectDemo": "https://km-saifullah.github.io/randomColorGenerator",
+    "demoVideo": ""
   }
 ]
