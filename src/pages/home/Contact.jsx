@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Image from "../../utils/Image";
 import contactMe from "../../assets/contact_img.png";
 import SectionHeading from "../../utils/SectionHeading";
+import { push, ref, set } from "firebase/database";
+import { db } from "../../db/firebase.config";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -19,13 +21,26 @@ const Contact = () => {
 
   //   handle message
   const handleMessage = (e) => {
+    e.preventDefault();
     console.log(formData);
+    if (
+      formData.fullName === "" &&
+      formData.email === "" &&
+      formData.message === ""
+    ) {
+      alert("Please enter all fields");
+    } else {
+      set(push(ref(db, "messages/")), {
+        fullName: formData.fullName,
+        email: formData.email,
+        message: formData.message,
+      });
+    }
     setFormData({
       fullName: "",
       email: "",
       message: "",
     });
-    e.preventDefault();
   };
   return (
     <section className="pb-[20px] lg:pb-[30px]">
