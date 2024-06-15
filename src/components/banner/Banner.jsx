@@ -10,10 +10,10 @@ const Banner = () => {
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
         <div className="lg:flex gap-x-[50px] items-center flex-wrap lg:flex-nowrap">
           <div>
-            <h2 className="text-heading text-lg sm:text-[50px] font-bold font-openSans leading-[90%] sm:leading-[140%] flex items-center justify-center sm:justify-normal">
+            <h2 className="text-heading text-2xl sm:text-[50px] font-bold font-openSans leading-[90%] sm:leading-[140%] flex items-center justify-center sm:justify-normal">
               Hello World <span className="hi_animation">👋</span>
             </h2>
-            <h1 className="py-[5px] w-[100%] md:w-[600px] text-heading text-lg sm:text-[30px] font-bold font-openSans leading-[140%] text-center sm:text-left">
+            <h1 className="py-[0px] w-[100%] md:w-[600px] text-heading text-lg sm:text-[30px] font-bold font-openSans leading-[140%] text-center sm:text-left">
               I'm Khaled Md Saifullah a
               <span className="text-primary"> MERN-Stack Developer</span>
             </h1>

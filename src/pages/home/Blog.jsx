@@ -3,8 +3,10 @@ import { blogs } from "../../data/blogs";
 import SectionHeading from "../../utils/SectionHeading";
 import Image from "../../utils/Image";
 import Button from "../../utils/Button";
+import { Link } from "react-router-dom";
 
 const Blog = () => {
+  let selectedBlog = blogs.slice(0, 6);
   return (
     <section className="py-[20px] lg:py-[30px]">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
@@ -12,7 +14,7 @@ const Blog = () => {
           <SectionHeading title="Blogs" />
         </div>
         <div className="flex items-center justify-around gap-x-[50px] gap-y-[34px] flex-wrap">
-          {blogs.map((blog) => (
+          {selectedBlog.map((blog) => (
             <div
               className={`${
                 blog.id % 2 == 0 ? "bg-bannerBg" : "bg-inputFieldBg"
@@ -50,16 +52,23 @@ const Blog = () => {
                 >
                   {blog.title}
                 </h4>
-                <a
-                  href={blog.blogLink}
-                  target="_blank"
-                  className="px-4 py-2 transition-all ease-linear duration-300 bg-primary text-white text-base font-bold font-openSans leading-[135%] capitalize hover:bg-white hover:text-heading"
-                >
-                  read more
-                </a>
+                <div className="pt-2">
+                  <a
+                    href={blog.blogLink}
+                    target="_blank"
+                    className="px-4 py-2 transition-all ease-linear duration-300 bg-primary text-white text-base font-bold font-openSans leading-[135%] capitalize hover:bg-white hover:text-heading"
+                  >
+                    read more
+                  </a>
+                </div>
               </div>
             </div>
           ))}
+        </div>
+        <div className="flex items-center justify-center pt-6">
+          <Link to="/blogs">
+            <Button title="More Blogs ✏️" />
+          </Link>
         </div>
       </div>
     </section>

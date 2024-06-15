@@ -9,7 +9,9 @@ const NotFound = () => {
       <div>
         <MdOutlineErrorOutline className="h-[150px] w-[150px] text-textColor" />
       </div>
-      <p className="font-normal font-roboto text-heading text-lg py-3 text-center">The page you are looking for cannot be found!</p>
+      <p className="font-normal font-roboto text-heading text-lg py-3 text-center">
+        The page you are looking for cannot be found!
+      </p>
       <Link to="/">
         <Button title="Home" />
       </Link>
