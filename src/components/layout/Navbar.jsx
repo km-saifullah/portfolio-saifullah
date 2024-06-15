@@ -11,7 +11,7 @@ const Navbar = () => {
           <div>
             <Link to="/">
               <h3 className="font-roboto text-base sm:text-xl md:text-2xl lg:text-[25px] text-heading leading-[140%] font-semibold transition-all ease-linear duration-300 hover:text-primary">
-                Khaled Md
+                Khaled Md {""}
                 <span className="text-primary transition-all ease-linear duration-300 hover:text-heading">
                   Saifullah
                 </span>
