@@ -128,5 +128,27 @@
     "projectLink": "https://github.com/km-saifullah/randomColorGenerator",
     "projectDemo": "https://km-saifullah.github.io/randomColorGenerator",
     "demoVideo": ""
+  },
+  {
+    "id": 7,
+    "projectName": "TaskManager",
+    "category": "Mobile App",
+    "projectDetail": "TaskManager is an android mobile application. It's fully developed on ReactJS and React Native. I use the expo framework to build this application. I have implemented CRUD operation in this app. The features of this app are add a task, edit a task, update a task and delete a task.",
+    "projectIcons": [
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/android.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/expo.svg"
+      }
+    ],
+    "projectImage": "https://raw.githubusercontent.com/km-saifullah/image-data/main/images/task-manager.jpeg",
+    "projectLink": "https://github.com/km-saifullah/task-manager",
+    "projectDemo": "https://expo.dev/accounts/km-saifullah/projects/TaskManager/builds/e6d0c588-0dd6-4bc2-b108-5eaa38ac421c",
+    "demoVideo": "",
+    "apkFile": "https://expo.dev/accounts/km-saifullah/projects/TaskManager"
   }
 ]
