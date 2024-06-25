@@ -150,5 +150,29 @@
     "projectDemo": "https://expo.dev/accounts/km-saifullah/projects/TaskManager/builds/e6d0c588-0dd6-4bc2-b108-5eaa38ac421c",
     "demoVideo": "",
     "apkFile": "https://expo.dev/accounts/km-saifullah/projects/TaskManager"
+  },
+  {
+    "id": 8,
+    "projectName": "Todo App",
+    "category": "Backend",
+    "projectDetail": "Todo App is a MERN stack project. It has multiple features. The CRUD operation has been inetgrated in this application. You can add a todo, update a todo, delete a todo and see all the todos from the database. The frontend has been created with ReactJS. In backend I used ExpressJS and MongoDB.",
+    "projectIcons": [
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/nodejs.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/express-js.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/mongodb.svg"
+      }
+    ],
+    "projectImage": "https://raw.githubusercontent.com/km-saifullah/image-data/main/images/todoApp.png",
+    "projectLink": "https://github.com/km-saifullah/todo-app",
+    "projectDemo": "",
+    "demoVideo": ""
   }
 ]
