@@ -50,8 +50,7 @@
   {
     "id": 3,
     "projectName": "Estatein",
-    "projectDetail": "DailyTalk is a project aimed at facilitating daily communication and interaction among users through a web-based platform. Whether it's for team collaboration, informal discussions, or sharing updates, DailyTalk provides a convenient space for users to engage in conversation share multimedia content and stay connected.",
-    "category": "Front-end",
+    "projectDetail": "This is a Real State application. It is totally build on React JS and CSS. It is basically a conversion project from Firgma Design to React JS. This project was made by collaboration.",
     "projectIcons": [
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
@@ -91,7 +90,7 @@
     "id": 5,
     "projectName": "NoteApp",
     "category": "Front-end",
-    "projectDetail": "Dragon World is a drogn fruit selling website. This is single page application based on ReactJS and Firebase. Here, in this project I demonstrate how we can make a react project from a Figma file.",
+    "projectDetail": "This note taking project is fullly built on HTML, CSS and JavaScript. Anyone can take note through this application. When you refresh the page the contents of the notes will not be removed. I have implemented the CRUD operation in this app.",
     "projectIcons": [
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/html.svg"
@@ -112,7 +111,7 @@
     "id": 6,
     "projectName": "Color Generator",
     "category": "Front-end",
-    "projectDetail": "Dragon World is a drogn fruit selling website. This is single page application based on ReactJS and Firebase. Here, in this project I demonstrate how we can make a react project from a Figma file.",
+    "projectDetail": "Color Generator is an app built on HTML, CSS and JavaScript. When you enter the url of this project it will generate some random colors infront of you. You can click any colors to copy the RGB format and with double click it can copy the HEX format of that color.",
     "projectIcons": [
       {
         "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/html.svg"
