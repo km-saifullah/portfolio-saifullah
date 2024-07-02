@@ -29,7 +29,7 @@ const Banner = () => {
                 </button>
               </Link>
               <Link
-                to="https://drive.google.com/file/d/1VyptXOaqGwWDSX_MS4zhmjLlOTqtAfOY/view?usp=drive_link"
+                to="https://drive.google.com/file/d/1iMUouFs_tb0MmN0cVxRnWl_5TsTVp1jS/view?usp=drive_link"
                 target="_blank"
               >
                 <button className="px-4 sm:px-5 py-2 sm:py-2 bg-white text-buttonColor uppercase text-base sm:text-lg leading-[135%] font-openSans font-medium border border-solid border-primary transition-all ease-linear duration-300 hover:text-[#EEF5FF] hover:bg-primary">
