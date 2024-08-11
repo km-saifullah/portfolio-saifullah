@@ -22,7 +22,7 @@ const VideoSection = () => {
                 clickable: true,
               }}
               modules={[Pagination]}
-              className="mySwiper rounded-lg flex items-center justify-center"
+              className="mySwiper rounded-lg flex items-center justify-center w-[100%] md:w-[70%] h-[100%] md:h-[70%] "
             >
               <SwiperSlide className="flex items-center justify-center">
                 <Link to="https://youtu.be/A1AMxrSYdPM" target="_blank">

@@ -17,14 +17,13 @@ const Projects = () => {
           <div className="flex flex-col gap-12 px-3">
             {frontEnd.map((item) => (
               <ProjectCard
-                keyId={item.id}
+                key={item.id}
                 projectImg={item.projectImage}
                 projectTitle={item.projectName}
                 projectDescription={item.projectDetail}
                 icons={item.projectIcons}
                 projectGithub={item.projectLink}
                 liveSite={item.projectDemo}
-                youtubeLink={item.demoVideo}
               />
             ))}
           </div>
@@ -36,14 +35,13 @@ const Projects = () => {
           <div className="flex flex-col gap-12 px-3">
             {mobile.map((item) => (
               <ProjectCard
-                keyId={item.id}
+                key={item.id}
                 projectImg={item.projectImage}
                 projectTitle={item.projectName}
                 projectDescription={item.projectDetail}
                 icons={item.projectIcons}
                 projectGithub={item.projectLink}
                 liveSite={item.projectDemo}
-                youtubeLink={item.demoVideo}
               />
             ))}
           </div>
@@ -55,14 +53,13 @@ const Projects = () => {
           <div className="flex flex-col gap-12 px-3">
             {backend.map((item) => (
               <ProjectCard
-                keyId={item.id}
+                key={item.id}
                 projectImg={item.projectImage}
                 projectTitle={item.projectName}
                 projectDescription={item.projectDetail}
                 icons={item.projectIcons}
                 projectGithub={item.projectLink}
                 liveSite={item.projectDemo}
-                youtubeLink={item.demoVideo}
               />
             ))}
           </div>

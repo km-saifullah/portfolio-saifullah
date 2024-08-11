@@ -1,23 +1,18 @@
 import React from "react";
 import Image from "../utils/Image";
-import { FaGithub, FaYoutube } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { CgMediaLive } from "react-icons/cg";
 
 const ProjectCard = ({
-  keyId,
   projectImg,
   projectTitle,
   projectDescription,
   icons,
   projectGithub,
   liveSite,
-  youtubeLink,
 }) => {
   return (
-    <div
-      className="flex itmes-center justify-between flex-wrap lg:flex-nowrap gap-3 shadow-none lg:shadow-md rounded-lg px-2 lg:px-0"
-      keyId={keyId}
-    >
+    <div className="flex itmes-center justify-between flex-wrap lg:flex-nowrap gap-3 shadow-none lg:shadow-md rounded-lg px-2 lg:px-0">
       <div className="w-full lg:w-[50%] h-[150px] lg:h-[268px] lg:rounded-l-lg overflow-hidden ">
         <Image
           imgSrc={projectImg}
@@ -59,14 +54,6 @@ const ProjectCard = ({
           >
             <CgMediaLive />
             Live Site
-          </a>
-          <a
-            href={youtubeLink}
-            target="_blank"
-            className="hidden md:flex items-center justify-center gap-x-2 bg-primary px-2 lg:px-4 py-1 lg:py-2 text-white text-[14px] lg:text-lg font-roboto font-normal md:font-medium leading-[120%] capitalize"
-          >
-            <FaYoutube />
-            Demo Video
           </a>
         </div>
       </div>
