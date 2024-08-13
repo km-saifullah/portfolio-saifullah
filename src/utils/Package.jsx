@@ -7,7 +7,7 @@ const Package = ({ packageName, packageDetails, packageLink }) => {
   return (
     <div className="flex items-center justify-between gap-2 flex-wrap-reverse">
       <div className="w-[500px]">
-        <h1 className="text-xl font-roboto font-bold">quick-app</h1>
+        <h1 className="text-xl font-roboto font-bold">{packageName}</h1>
         <p className="w-full xl:w-[585px] text-justify md:text-left pt-2 pb-2 text-base text-textColor font-normal font-openSans leading-[135%]">
           {packageDetails}
         </p>
