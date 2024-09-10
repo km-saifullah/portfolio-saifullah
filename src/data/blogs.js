@@ -1,6 +1,16 @@
 export const blogs = [
   {
     id: 0,
+    title: "Dockerizing Your HTML Application",
+    postAt: "September 09, 2024",
+    blogTag: "Docker",
+    blogLink:
+      "https://medium.com/@kmsaifullah16/dockerizing-your-html-application-e0493ff5bf98",
+    blogThumbnail:
+      "https://miro.medium.com/v2/resize:fit:720/format:webp/1*rSTBtCMeqmyuX_shp08uHA.png",
+  },
+  {
+    id: 1,
     title: "Create a Node App in a Minute",
     postAt: "May 29, 2024",
     blogTag: "Web Development",
@@ -9,7 +19,7 @@ export const blogs = [
       "https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F7bf17uk1c4tc25ctytab.png",
   },
   {
-    id: 1,
+    id: 2,
     title: "Create your own API for react App",
     postAt: "Apr 17, 2024",
     blogTag: "Web Development",
@@ -19,7 +29,7 @@ export const blogs = [
       "https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F45d38z2sod3cz96sp6nk.png",
   },
   {
-    id: 2,
+    id: 3,
     title: "How to Fetch Data in React JS",
     postAt: "Mar 1, 2024",
     blogTag: "Web Development",
@@ -28,7 +38,7 @@ export const blogs = [
       "https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ffzkpddskxtdbvp574nho.png",
   },
   {
-    id: 3,
+    id: 4,
     title: "Setup Tailwind CSS Project in 5 Second Using Bash Script",
     postAt: "Nov 17, 2023",
     blogTag: "Web Development",
@@ -38,7 +48,7 @@ export const blogs = [
       "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*RKXE8Fi34TiSVYL9J7QCNw.png",
   },
   {
-    id: 4,
+    id: 5,
     title: "ReactJS Project Setup Using Shell Script",
     postAt: "Dec 3, 2023",
     blogTag: "Web Development",
@@ -48,7 +58,7 @@ export const blogs = [
       "https://miro.medium.com/v2/resize:fit:720/format:webp/1*7k63Sb1BSjmN0hQ9P0pd_w.gif",
   },
   {
-    id: 5,
+    id: 6,
     title: "Difference Between “export” and “export default”",
     postAt: "Dec 9, 2023",
     blogTag: "Programming",
@@ -58,7 +68,7 @@ export const blogs = [
       "https://miro.medium.com/v2/resize:fit:720/format:webp/1*6tZk5B6W4RMVCPCCM70EIQ.gif",
   },
   {
-    id: 6,
+    id: 7,
     title: "Essential Terminal Commands for Web Developers",
     postAt: "Dec 15, 2023",
     blogTag: "CLI Commands",
@@ -68,7 +78,7 @@ export const blogs = [
       "https://miro.medium.com/v2/resize:fit:720/format:webp/1*plNTVCbG-XM8H-se1WELfA.gif",
   },
   {
-    id: 7,
+    id: 8,
     title: "Essential cmd commands for windows users",
     postAt: "Dec 24, 2021",
     blogTag: "CLI Commands",
@@ -78,7 +88,7 @@ export const blogs = [
       "https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2bu4d9ws8ze8c774ihga.png",
   },
   {
-    id: 8,
+    id: 9,
     title: "Steps to Create a HTML Project",
     postAt: "Feb 22, 2024",
     blogTag: "Web Development",

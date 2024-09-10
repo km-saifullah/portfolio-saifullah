@@ -3,6 +3,7 @@ import { FaFacebookF } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { RiTwitterXFill } from "react-icons/ri";
+import { FaYoutube } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -10,7 +11,7 @@ const Footer = () => {
   return (
     <footer className="bg-footerBg py-[50px]">
       <div className="md:max-w-container mx-auto p-2 md:p-[30px]">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-3">
           <div className=" flex gap-x-4 flex-col">
             <h4 className="text-primary text-lg lg:text-[25px] font-bold font-roboto leading-[140%] pb-3">
               Social Links
@@ -55,6 +56,25 @@ const Footer = () => {
             </div>
           </div>
           <div>
+            <h4 className="text-primary text-lg lg:text-[25px] font-bold font-roboto leading-[140%] pb-3">
+              Youtube Channel
+            </h4>
+            <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center jusitfy-center h-[45px] w-[45px]">
+                <FaYoutube className="text-4xl text-[#FF0000]" />
+              </div>
+              <div>
+                <Link
+                  className="text-buttonText text-sm lg:text-xl font-normal font-openSans leading-[135%] underline"
+                  to={"https://www.youtube.com/@kmSaifullah"}
+                  target="_blank"
+                >
+                  View More
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="">
             <h4 className="text-primary text-lg lg:text-[25px] font-bold font-roboto leading-[140%] pb-3">
               Pages
             </h4>
