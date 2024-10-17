@@ -47,14 +47,16 @@ const ProjectCard = ({
             <FaGithub />
             Github Link
           </a>
-          <a
-            href={liveSite}
-            target="_blank"
-            className="flex items-center justify-center gap-x-2 bg-primary px-2 lg:px-4 py-1 lg:py-2 text-white text-[14px] lg:text-lg font-roboto font-normal md:font-medium leading-[120%] capitalize"
-          >
-            <CgMediaLive />
-            Live Site
-          </a>
+          {liveSite ? (
+            <a
+              href={liveSite}
+              target="_blank"
+              className="flex items-center justify-center gap-x-2 bg-primary px-2 lg:px-4 py-1 lg:py-2 text-white text-[14px] lg:text-lg font-roboto font-normal md:font-medium leading-[120%] capitalize"
+            >
+              <CgMediaLive />
+              Live Site
+            </a>
+          ) : null}
         </div>
       </div>
     </div>

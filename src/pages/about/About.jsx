@@ -17,18 +17,20 @@ const About = () => {
         <div className="pb-5 px-1">
           <SectionHeading title="About Me" />
           <div className="px-4 pt-3">
-            <h3 className="text-heading text-xl font-bold font-roboto">
-              Khaled Md Saifullah
-            </h3>
-            <h5 className="text-textColor text-base font-normal font-openSans py-1">
-              MERN Stack Developer
-            </h5>
-            <p className="text-textColor leading-[140%] text-base font-normal font-openSans">
-              I'm a MERN stack developer who loves JavaScript and is fascinated
-              by technology. When I'm not coding, I'm either traveling, watching
-              TV series or experimenting with new technology. Let's connect and
-              go exploring together.
-            </p>
+            <div className="w-[60%] border p-10  ring-2 ring-primary ring-inset">
+              <h3 className="text-heading text-xl font-bold font-roboto">
+                Khaled Md Saifullah
+              </h3>
+              <h5 className="text-textColor text-base font-medium font-openSans py-1 italic">
+                MERN Stack Developer
+              </h5>
+              <p className="text-textColor leading-[140%] text-base font-normal font-openSans">
+                I'm a MERN stack developer who loves JavaScript and is
+                fascinated by technology. When I'm not coding, I'm either
+                traveling, watching TV series or experimenting with new
+                technology. Let's connect and go exploring together.
+              </p>
+            </div>
             <div className="flex items-center gap-x-3 py-3">
               <p className="text-navLink text-base font-medium font-openSans">
                 I regularly write articles on |

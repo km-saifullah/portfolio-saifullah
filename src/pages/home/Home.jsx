@@ -6,6 +6,7 @@ import Blog from "./Blog";
 import Contact from "./Contact";
 import Myworks from "./Myworks";
 import VideoSection from "./VideoSection";
+import DockerProjects from "../dockerProjects/DockerProjects";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
       <Services />
       <Blog />
       <Myworks />
+      <DockerProjects />
       <VideoSection />
       <Contact />
     </>

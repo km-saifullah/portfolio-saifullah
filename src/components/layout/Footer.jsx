@@ -89,6 +89,9 @@ const Footer = () => {
                 <Link to="/projects">Projects</Link>
               </li>
               <li className="text-buttonText text-sm lg:text-xl font-normal font-openSans leading-[135%]">
+                <Link to="/docker-project">Docker Projects</Link>
+              </li>
+              <li className="text-buttonText text-sm lg:text-xl font-normal font-openSans leading-[135%]">
                 <Link to="/contact">Contact</Link>
               </li>
             </ul>

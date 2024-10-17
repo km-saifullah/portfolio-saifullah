@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "projectName": "Containerizing Node App",
+    "projectDetail": "Learn how to create a Docker image for a Node.js application and run a container based on that image in this project.",
+    "projectIcons": [
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/e125ae462e46983e16d6c7cdb8b0fe8b278c3c22/icons/docker.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/e125ae462e46983e16d6c7cdb8b0fe8b278c3c22/icons/nodejs.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/e125ae462e46983e16d6c7cdb8b0fe8b278c3c22/icons/express-js.svg"
+      }
+    ],
+    "projectImage": "https://i.ibb.co.com/wdYk9Zx/docker.png",
+    "projectLink": "https://github.com/km-saifullah/conainerizing-node-app",
+    "projectDemo": "https://github.com/km-saifullah/conainerizing-node-app",
+    "demoVideo": ""
+  }
+]
