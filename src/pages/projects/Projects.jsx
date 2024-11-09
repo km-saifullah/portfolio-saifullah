@@ -5,7 +5,7 @@ import ProjectCard from "../../components/ProjectCard";
 
 const Projects = () => {
   const frontEnd = projects.slice(0, 6);
-  const backend = projects.slice(7, 8);
+  const backend = projects.slice(7, 9);
   const mobile = projects.slice(6, 7);
   return (
     <section className="py-10 md:py-16 lg:py-20">

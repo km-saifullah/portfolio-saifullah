@@ -173,5 +173,32 @@
     "projectLink": "https://github.com/km-saifullah/todo-app",
     "projectDemo": "",
     "demoVideo": ""
+  },
+  {
+    "id": 9,
+    "projectName": "IoT Controlled LED Light",
+    "category": "Backend",
+    "projectDetail": "An IoT enabled device that allows remote control of an LED light via the internet is being developed as part of this full-stack project. A Node.js backend and a React.js frontend are used in the system's construction, with an Arduino Nano serving as the main hardware component. By facilitating communication between the Arduino and the client interface, the backend server allows any internet-connected device to manage the LED's on/off status in real time.",
+    "projectIcons": [
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/react.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/nodejs.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/main/icons/express-js.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/c779a4decd2a08dcf2bab4befaf006de345d8b37/icons/socketio-icon.svg"
+      },
+      {
+        "techName": "https://raw.githubusercontent.com/km-saifullah/image-data/c779a4decd2a08dcf2bab4befaf006de345d8b37/icons/arduino.svg"
+      }
+    ],
+    "projectImage": "https://raw.githubusercontent.com/km-saifullah/iot-controlled-led/refs/heads/main/images/nano-led.png",
+    "projectLink": "https://github.com/km-saifullah/iot-controlled-led",
+    "projectDemo": "",
+    "demoVideo": ""
   }
 ]
