@@ -1,24 +1,2208 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="shortcut icon"
-      href="./src/assets/saifullah.png"
-      type="image/x-icon"
-    />
-    <title>Khaled Md Saifullah</title>
-    <!-- ===== Google Fonts ===== -->
+    <title>DevOps Engineer — Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Outfit", "sans-serif"],
+              body: ["Inter", "sans-serif"],
+            },
+            colors: {
+              bg: "#0b0f1a",
+              surface: "#111827",
+              card: "#141d2e",
+              border: "#1e2d45",
+              accent: "#f97316",
+              blue: "#3b82f6",
+              text: "#f1f5f9",
+              dim: "#94a3b8",
+              muted: "#334155",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: #0b0f1a;
+        color: #f1f5f9;
+        font-family: "Inter", sans-serif;
+        margin: 0;
+      }
+
+      /* subtle dot grid */
+      .dot-grid {
+        background-image: radial-gradient(
+          circle,
+          rgba(59, 130, 246, 0.12) 1px,
+          transparent 1px
+        );
+        background-size: 32px 32px;
+      }
+
+      /* ── Navbar ── */
+      .nav-link {
+        position: relative;
+        font-size: 0.875rem;
+        color: #94a3b8;
+        font-weight: 500;
+        transition: color 0.2s;
+        padding-bottom: 2px;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #f97316;
+        border-radius: 2px;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s;
+      }
+      .nav-link:hover {
+        color: #f1f5f9;
+      }
+      .nav-link:hover::after {
+        transform: scaleX(1);
+      }
+
+      /* ── Buttons ── */
+      .btn-orange {
+        background: #f97316;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        border-radius: 8px;
+        padding: 10px 22px;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+      }
+      .btn-orange:hover {
+        background: #ea6c0a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: #f1f5f9;
+        font-weight: 600;
+        font-size: 0.875rem;
+        border-radius: 8px;
+        padding: 10px 22px;
+        transition: all 0.2s;
+        border: 1.5px solid #1e2d45;
+        cursor: pointer;
+      }
+      .btn-outline:hover {
+        border-color: #3b82f6;
+        color: #3b82f6;
+      }
+
+      /* ── Section label ── */
+      .section-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #f97316;
+      }
+      .section-eyebrow::before {
+        content: "";
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: #f97316;
+        border-radius: 2px;
+      }
+
+      /* ── Cards ── */
+      .card {
+        background: #141d2e;
+        border: 1px solid #1e2d45;
+        border-radius: 12px;
+        transition: all 0.25s;
+      }
+      .card:hover {
+        border-color: rgba(249, 115, 22, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      .card-blue:hover {
+        border-color: rgba(59, 130, 246, 0.4);
+      }
+
+      /* ── Skill bar ── */
+      .skill-bar-fill {
+        height: 4px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #f97316, #fb923c);
+        transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .skill-bar-fill-blue {
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      }
+
+      /* ── Timeline ── */
+      .timeline-item {
+        position: relative;
+        padding-left: 28px;
+        border-left: 2px solid #1e2d45;
+        transition: border-color 0.25s;
+      }
+      .timeline-item:hover {
+        border-left-color: #f97316;
+      }
+      .timeline-dot {
+        position: absolute;
+        left: -7px;
+        top: 6px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #1e2d45;
+        border: 2px solid #334155;
+        transition: all 0.25s;
+      }
+      .timeline-item:hover .timeline-dot {
+        background: #f97316;
+        border-color: #f97316;
+        box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+      }
+
+      /* ── Project card top line ── */
+      .project-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .project-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f97316, #3b82f6);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.35s;
+      }
+      .project-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      /* ── Certification card ── */
+      .cert-card {
+        background: #141d2e;
+        border: 1px solid #1e2d45;
+        border-radius: 12px;
+        transition: all 0.25s;
+        position: relative;
+        overflow: hidden;
+      }
+      .cert-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, #f97316, #fb923c);
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.3s;
+      }
+      .cert-card:hover::after {
+        transform: scaleY(1);
+      }
+      .cert-card:hover {
+        border-color: rgba(249, 115, 22, 0.35);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35);
+      }
+
+      /* ── Tag ── */
+      .tag {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 500;
+        background: rgba(249, 115, 22, 0.1);
+        border: 1px solid rgba(249, 115, 22, 0.25);
+        color: #fb923c;
+        padding: 2px 9px;
+        border-radius: 4px;
+      }
+      .tag-blue {
+        background: rgba(59, 130, 246, 0.1);
+        border-color: rgba(59, 130, 246, 0.25);
+        color: #60a5fa;
+      }
+      .tag-green {
+        background: rgba(34, 197, 94, 0.1);
+        border-color: rgba(34, 197, 94, 0.25);
+        color: #4ade80;
+      }
+
+      /* ── Contact input ── */
+      .c-input {
+        width: 100%;
+        background: #141d2e;
+        border: 1px solid #1e2d45;
+        border-radius: 8px;
+        padding: 11px 14px;
+        color: #f1f5f9;
+        font-family: "Inter", sans-serif;
+        font-size: 0.875rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .c-input:focus {
+        outline: none;
+        border-color: #f97316;
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+      }
+      .c-input::placeholder {
+        color: #334155;
+      }
+
+      /* ── Scroll reveal ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ── Hero typed ── */
+      .cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        background: #f97316;
+        margin-left: 2px;
+        vertical-align: text-bottom;
+        animation: blink 1s step-end infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-up {
+        opacity: 0;
+        animation: fadeUp 0.7s ease forwards;
+      }
+
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0b0f1a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e2d45;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #f97316;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- ══════════════════════════════════════════════════════
+     NAVBAR
+    ══════════════════════════════════════════════════════ -->
+    <nav
+      id="navbar"
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      style="
+        background: rgba(11, 15, 26, 0.85);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid transparent;
+      "
+    >
+      <div
+        class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between"
+      >
+        <!-- Logo -->
+        <a
+          href="#hero"
+          class="font-display font-bold text-lg text-text flex items-center gap-2"
+        >
+          <span
+            class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white"
+            style="background: linear-gradient(135deg, #f97316, #fb923c)"
+            >YN</span
+          >
+          YourName
+        </a>
+        <!-- Desktop links -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#skills" class="nav-link">Skills</a>
+          <a href="#experience" class="nav-link">Experience</a>
+          <a href="#projects" class="nav-link">Projects</a>
+          <a href="#achievements" class="nav-link">Certifications</a>
+          <a href="#contact" class="nav-link">Contact</a>
+          <a href="mailto:yourname@email.com" class="btn-orange">Hire Me</a>
+        </div>
+        <!-- Hamburger -->
+        <button
+          id="menuBtn"
+          class="md:hidden text-dim hover:text-text transition-colors"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+      <!-- Mobile dropdown -->
+      <div
+        id="mobileMenu"
+        class="hidden md:hidden flex-col gap-1 px-6 pb-5 pt-2"
+        style="
+          background: rgba(11, 15, 26, 0.98);
+          border-top: 1px solid #1e2d45;
+        "
+      >
+        <a
+          href="#skills"
+          class="py-2 text-sm text-dim hover:text-text border-b border-border block"
+          >Skills</a
+        >
+        <a
+          href="#experience"
+          class="py-2 text-sm text-dim hover:text-text border-b border-border block"
+          >Experience</a
+        >
+        <a
+          href="#projects"
+          class="py-2 text-sm text-dim hover:text-text border-b border-border block"
+          >Projects</a
+        >
+        <a
+          href="#achievements"
+          class="py-2 text-sm text-dim hover:text-text border-b border-border block"
+          >Certifications</a
+        >
+        <a href="#contact" class="py-2 text-sm text-dim hover:text-text block"
+          >Contact</a
+        >
+      </div>
+    </nav>
+
+    <!-- ══════════════════════════════════════════════════════
+     HERO
+    ══════════════════════════════════════════════════════ -->
+    <section
+      id="hero"
+      class="dot-grid min-h-screen flex items-center pt-16 relative overflow-hidden"
+    >
+      <!-- Glow blobs -->
+      <div
+        style="
+          position: absolute;
+          top: 10%;
+          right: 5%;
+          width: 420px;
+          height: 420px;
+          border-radius: 50%;
+          background: radial-gradient(
+            circle,
+            rgba(249, 115, 22, 0.08),
+            transparent 70%
+          );
+          pointer-events: none;
+        "
+      ></div>
+      <div
+        style="
+          position: absolute;
+          bottom: 15%;
+          left: 0;
+          width: 320px;
+          height: 320px;
+          border-radius: 50%;
+          background: radial-gradient(
+            circle,
+            rgba(59, 130, 246, 0.08),
+            transparent 70%
+          );
+          pointer-events: none;
+        "
+      ></div>
+
+      <div class="max-w-6xl mx-auto px-6 py-20 w-full">
+        <div class="max-w-2xl">
+          <!-- Availability badge -->
+          <div
+            class="fade-up mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium"
+            style="
+              animation-delay: 0.05s;
+              background: rgba(249, 115, 22, 0.1);
+              border: 1px solid rgba(249, 115, 22, 0.25);
+              color: #fb923c;
+            "
+          >
+            <span
+              class="w-2 h-2 rounded-full bg-orange-400"
+              style="animation: pulse 2s ease-in-out infinite"
+            ></span>
+            Available for new opportunities
+          </div>
+
+          <h1
+            class="font-display font-extrabold leading-none mb-3 fade-up"
+            style="
+              font-size: clamp(2.8rem, 7vw, 5.5rem);
+              animation-delay: 0.15s;
+            "
+          >
+            Hi, I'm<br />
+            <span
+              style="
+                background: linear-gradient(135deg, #f97316 30%, #fb923c);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+              "
+            >
+              Your Name
+            </span>
+          </h1>
+
+          <div
+            class="flex items-center gap-2 text-lg md:text-xl text-dim mb-6 fade-up"
+            style="animation-delay: 0.28s"
+          >
+            <span
+              id="typed-role"
+              class="text-blue"
+              style="color: #60a5fa; font-weight: 500"
+            ></span>
+            <span class="cursor"></span>
+          </div>
+
+          <p
+            class="text-dim leading-relaxed mb-10 fade-up"
+            style="max-width: 520px; animation-delay: 0.4s; font-size: 1rem"
+          >
+            Building resilient, automated infrastructure at scale. Bridging Dev
+            and Ops through modern cloud-native practices, clean CI/CD
+            pipelines, and solid backend engineering.
+          </p>
+
+          <!-- CTA row -->
+          <div
+            class="flex flex-wrap gap-3 mb-14 fade-up"
+            style="animation-delay: 0.52s"
+          >
+            <a
+              href="mailto:yourname@email.com"
+              class="btn-orange flex items-center gap-2"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              yourname@email.com
+            </a>
+            <a
+              href="https://github.com/yourusername"
+              target="_blank"
+              class="btn-outline flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.807 1.305 3.492.998.108-.776.42-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23A11.51 11.51 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"
+                />
+              </svg>
+              GitHub
+            </a>
+            <a
+              href="https://linkedin.com/in/yourusername"
+              target="_blank"
+              class="btn-outline flex items-center gap-2"
+              style="border-color: #1e3a5f; color: #60a5fa"
+              onmouseover="this.style.borderColor = '#3b82f6'"
+              onmouseout="this.style.borderColor = '#1e3a5f'"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
+
+          <!-- Stats -->
+          <div
+            class="flex flex-wrap gap-10 fade-up"
+            style="animation-delay: 0.64s"
+          >
+            <div>
+              <div
+                class="font-display font-bold text-3xl"
+                style="color: #f97316"
+              >
+                3+
+              </div>
+              <div class="text-xs text-dim mt-1">Years Experience</div>
+            </div>
+            <div class="w-px bg-border self-stretch"></div>
+            <div>
+              <div
+                class="font-display font-bold text-3xl"
+                style="color: #f97316"
+              >
+                20+
+              </div>
+              <div class="text-xs text-dim mt-1">Projects Deployed</div>
+            </div>
+            <div class="w-px bg-border self-stretch"></div>
+            <div>
+              <div
+                class="font-display font-bold text-3xl"
+                style="color: #f97316"
+              >
+                99.9%
+              </div>
+              <div class="text-xs text-dim mt-1">Uptime Maintained</div>
+            </div>
+            <div class="w-px bg-border self-stretch"></div>
+            <div>
+              <div
+                class="font-display font-bold text-3xl"
+                style="color: #f97316"
+              >
+                8+
+              </div>
+              <div class="text-xs text-dim mt-1">Certifications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+     SKILLS
+    ══════════════════════════════════════════════════════ -->
+    <section id="skills" class="py-24" style="background: #0d1220">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal mb-14">
+          <div class="section-eyebrow mb-3">Skills</div>
+          <h2 class="font-display font-bold text-4xl text-text">
+            Tech Stack &amp; <span style="color: #f97316">Expertise</span>
+          </h2>
+        </div>
+
+        <!-- DevOps & Cloud -->
+        <div class="reveal mb-10">
+          <h3
+            class="text-xs font-semibold uppercase tracking-widest text-dim mb-5 flex items-center gap-2"
+          >
+            <span
+              class="w-4 h-0.5 rounded"
+              style="background: #f97316; display: inline-block"
+            ></span>
+            DevOps &amp; Cloud Infrastructure
+          </h3>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
+          >
+            <!-- skill template: icon, name, pct -->
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🐳</span
+                ><span class="text-sm font-medium">Docker</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">☸️</span
+                ><span class="text-sm font-medium">Kubernetes</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 82%"></div>
+              </div>
+            </div>
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🔧</span
+                ><span class="text-sm font-medium">Terraform</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">☁️</span
+                ><span class="text-sm font-medium">AWS</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 88%"></div>
+              </div>
+            </div>
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🔵</span
+                ><span class="text-sm font-medium">Azure</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 70%"></div>
+              </div>
+            </div>
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🔁</span
+                ><span class="text-sm font-medium">CI/CD</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 93%"></div>
+              </div>
+            </div>
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">📊</span
+                ><span class="text-sm font-medium">Prometheus</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 80%"></div>
+              </div>
+            </div>
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">📈</span
+                ><span class="text-sm font-medium">Grafana</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 80%"></div>
+              </div>
+            </div>
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🎯</span
+                ><span class="text-sm font-medium">Ansible</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 76%"></div>
+              </div>
+            </div>
+            <div class="card p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🐙</span
+                ><span class="text-sm font-medium">GH Actions</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div class="skill-bar-fill" style="width: 91%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Backend -->
+        <div class="reveal">
+          <h3
+            class="text-xs font-semibold uppercase tracking-widest text-dim mb-5 flex items-center gap-2"
+          >
+            <span
+              class="w-4 h-0.5 rounded inline-block"
+              style="background: #3b82f6"
+            ></span>
+            Backend Development
+          </h3>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
+          >
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🟢</span
+                ><span class="text-sm font-medium">Node.js</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 88%"
+                ></div>
+              </div>
+            </div>
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">⚡</span
+                ><span class="text-sm font-medium">Express</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 86%"
+                ></div>
+              </div>
+            </div>
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🍃</span
+                ><span class="text-sm font-medium">MongoDB</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 83%"
+                ></div>
+              </div>
+            </div>
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🐘</span
+                ><span class="text-sm font-medium">PostgreSQL</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 80%"
+                ></div>
+              </div>
+            </div>
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🔴</span
+                ><span class="text-sm font-medium">Redis</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 78%"
+                ></div>
+              </div>
+            </div>
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🐍</span
+                ><span class="text-sm font-medium">Python</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 74%"
+                ></div>
+              </div>
+            </div>
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🐚</span
+                ><span class="text-sm font-medium">Bash/Shell</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 87%"
+                ></div>
+              </div>
+            </div>
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">📨</span
+                ><span class="text-sm font-medium">Kafka</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 71%"
+                ></div>
+              </div>
+            </div>
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🌐</span
+                ><span class="text-sm font-medium">REST APIs</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 90%"
+                ></div>
+              </div>
+            </div>
+            <div class="card card-blue p-4 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🔒</span
+                ><span class="text-sm font-medium">Nginx</span>
+              </div>
+              <div
+                class="w-full rounded-full"
+                style="background: #1e2d45; height: 4px"
+              >
+                <div
+                  class="skill-bar-fill skill-bar-fill-blue"
+                  style="width: 83%"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+     EXPERIENCE
+    ══════════════════════════════════════════════════════ -->
+    <section id="experience" class="py-24" style="background: #0b0f1a">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal mb-14">
+          <div class="section-eyebrow mb-3">Experience</div>
+          <h2 class="font-display font-bold text-4xl text-text">
+            Work <span style="color: #f97316">History</span>
+          </h2>
+        </div>
+
+        <div class="max-w-3xl space-y-10">
+          <!-- Job 1 -->
+          <div class="reveal timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-bold text-xl">
+                  Senior DevOps Engineer
+                </h3>
+                <p class="text-sm font-medium mt-0.5" style="color: #f97316">
+                  TechCorp Inc.
+                </p>
+              </div>
+              <span class="tag">2022 – Present</span>
+            </div>
+            <p class="text-dim text-sm leading-relaxed mb-4">
+              Led cloud infrastructure migration to AWS EKS, reducing deployment
+              time by 60%. Designed CI/CD pipelines using GitHub Actions for 50+
+              microservices. Established SRE practices achieving 99.95% system
+              availability.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">AWS</span><span class="tag">Kubernetes</span
+              ><span class="tag">Terraform</span>
+              <span class="tag">GitHub Actions</span
+              ><span class="tag">Prometheus</span>
+            </div>
+          </div>
+
+          <!-- Job 2 -->
+          <div class="reveal timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-bold text-xl">
+                  Backend Developer &amp; DevOps
+                </h3>
+                <p class="text-sm font-medium mt-0.5" style="color: #f97316">
+                  StartupXYZ
+                </p>
+              </div>
+              <span class="tag">2021 – 2022</span>
+            </div>
+            <p class="text-dim text-sm leading-relaxed mb-4">
+              Built RESTful APIs with Node.js and Express serving 100k+ daily
+              requests. Containerized services with Docker and set up automated
+              deployments. Managed MongoDB and PostgreSQL databases with
+              optimized indexing.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag tag-blue">Node.js</span
+              ><span class="tag tag-blue">Express</span>
+              <span class="tag tag-blue">MongoDB</span
+              ><span class="tag">Docker</span
+              ><span class="tag tag-blue">Redis</span>
+            </div>
+          </div>
+
+          <!-- Job 3 -->
+          <div class="reveal timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-bold text-xl">
+                  Junior Software Engineer
+                </h3>
+                <p class="text-sm font-medium mt-0.5" style="color: #f97316">
+                  Digital Agency Co.
+                </p>
+              </div>
+              <span class="tag">2020 – 2021</span>
+            </div>
+            <p class="text-dim text-sm leading-relaxed mb-4">
+              Developed backend services and internal tooling. Introduced basic
+              CI/CD workflows with Jenkins. Linux server administration and
+              shell scripting for automation.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag tag-blue">Python</span
+              ><span class="tag tag-blue">PostgreSQL</span>
+              <span class="tag">Linux</span><span class="tag">Bash</span
+              ><span class="tag">Jenkins</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+     PROJECTS
+    ══════════════════════════════════════════════════════ -->
+    <section id="projects" class="py-24" style="background: #0d1220">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal mb-14">
+          <div class="section-eyebrow mb-3">Projects</div>
+          <h2 class="font-display font-bold text-4xl text-text">
+            Featured <span style="color: #f97316">Work</span>
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="reveal card project-card p-6 flex flex-col gap-4">
+            <div class="flex items-start justify-between">
+              <div
+                class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                style="background: rgba(249, 115, 22, 0.12)"
+              >
+                🏗️
+              </div>
+              <div class="flex gap-2">
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.645 1.653.24 2.873.12 3.176.765.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"
+                    /></svg
+                ></a>
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    /></svg
+                ></a>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg mb-2">
+                K8s Auto-Scaling Platform
+              </h3>
+              <p class="text-dim text-sm leading-relaxed">
+                Dynamic cluster auto-scaling based on custom metrics. Reduced
+                infrastructure costs by 40% with intelligent scale-down
+                policies.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="tag">Kubernetes</span><span class="tag">Go</span
+              ><span class="tag">Prometheus</span><span class="tag">Helm</span>
+            </div>
+          </div>
+
+          <div class="reveal card project-card p-6 flex flex-col gap-4">
+            <div class="flex items-start justify-between">
+              <div
+                class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                style="background: rgba(249, 115, 22, 0.12)"
+              >
+                🔄
+              </div>
+              <div class="flex gap-2">
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.645 1.653.24 2.873.12 3.176.765.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"
+                    /></svg
+                ></a>
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    /></svg
+                ></a>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg mb-2">
+                GitOps Pipeline Framework
+              </h3>
+              <p class="text-dim text-sm leading-relaxed">
+                ArgoCD + GitHub Actions end-to-end GitOps with zero-downtime
+                deployments and automated rollback for 30+ microservices.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="tag">ArgoCD</span
+              ><span class="tag">GitHub Actions</span
+              ><span class="tag">Terraform</span
+              ><span class="tag tag-blue">Node.js</span>
+            </div>
+          </div>
+
+          <div class="reveal card project-card p-6 flex flex-col gap-4">
+            <div class="flex items-start justify-between">
+              <div
+                class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                style="background: rgba(59, 130, 246, 0.12)"
+              >
+                📡
+              </div>
+              <div class="flex gap-2">
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.645 1.653.24 2.873.12 3.176.765.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"
+                    /></svg
+                ></a>
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    /></svg
+                ></a>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg mb-2">
+                Observability Dashboard
+              </h3>
+              <p class="text-dim text-sm leading-relaxed">
+                Centralized monitoring with Prometheus, Grafana, and ELK. Custom
+                alerting via PagerDuty. Reduced MTTR by 50%.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="tag">Prometheus</span><span class="tag">Grafana</span
+              ><span class="tag">ELK</span><span class="tag">PagerDuty</span>
+            </div>
+          </div>
+
+          <div class="reveal card project-card p-6 flex flex-col gap-4">
+            <div class="flex items-start justify-between">
+              <div
+                class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                style="background: rgba(59, 130, 246, 0.12)"
+              >
+                🛒
+              </div>
+              <div class="flex gap-2">
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.645 1.653.24 2.873.12 3.176.765.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"
+                    /></svg
+                ></a>
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    /></svg
+                ></a>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg mb-2">
+                E-Commerce Microservices
+              </h3>
+              <p class="text-dim text-sm leading-relaxed">
+                CQRS-pattern backend with Node.js/Express. Redis caching,
+                MongoDB for catalog, PostgreSQL for orders. Handles 10k+
+                concurrent connections.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="tag tag-blue">Node.js</span
+              ><span class="tag tag-blue">MongoDB</span
+              ><span class="tag tag-blue">PostgreSQL</span
+              ><span class="tag tag-blue">Redis</span>
+            </div>
+          </div>
+
+          <div class="reveal card project-card p-6 flex flex-col gap-4">
+            <div class="flex items-start justify-between">
+              <div
+                class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                style="background: rgba(249, 115, 22, 0.12)"
+              >
+                🔐
+              </div>
+              <div class="flex gap-2">
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.645 1.653.24 2.873.12 3.176.765.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"
+                    /></svg
+                ></a>
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    /></svg
+                ></a>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg mb-2">
+                Secrets Management System
+              </h3>
+              <p class="text-dim text-sm leading-relaxed">
+                HashiCorp Vault with automated secret rotation and K8s pod
+                injection. Eliminated hardcoded credentials across 20+ services.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="tag">Vault</span><span class="tag">Kubernetes</span
+              ><span class="tag">AWS KMS</span
+              ><span class="tag">Terraform</span>
+            </div>
+          </div>
+
+          <div class="reveal card project-card p-6 flex flex-col gap-4">
+            <div class="flex items-start justify-between">
+              <div
+                class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                style="background: rgba(59, 130, 246, 0.12)"
+              >
+                🧪
+              </div>
+              <div class="flex gap-2">
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.645 1.653.24 2.873.12 3.176.765.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"
+                    /></svg
+                ></a>
+                <a href="#" class="text-dim hover:text-text transition-colors"
+                  ><svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    /></svg
+                ></a>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg mb-2">
+                Infra Testing Framework
+              </h3>
+              <p class="text-dim text-sm leading-relaxed">
+                Terratest-based automated infrastructure testing. Validates IaC
+                changes before production — preventing misconfigurations.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="tag">Terratest</span><span class="tag">Go</span
+              ><span class="tag">Terraform</span><span class="tag">AWS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+     ACHIEVEMENTS / CERTIFICATIONS
+    ══════════════════════════════════════════════════════ -->
+    <section id="achievements" class="py-24" style="background: #0b0f1a">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal mb-14">
+          <div class="section-eyebrow mb-3">Achievements</div>
+          <h2 class="font-display font-bold text-4xl text-text">
+            Certifications &amp; <span style="color: #f97316">Awards</span>
+          </h2>
+          <p class="text-dim mt-3 max-w-xl">
+            Industry-recognised credentials validating cloud, DevOps, and
+            engineering expertise.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- AWS SAA -->
+          <div class="reveal cert-card p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(249, 115, 22, 0.15),
+                    rgba(249, 115, 22, 0.05)
+                  );
+                  border: 1px solid rgba(249, 115, 22, 0.2);
+                "
+              >
+                ☁️
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-base leading-snug">
+                  AWS Certified Solutions Architect
+                </h3>
+                <p class="text-xs text-dim mt-0.5">Amazon Web Services</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="tag tag-green">✓ Verified</span>
+              <span class="text-xs text-dim">2023</span>
+            </div>
+            <p class="text-dim text-xs leading-relaxed">
+              Validates expertise in designing distributed systems and selecting
+              AWS services for scale, resilience, and cost-efficiency.
+            </p>
+            <a
+              href="#"
+              class="text-xs font-medium flex items-center gap-1 transition-colors"
+              style="color: #f97316"
+              onmouseover="this.style.color = '#fb923c'"
+              onmouseout="this.style.color = '#f97316'"
+            >
+              View Credential
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <!-- CKA -->
+          <div class="reveal cert-card p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, 0.15),
+                    rgba(59, 130, 246, 0.05)
+                  );
+                  border: 1px solid rgba(59, 130, 246, 0.2);
+                "
+              >
+                ☸️
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-base leading-snug">
+                  Certified Kubernetes Administrator
+                </h3>
+                <p class="text-xs text-dim mt-0.5">
+                  Cloud Native Computing Foundation
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="tag tag-green">✓ Verified</span>
+              <span class="text-xs text-dim">2023</span>
+            </div>
+            <p class="text-dim text-xs leading-relaxed">
+              Demonstrates hands-on proficiency in Kubernetes cluster
+              management, networking, storage, security, and troubleshooting.
+            </p>
+            <a
+              href="#"
+              class="text-xs font-medium flex items-center gap-1 transition-colors"
+              style="color: #f97316"
+              onmouseover="this.style.color = '#fb923c'"
+              onmouseout="this.style.color = '#f97316'"
+            >
+              View Credential
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <!-- HashiCorp Terraform -->
+          <div class="reveal cert-card p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(249, 115, 22, 0.15),
+                    rgba(249, 115, 22, 0.05)
+                  );
+                  border: 1px solid rgba(249, 115, 22, 0.2);
+                "
+              >
+                🔧
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-base leading-snug">
+                  HashiCorp Terraform Associate
+                </h3>
+                <p class="text-xs text-dim mt-0.5">HashiCorp</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="tag tag-green">✓ Verified</span>
+              <span class="text-xs text-dim">2022</span>
+            </div>
+            <p class="text-dim text-xs leading-relaxed">
+              Validates skills in infrastructure-as-code concepts, Terraform
+              CLI, provisioning, state management, and modules.
+            </p>
+            <a
+              href="#"
+              class="text-xs font-medium flex items-center gap-1 transition-colors"
+              style="color: #f97316"
+              onmouseover="this.style.color = '#fb923c'"
+              onmouseout="this.style.color = '#f97316'"
+            >
+              View Credential
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <!-- GCP Professional DevOps -->
+          <div class="reveal cert-card p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, 0.15),
+                    rgba(59, 130, 246, 0.05)
+                  );
+                  border: 1px solid rgba(59, 130, 246, 0.2);
+                "
+              >
+                🔵
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-base leading-snug">
+                  GCP Professional DevOps Engineer
+                </h3>
+                <p class="text-xs text-dim mt-0.5">Google Cloud</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="tag tag-green">✓ Verified</span>
+              <span class="text-xs text-dim">2023</span>
+            </div>
+            <p class="text-dim text-xs leading-relaxed">
+              Covers SRE practices, CI/CD on GCP, monitoring, and managing
+              service reliability using Google Cloud tools.
+            </p>
+            <a
+              href="#"
+              class="text-xs font-medium flex items-center gap-1 transition-colors"
+              style="color: #f97316"
+              onmouseover="this.style.color = '#fb923c'"
+              onmouseout="this.style.color = '#f97316'"
+            >
+              View Credential
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Linux Foundation -->
+          <div class="reveal cert-card p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(249, 115, 22, 0.15),
+                    rgba(249, 115, 22, 0.05)
+                  );
+                  border: 1px solid rgba(249, 115, 22, 0.2);
+                "
+              >
+                🐧
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-base leading-snug">
+                  LFCS — Linux Foundation Certified Sysadmin
+                </h3>
+                <p class="text-xs text-dim mt-0.5">Linux Foundation</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="tag tag-green">✓ Verified</span>
+              <span class="text-xs text-dim">2022</span>
+            </div>
+            <p class="text-dim text-xs leading-relaxed">
+              Performance-based exam validating skills in Linux system
+              administration, storage management, and networking.
+            </p>
+            <a
+              href="#"
+              class="text-xs font-medium flex items-center gap-1 transition-colors"
+              style="color: #f97316"
+              onmouseover="this.style.color = '#fb923c'"
+              onmouseout="this.style.color = '#f97316'"
+            >
+              View Credential
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <!-- MongoDB Dev -->
+          <div class="reveal cert-card p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, 0.15),
+                    rgba(59, 130, 246, 0.05)
+                  );
+                  border: 1px solid rgba(59, 130, 246, 0.2);
+                "
+              >
+                🍃
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-base leading-snug">
+                  MongoDB Certified Developer
+                </h3>
+                <p class="text-xs text-dim mt-0.5">MongoDB University</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="tag tag-green">✓ Verified</span>
+              <span class="text-xs text-dim">2022</span>
+            </div>
+            <p class="text-dim text-xs leading-relaxed">
+              Covers MongoDB CRUD, indexing, aggregation, data modelling and
+              best practices for application developers.
+            </p>
+            <a
+              href="#"
+              class="text-xs font-medium flex items-center gap-1 transition-colors"
+              style="color: #f97316"
+              onmouseover="this.style.color = '#fb923c'"
+              onmouseout="this.style.color = '#f97316'"
+            >
+              View Credential
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Azure Fundamentals -->
+          <div class="reveal cert-card p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(249, 115, 22, 0.15),
+                    rgba(249, 115, 22, 0.05)
+                  );
+                  border: 1px solid rgba(249, 115, 22, 0.2);
+                "
+              >
+                🌐
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-base leading-snug">
+                  Microsoft Azure Fundamentals AZ-900
+                </h3>
+                <p class="text-xs text-dim mt-0.5">Microsoft</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="tag tag-green">✓ Verified</span>
+              <span class="text-xs text-dim">2021</span>
+            </div>
+            <p class="text-dim text-xs leading-relaxed">
+              Foundational understanding of Azure cloud services, pricing
+              models, SLAs, and core cloud concepts.
+            </p>
+            <a
+              href="#"
+              class="text-xs font-medium flex items-center gap-1 transition-colors"
+              style="color: #f97316"
+              onmouseover="this.style.color = '#fb923c'"
+              onmouseout="this.style.color = '#f97316'"
+            >
+              View Credential
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Docker Certified -->
+          <div class="reveal cert-card p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, 0.15),
+                    rgba(59, 130, 246, 0.05)
+                  );
+                  border: 1px solid rgba(59, 130, 246, 0.2);
+                "
+              >
+                🐳
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-base leading-snug">
+                  Docker Certified Associate
+                </h3>
+                <p class="text-xs text-dim mt-0.5">Docker Inc.</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="tag tag-green">✓ Verified</span>
+              <span class="text-xs text-dim">2022</span>
+            </div>
+            <p class="text-dim text-xs leading-relaxed">
+              Validates container image management, Docker networking, volumes,
+              security, and orchestration fundamentals.
+            </p>
+            <a
+              href="#"
+              class="text-xs font-medium flex items-center gap-1 transition-colors"
+              style="color: #f97316"
+              onmouseover="this.style.color = '#fb923c'"
+              onmouseout="this.style.color = '#f97316'"
+            >
+              View Credential
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <!-- GitHub Actions -->
+          <div class="reveal cert-card p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    rgba(249, 115, 22, 0.15),
+                    rgba(249, 115, 22, 0.05)
+                  );
+                  border: 1px solid rgba(249, 115, 22, 0.2);
+                "
+              >
+                🐙
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-base leading-snug">
+                  GitHub Actions Certification
+                </h3>
+                <p class="text-xs text-dim mt-0.5">GitHub / Microsoft</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="tag tag-green">✓ Verified</span>
+              <span class="text-xs text-dim">2024</span>
+            </div>
+            <p class="text-dim text-xs leading-relaxed">
+              Covers workflow automation, CI/CD pipeline design, secrets
+              management, and advanced Actions patterns.
+            </p>
+            <a
+              href="#"
+              class="text-xs font-medium flex items-center gap-1 transition-colors"
+              style="color: #f97316"
+              onmouseover="this.style.color = '#fb923c'"
+              onmouseout="this.style.color = '#f97316'"
+            >
+              View Credential
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+     CONTACT
+    ══════════════════════════════════════════════════════ -->
+    <section id="contact" class="py-24" style="background: #0d1220">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal mb-14">
+          <div class="section-eyebrow mb-3">Contact</div>
+          <h2 class="font-display font-bold text-4xl text-text">
+            Let's <span style="color: #f97316">Work Together</span>
+          </h2>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12">
+          <!-- Info -->
+          <div class="reveal space-y-6">
+            <p class="text-dim leading-relaxed">
+              Open to full-time roles, contract work, and consulting
+              engagements. Whether it's cloud infrastructure, CI/CD design, or
+              backend architecture — let's build something great.
+            </p>
+            <div class="space-y-3">
+              <a
+                href="mailto:yourname@email.com"
+                class="flex items-center gap-4 p-4 card hover:border-orange-500/40 group rounded-xl"
+              >
+                <div
+                  class="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style="background: rgba(249, 115, 22, 0.12)"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    style="color: #f97316"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs text-dim">Email</p>
+                  <p class="text-sm font-medium text-text">
+                    yourname@email.com
+                  </p>
+                </div>
+              </a>
+              <div class="flex items-center gap-4 p-4 card rounded-xl">
+                <div
+                  class="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style="background: rgba(249, 115, 22, 0.12)"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    style="color: #f97316"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs text-dim">Phone</p>
+                  <p class="text-sm font-medium text-text">+1 (234) 567-890</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 p-4 card rounded-xl">
+                <div
+                  class="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style="background: rgba(249, 115, 22, 0.12)"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    style="color: #f97316"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs text-dim">Location</p>
+                  <p class="text-sm font-medium text-text">
+                    Narayanganj, Bangladesh
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <div class="reveal">
+            <form onsubmit="handleSubmit(event)" class="space-y-4">
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-dim mb-2"
+                    >Full Name</label
+                  >
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    class="c-input"
+                    required
+                  />
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-dim mb-2"
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    placeholder="you@email.com"
+                    class="c-input"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-dim mb-2"
+                  >Subject</label
+                >
+                <input
+                  type="text"
+                  placeholder="Project / Opportunity / Collaboration"
+                  class="c-input"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-dim mb-2"
+                  >Message</label
+                >
+                <textarea
+                  rows="5"
+                  placeholder="Tell me about your project or opportunity..."
+                  class="c-input resize-none"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="btn-orange w-full py-3 flex items-center justify-center gap-2"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                Send Message
+              </button>
+              <p
+                id="formMsg"
+                class="text-sm text-center hidden"
+                style="color: #4ade80"
+              ></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+     FOOTER
+    ══════════════════════════════════════════════════════ -->
+    <footer
+      style="background: #080c14; border-top: 1px solid #1e2d45"
+      class="py-12"
+    >
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="grid md:grid-cols-3 gap-10 mb-10">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <span
+                class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white"
+                style="background: linear-gradient(135deg, #f97316, #fb923c)"
+                >YN</span
+              >
+              <span class="font-display font-bold text-text">YourName</span>
+            </div>
+            <p class="text-dim text-sm leading-relaxed">
+              DevOps Engineer &amp; Backend Developer building reliable,
+              automated, cloud-native infrastructure.
+            </p>
+          </div>
+          <div>
+            <h4
+              class="text-xs font-semibold uppercase tracking-widest text-dim mb-4"
+            >
+              Navigation
+            </h4>
+            <div class="space-y-2">
+              <a
+                href="#skills"
+                class="block text-sm text-dim hover:text-text transition-colors"
+                >Skills</a
+              >
+              <a
+                href="#experience"
+                class="block text-sm text-dim hover:text-text transition-colors"
+                >Experience</a
+              >
+              <a
+                href="#projects"
+                class="block text-sm text-dim hover:text-text transition-colors"
+                >Projects</a
+              >
+              <a
+                href="#achievements"
+                class="block text-sm text-dim hover:text-text transition-colors"
+                >Certifications</a
+              >
+              <a
+                href="#contact"
+                class="block text-sm text-dim hover:text-text transition-colors"
+                >Contact</a
+              >
+            </div>
+          </div>
+          <div>
+            <h4
+              class="text-xs font-semibold uppercase tracking-widest text-dim mb-4"
+            >
+              Contact Info
+            </h4>
+            <div class="space-y-3">
+              <a
+                href="mailto:yourname@email.com"
+                class="flex items-center gap-2 text-sm text-dim hover:text-text transition-colors"
+              >
+                <svg
+                  class="w-4 h-4 shrink-0"
+                  style="color: #f97316"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                yourname@email.com
+              </a>
+              <a
+                href="tel:+1234567890"
+                class="flex items-center gap-2 text-sm text-dim hover:text-text transition-colors"
+              >
+                <svg
+                  class="w-4 h-4 shrink-0"
+                  style="color: #f97316"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+                +1 (234) 567-890
+              </a>
+              <div class="flex items-center gap-2 text-sm text-dim">
+                <svg
+                  class="w-4 h-4 shrink-0"
+                  style="color: #f97316"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Narayanganj, Bangladesh
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          style="border-top: 1px solid #1e2d45"
+          class="pt-6 flex flex-wrap items-center justify-between gap-4"
+        >
+          <p class="text-xs text-dim">© 2026 YourName. All rights reserved.</p>
+          <div class="flex items-center gap-4">
+            <a
+              href="https://github.com/yourusername"
+              target="_blank"
+              class="text-dim hover:text-text transition-colors"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.807 1.305 3.492.998.108-.776.42-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23A11.51 11.51 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"
+                />
+              </svg>
+            </a>
+            <a
+              href="https://linkedin.com/in/yourusername"
+              target="_blank"
+              class="text-dim hover:text-text transition-colors"
+              style="color: #60a5fa"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                />
+              </svg>
+            </a>
+            <a
+              href="mailto:yourname@email.com"
+              class="text-dim hover:text-text transition-colors"
+              style="color: #f97316"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ══════════════════════════════════════════════════════
+     JS
+    ══════════════════════════════════════════════════════ -->
+    <script src="./js/script.js"></script>
   </body>
 </html>
