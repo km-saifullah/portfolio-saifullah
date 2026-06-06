@@ -1,10 +1,5 @@
 // Typed animation
-const roles = [
-  "DevOps Engineer",
-  "Cloud Architect",
-  "Backend Developer",
-  "SRE / Platform Engineer",
-];
+const roles = ["DevOps Engineer", "Cloud Architect", "Backend Developer"];
 let ri = 0,
   ci = 0,
   deleting = false;

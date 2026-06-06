@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DevOps Engineer — Portfolio</title>
+    <title>Khaled Md Saifullah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,329 +34,7 @@
         },
       };
     </script>
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        background: #0b0f1a;
-        color: #f1f5f9;
-        font-family: "Inter", sans-serif;
-        margin: 0;
-      }
-
-      /* subtle dot grid */
-      .dot-grid {
-        background-image: radial-gradient(
-          circle,
-          rgba(59, 130, 246, 0.12) 1px,
-          transparent 1px
-        );
-        background-size: 32px 32px;
-      }
-
-      /* ── Navbar ── */
-      .nav-link {
-        position: relative;
-        font-size: 0.875rem;
-        color: #94a3b8;
-        font-weight: 500;
-        transition: color 0.2s;
-        padding-bottom: 2px;
-      }
-      .nav-link::after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #f97316;
-        border-radius: 2px;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.25s;
-      }
-      .nav-link:hover {
-        color: #f1f5f9;
-      }
-      .nav-link:hover::after {
-        transform: scaleX(1);
-      }
-
-      /* ── Buttons ── */
-      .btn-orange {
-        background: #f97316;
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.875rem;
-        border-radius: 8px;
-        padding: 10px 22px;
-        transition: all 0.2s;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
-      }
-      .btn-orange:hover {
-        background: #ea6c0a;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
-      }
-
-      .btn-outline {
-        background: transparent;
-        color: #f1f5f9;
-        font-weight: 600;
-        font-size: 0.875rem;
-        border-radius: 8px;
-        padding: 10px 22px;
-        transition: all 0.2s;
-        border: 1.5px solid #1e2d45;
-        cursor: pointer;
-      }
-      .btn-outline:hover {
-        border-color: #3b82f6;
-        color: #3b82f6;
-      }
-
-      /* ── Section label ── */
-      .section-eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: #f97316;
-      }
-      .section-eyebrow::before {
-        content: "";
-        display: block;
-        width: 24px;
-        height: 2px;
-        background: #f97316;
-        border-radius: 2px;
-      }
-
-      /* ── Cards ── */
-      .card {
-        background: #141d2e;
-        border: 1px solid #1e2d45;
-        border-radius: 12px;
-        transition: all 0.25s;
-      }
-      .card:hover {
-        border-color: rgba(249, 115, 22, 0.4);
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-      }
-
-      .card-blue:hover {
-        border-color: rgba(59, 130, 246, 0.4);
-      }
-
-      /* ── Skill bar ── */
-      .skill-bar-fill {
-        height: 4px;
-        border-radius: 2px;
-        background: linear-gradient(90deg, #f97316, #fb923c);
-        transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .skill-bar-fill-blue {
-        background: linear-gradient(90deg, #3b82f6, #60a5fa);
-      }
-
-      /* ── Timeline ── */
-      .timeline-item {
-        position: relative;
-        padding-left: 28px;
-        border-left: 2px solid #1e2d45;
-        transition: border-color 0.25s;
-      }
-      .timeline-item:hover {
-        border-left-color: #f97316;
-      }
-      .timeline-dot {
-        position: absolute;
-        left: -7px;
-        top: 6px;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #1e2d45;
-        border: 2px solid #334155;
-        transition: all 0.25s;
-      }
-      .timeline-item:hover .timeline-dot {
-        background: #f97316;
-        border-color: #f97316;
-        box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
-      }
-
-      /* ── Project card top line ── */
-      .project-card {
-        position: relative;
-        overflow: hidden;
-      }
-      .project-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #f97316, #3b82f6);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.35s;
-      }
-      .project-card:hover::before {
-        transform: scaleX(1);
-      }
-
-      /* ── Certification card ── */
-      .cert-card {
-        background: #141d2e;
-        border: 1px solid #1e2d45;
-        border-radius: 12px;
-        transition: all 0.25s;
-        position: relative;
-        overflow: hidden;
-      }
-      .cert-card::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 3px;
-        background: linear-gradient(180deg, #f97316, #fb923c);
-        transform: scaleY(0);
-        transform-origin: top;
-        transition: transform 0.3s;
-      }
-      .cert-card:hover::after {
-        transform: scaleY(1);
-      }
-      .cert-card:hover {
-        border-color: rgba(249, 115, 22, 0.35);
-        transform: translateY(-3px);
-        box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35);
-      }
-
-      /* ── Tag ── */
-      .tag {
-        display: inline-block;
-        font-size: 0.68rem;
-        font-weight: 500;
-        background: rgba(249, 115, 22, 0.1);
-        border: 1px solid rgba(249, 115, 22, 0.25);
-        color: #fb923c;
-        padding: 2px 9px;
-        border-radius: 4px;
-      }
-      .tag-blue {
-        background: rgba(59, 130, 246, 0.1);
-        border-color: rgba(59, 130, 246, 0.25);
-        color: #60a5fa;
-      }
-      .tag-green {
-        background: rgba(34, 197, 94, 0.1);
-        border-color: rgba(34, 197, 94, 0.25);
-        color: #4ade80;
-      }
-
-      /* ── Contact input ── */
-      .c-input {
-        width: 100%;
-        background: #141d2e;
-        border: 1px solid #1e2d45;
-        border-radius: 8px;
-        padding: 11px 14px;
-        color: #f1f5f9;
-        font-family: "Inter", sans-serif;
-        font-size: 0.875rem;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s;
-      }
-      .c-input:focus {
-        outline: none;
-        border-color: #f97316;
-        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
-      }
-      .c-input::placeholder {
-        color: #334155;
-      }
-
-      /* ── Scroll reveal ── */
-      .reveal {
-        opacity: 0;
-        transform: translateY(22px);
-        transition:
-          opacity 0.65s ease,
-          transform 0.65s ease;
-      }
-      .reveal.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* ── Hero typed ── */
-      .cursor {
-        display: inline-block;
-        width: 2px;
-        height: 1.1em;
-        background: #f97316;
-        margin-left: 2px;
-        vertical-align: text-bottom;
-        animation: blink 1s step-end infinite;
-      }
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0;
-        }
-      }
-
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(24px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .fade-up {
-        opacity: 0;
-        animation: fadeUp 0.7s ease forwards;
-      }
-
-      ::-webkit-scrollbar {
-        width: 5px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0b0f1a;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #1e2d45;
-        border-radius: 3px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #f97316;
-      }
-    </style>
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
     <!-- ══════════════════════════════════════════════════════
@@ -382,9 +60,9 @@
           <span
             class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white"
             style="background: linear-gradient(135deg, #f97316, #fb923c)"
-            >YN</span
+            >KMS</span
           >
-          YourName
+          Khaled Md Saifullah
         </a>
         <!-- Desktop links -->
         <div class="hidden md:flex items-center gap-8">
@@ -393,7 +71,9 @@
           <a href="#projects" class="nav-link">Projects</a>
           <a href="#achievements" class="nav-link">Certifications</a>
           <a href="#contact" class="nav-link">Contact</a>
-          <a href="mailto:yourname@email.com" class="btn-orange">Hire Me</a>
+          <a href="mailto:kmsaifullah16@gmail.com" class="btn-orange"
+            >Hire Me</a
+          >
         </div>
         <!-- Hamburger -->
         <button
@@ -512,10 +192,7 @@
 
           <h1
             class="font-display font-extrabold leading-none mb-3 fade-up"
-            style="
-              font-size: clamp(2.8rem, 7vw, 5.5rem);
-              animation-delay: 0.15s;
-            "
+            style="font-size: clamp(2.5rem, 6vw, 5rem); animation-delay: 0.15s"
           >
             Hi, I'm<br />
             <span
@@ -526,20 +203,29 @@
                 background-clip: text;
               "
             >
-              Your Name
+              Khaled Md Saifullah
             </span>
           </h1>
 
           <div
-            class="flex items-center gap-2 text-lg md:text-xl text-dim mb-6 fade-up"
-            style="animation-delay: 0.28s"
+            class="text-lg md:text-xl text-dim mb-6 fade-up"
+            style="
+              animation-delay: 0.28s;
+              min-height: 1.75rem;
+              display: flex;
+              align-items: center;
+            "
           >
             <span
+              style="
+                color: #60a5fa;
+                font-weight: 500;
+                min-width: 280px;
+                display: inline-block;
+                white-space: nowrap;
+              "
               id="typed-role"
-              class="text-blue"
-              style="color: #60a5fa; font-weight: 500"
             ></span>
-            <span class="cursor"></span>
           </div>
 
           <p
@@ -571,10 +257,10 @@
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               </svg>
-              yourname@email.com
+              kmsaifullah16@gmail.com
             </a>
             <a
-              href="https://github.com/yourusername"
+              href="https://github.com/km-saifullah"
               target="_blank"
               class="btn-outline flex items-center gap-2"
             >
@@ -586,7 +272,7 @@
               GitHub
             </a>
             <a
-              href="https://linkedin.com/in/yourusername"
+              href="https://linkedin.com/in/kmsaifullah"
               target="_blank"
               class="btn-outline flex items-center gap-2"
               style="border-color: #1e3a5f; color: #60a5fa"
@@ -2044,9 +1730,11 @@
               <span
                 class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white"
                 style="background: linear-gradient(135deg, #f97316, #fb923c)"
-                >YN</span
+                >KMS</span
               >
-              <span class="font-display font-bold text-text">YourName</span>
+              <span class="font-display font-bold text-text"
+                >Khaled Md Saifullah</span
+              >
             </div>
             <p class="text-dim text-sm leading-relaxed">
               DevOps Engineer &amp; Backend Developer building reliable,
@@ -2095,7 +1783,7 @@
             </h4>
             <div class="space-y-3">
               <a
-                href="mailto:yourname@email.com"
+                href="mailto:kmsaifullah16@gmail.com"
                 class="flex items-center gap-2 text-sm text-dim hover:text-text transition-colors"
               >
                 <svg
@@ -2110,7 +1798,7 @@
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                yourname@email.com
+                kmsaifullah16@gmail.com
               </a>
               <a
                 href="tel:+1234567890"
@@ -2128,7 +1816,7 @@
                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>
-                +1 (234) 567-890
+                +880 1689257036
               </a>
               <div class="flex items-center gap-2 text-sm text-dim">
                 <svg
@@ -2144,7 +1832,7 @@
                   />
                   <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                Narayanganj, Bangladesh
+                Dhaka, Bangladesh
               </div>
             </div>
           </div>
@@ -2153,10 +1841,12 @@
           style="border-top: 1px solid #1e2d45"
           class="pt-6 flex flex-wrap items-center justify-between gap-4"
         >
-          <p class="text-xs text-dim">© 2026 YourName. All rights reserved.</p>
+          <p class="text-xs text-dim">
+            © 2026 Khaled Md Saifullah. All rights reserved.
+          </p>
           <div class="flex items-center gap-4">
             <a
-              href="https://github.com/yourusername"
+              href="https://github.com/km-saifullah"
               target="_blank"
               class="text-dim hover:text-text transition-colors"
             >
@@ -2167,7 +1857,7 @@
               </svg>
             </a>
             <a
-              href="https://linkedin.com/in/yourusername"
+              href="https://linkedin.com/in/kmsaifullah"
               target="_blank"
               class="text-dim hover:text-text transition-colors"
               style="color: #60a5fa"
@@ -2179,7 +1869,7 @@
               </svg>
             </a>
             <a
-              href="mailto:yourname@email.com"
+              href="mailto:kmsaifullah16@gmail.com"
               class="text-dim hover:text-text transition-colors"
               style="color: #f97316"
             >
