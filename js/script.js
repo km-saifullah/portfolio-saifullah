@@ -71,3 +71,6 @@ function handleSubmit(e) {
   e.target.reset();
   setTimeout(() => msg.classList.add("hidden"), 5000);
 }
+
+// make copyright year dynamic
+document.getElementById("current-year").textContent = new Date().getFullYear();
