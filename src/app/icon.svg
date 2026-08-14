@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<defs>
+<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3dffab"/><stop offset="1" stop-color="#22c55e"/></linearGradient>
+<linearGradient id="s" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#b9c7c1"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<clipPath id="c"><circle cx="32" cy="32" r="29"/></clipPath>
+</defs>
+<circle cx="32" cy="32" r="31" fill="#060907"/>
+<circle cx="32" cy="32" r="29.5" fill="#0d1712" stroke="url(#g)" stroke-width="2"/>
+<g clip-path="url(#c)">
+<path d="M13 25A20 20 0 0 1 51 25M13 39A20 20 0 0 0 51 39" fill="none" stroke="url(#g)" stroke-width="1.3" stroke-linecap="round"/>
+<path d="M10 20V44H14V35.8L21.5 44H26.8L17.1 32.8L26 20H21L14 29.4V20Z" fill="url(#g)" filter="url(#glow)"/>
+<path d="M25.5 44V20H30L34 27.2L38 20H42.5V44H38.3V27.3L34 34.8L29.7 27.3V44Z" fill="url(#s)" filter="url(#glow)"/>
+<path d="M53 24.2C51.5 21.2 48.8 19.5 45.5 19.5C41.2 19.5 38.3 22.1 38.3 25.7C38.3 29.4 40.5 31.2 45.1 32.6L47 33.2C48.8 33.8 49.5 34.5 49.5 35.6C49.5 37 48.3 37.8 46.3 37.8C44 37.8 42.2 36.8 40.8 35L37.9 38C39.9 41.1 43 42.6 46.5 42.6C51.3 42.6 54.1 39.9 54.1 36C54.1 32.4 52 30.4 47.5 29L45.4 28.3C43.7 27.8 43 27.1 43 26C43 24.9 44 24.2 45.5 24.2C47.2 24.2 48.6 25 49.7 26.3Z" fill="url(#g)" filter="url(#glow)"/>
+<path d="M32 11.5L34 13.5L32 15.5L30 13.5ZM32 48.5L34 50.5L32 52.5L30 50.5Z" fill="#3dffab"/>
+</g>
+<circle cx="32" cy="32" r="30.5" fill="none" stroke="#3dffab" stroke-opacity=".35"/>
+</svg>
