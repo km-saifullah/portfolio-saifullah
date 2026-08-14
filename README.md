@@ -60,32 +60,4 @@ Run the server
 npm run dev
 ```
 
-Visit `http://localhost:3000` for the public site and
-`http://localhost:3000/dashboard/login` to sign in and start adding
-projects/blog posts.
-
-## 3. Project structure
-
-```
-src/
-  app/
-    page.tsx                 Home (Hero, Experience, Projects, Blogs, Contact)
-    blogs/[slug]/page.tsx     Public blog post page
-    dashboard/
-      login/page.tsx          Admin login (outside the protected route group)
-      (protected)/            Everything below requires an admin session
-        layout.tsx             Sidebar shell
-        page.tsx                Overview
-        projects/               List / new / edit
-        blogs/                  List / new / edit
-    api/
-      auth/[...nextauth]/      NextAuth handler
-      contact/                 Sends email via Nodemailer
-      projects/, blogs/        Public GET, admin-only POST/PUT/DELETE
-      upload/                  Issues signed Cloudinary upload params
-  components/                 Public site UI + dashboard/ subfolder for admin UI
-  lib/                        mongodb, auth, cloudinary, mailer, validation, rateLimit
-  models/                     Mongoose schemas (Project, Blog)
-  data/experience.ts          Hardcoded experience timeline content
-scripts/generate-admin-hash.mjs   CLI to hash your admin password
-```
+Visit `http://localhost:3000` for the public site and `http://localhost:3000/dashboard/login` to sign in and start adding projects/blog posts.
