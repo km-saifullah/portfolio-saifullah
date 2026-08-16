@@ -3,6 +3,7 @@ import sanitizeHtml from "sanitize-html";
 const allowedTags = [
   "p",
   "br",
+  "div",
   "strong",
   "b",
   "em",
@@ -34,6 +35,7 @@ const allowedAttributes = {
 export function sanitizeBlogHtml(html: string) {
   return sanitizeHtml(html, {
     allowedTags,
+
     allowedAttributes,
 
     allowedSchemes: ["http", "https", "mailto"],
@@ -48,10 +50,12 @@ export function sanitizeBlogHtml(html: string) {
         "font-size": [/^(\d+(\.\d+)?)(px|em|rem|%)$/],
       },
     },
-
     transformTags: {
+      div: "p",
+
       a: (_tagName, attribs) => ({
         tagName: "a",
+
         attribs: {
           ...attribs,
           target: "_blank",
