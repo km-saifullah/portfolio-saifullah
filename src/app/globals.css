@@ -114,3 +114,136 @@ body {
     linear-gradient(to bottom, rgba(163, 255, 205, 0.045) 1px, transparent 1px);
   background-size: 56px 56px;
 }
+
+/* Blog rich text content */
+.prose-content {
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.prose-content p {
+  margin: 0 0 1.25rem;
+}
+
+.prose-content h1,
+.prose-content h2,
+.prose-content h3,
+.prose-content h4 {
+  color: var(--text-primary);
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.prose-content h1 {
+  margin: 2.5rem 0 1rem;
+  font-size: 2.25rem;
+}
+
+.prose-content h2 {
+  margin: 2.25rem 0 0.9rem;
+  font-size: 1.8rem;
+}
+
+.prose-content h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.45rem;
+}
+
+.prose-content h4 {
+  margin: 1.75rem 0 0.65rem;
+  font-size: 1.2rem;
+}
+
+.prose-content strong,
+.prose-content b {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.prose-content em,
+.prose-content i {
+  font-style: italic;
+}
+
+.prose-content u {
+  text-decoration: underline;
+  text-decoration-color: var(--green-bright);
+  text-underline-offset: 3px;
+}
+
+.prose-content a {
+  color: var(--green-bright);
+  text-decoration: underline;
+  text-decoration-color: rgba(61, 255, 171, 0.4);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.prose-content a:hover {
+  text-decoration-color: var(--green-bright);
+}
+
+.prose-content ul,
+.prose-content ol {
+  margin: 1.25rem 0;
+  padding-left: 1.75rem;
+}
+
+.prose-content ul {
+  list-style-type: disc;
+}
+
+.prose-content ol {
+  list-style-type: decimal;
+}
+
+.prose-content li {
+  margin: 0.4rem 0;
+  padding-left: 0.25rem;
+}
+
+.prose-content blockquote {
+  margin: 1.75rem 0;
+  border-left: 3px solid var(--green-bright);
+  padding: 0.75rem 0 0.75rem 1.25rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.prose-content hr {
+  margin: 2.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.prose-content img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+}
+
+.prose-content font[size="2"] {
+  font-size: 0.875rem;
+}
+
+.prose-content font[size="3"] {
+  font-size: 1.05rem;
+}
+
+.prose-content font[size="5"] {
+  font-size: 1.35rem;
+}
+
+.prose-content font[size="6"] {
+  font-size: 1.75rem;
+}
+
+.prose-content span[style*="font-size"] {
+  line-height: 1.5;
+}

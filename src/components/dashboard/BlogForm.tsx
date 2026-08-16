@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Save } from "lucide-react";
 import ImageUploader from "./ImageUploader";
 import TagInput from "./TagInput";
+import RichTextEditor from "./RichTextEditor";
 import type { IBlog } from "@/models/Blog";
 
 function slugify(str: string) {
@@ -26,11 +27,19 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
   const [excerpt, setExcerpt] = useState(blog?.excerpt ?? "");
   const [content, setContent] = useState(blog?.content ?? "");
   const [tags, setTags] = useState<string[]>(blog?.tags ?? []);
-  const [cover, setCover] = useState<{ url: string; publicId: string } | null>(
+
+  const [cover, setCover] = useState<{
+    url: string;
+    publicId: string;
+  } | null>(
     blog?.coverImageUrl
-      ? { url: blog.coverImageUrl, publicId: blog.coverImagePublicId ?? "" }
+      ? {
+          url: blog.coverImageUrl,
+          publicId: blog.coverImagePublicId ?? "",
+        }
       : null,
   );
+
   const [published, setPublished] = useState(blog?.published ?? true);
 
   const [saving, setSaving] = useState(false);
@@ -38,6 +47,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setSaving(true);
     setError("");
 
@@ -57,34 +67,45 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
         isEdit ? `/api/blogs/${blog!._id}` : "/api/blogs",
         {
           method: isEdit ? "PUT" : "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(payload),
         },
       );
+
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to save post");
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to save post");
+      }
 
       router.push("/dashboard/blogs");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
+
       setSaving(false);
     }
   };
 
   return (
-    <form onSubmit={onSubmit} className="max-w-2xl space-y-6">
+    <form onSubmit={onSubmit} className="max-w-4xl space-y-6">
       <div>
         <label htmlFor="title" className="font-mono text-xs text-text-muted">
           Title
         </label>
+
         <input
           id="title"
           required
           value={title}
           onChange={(e) => {
             setTitle(e.target.value);
-            if (!slugTouched) setSlug(slugify(e.target.value));
+
+            if (!slugTouched) {
+              setSlug(slugify(e.target.value));
+            }
           }}
           className="mt-2 w-full rounded-lg border border-border bg-surface px-4 py-3 text-sm outline-none focus:border-green-bright"
         />
@@ -94,6 +115,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
         <label htmlFor="slug" className="font-mono text-xs text-text-muted">
           Slug
         </label>
+
         <input
           id="slug"
           required
@@ -110,6 +132,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
         <label htmlFor="excerpt" className="font-mono text-xs text-text-muted">
           Excerpt
         </label>
+
         <textarea
           id="excerpt"
           required
@@ -117,23 +140,19 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
           maxLength={300}
           value={excerpt}
           onChange={(e) => setExcerpt(e.target.value)}
-          className="mt-2 w-full rounded-lg border border-border bg-surface px-4 py-3 text-sm outline-none focus:border-green-bright resize-none"
+          className="mt-2 w-full resize-none rounded-lg border border-border bg-surface px-4 py-3 text-sm outline-none focus:border-green-bright"
         />
       </div>
 
       <div>
-        <label htmlFor="content" className="font-mono text-xs text-text-muted">
-          Content
-        </label>
-        <textarea
-          id="content"
-          required
-          rows={12}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="mt-2 w-full rounded-lg border border-border bg-surface px-4 py-3 text-sm outline-none focus:border-green-bright resize-none"
-          placeholder="Plain text or Markdown rendered as-is on the post page."
-        />
+        <label className="font-mono text-xs text-text-muted">Content</label>
+
+        <RichTextEditor value={content} onChange={setContent} />
+
+        <p className="mt-2 text-xs text-text-faint">
+          Format your article using headings, text styles, links, lists, and
+          images.
+        </p>
       </div>
 
       <TagInput
@@ -160,13 +179,14 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
       <button
         type="submit"
         disabled={saving}
-        className="inline-flex items-center gap-2 rounded-full bg-green px-6 py-3 font-medium text-[#04140b] hover:bg-green-bright transition-colors disabled:opacity-60"
+        className="inline-flex items-center gap-2 rounded-full bg-green px-6 py-3 font-medium text-[#04140b] transition-colors hover:bg-green-bright disabled:opacity-60"
       >
         {saving ? (
           <Loader2 size={16} className="animate-spin" />
         ) : (
           <Save size={16} />
         )}
+
         {isEdit ? "Save changes" : "Publish post"}
       </button>
     </form>
