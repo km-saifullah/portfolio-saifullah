@@ -9,13 +9,17 @@ interface Props {
 
 export default async function EditBlogPage({ params }: Props) {
   const { id } = await params;
+
   await connectDB();
+
   const blog = await Blog.findById(id).lean();
+
   if (!blog) notFound();
 
   return (
     <div>
-      <h1 className="font-display text-3xl font-semibold mb-8">Edit post</h1>
+      <h1 className="mb-8 font-display text-3xl font-semibold">Edit post</h1>
+
       <BlogForm blog={JSON.parse(JSON.stringify(blog))} />
     </div>
   );
