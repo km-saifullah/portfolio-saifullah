@@ -14,6 +14,13 @@ import {
   RemoveFormatting,
   X,
   ExternalLink,
+  ChevronDown,
+  Type,
+  Heading1,
+  Heading2,
+  Heading3,
+  Pilcrow,
+  Quote,
 } from "lucide-react";
 
 interface RichTextEditorProps {
@@ -33,12 +40,90 @@ type Command =
   | "undo"
   | "redo";
 
+type HeadingOption = {
+  value: string;
+  label: string;
+  description: string;
+  icon: React.ReactNode;
+};
+
+type SizeOption = {
+  value: string;
+  label: string;
+  description: string;
+};
+
+const headingOptions: HeadingOption[] = [
+  {
+    value: "p",
+    label: "Paragraph",
+    description: "Regular body text",
+    icon: <Pilcrow size={16} />,
+  },
+  {
+    value: "h1",
+    label: "Heading 1",
+    description: "Main heading",
+    icon: <Heading1 size={17} />,
+  },
+  {
+    value: "h2",
+    label: "Heading 2",
+    description: "Section heading",
+    icon: <Heading2 size={17} />,
+  },
+  {
+    value: "h3",
+    label: "Heading 3",
+    description: "Subsection heading",
+    icon: <Heading3 size={17} />,
+  },
+  {
+    value: "blockquote",
+    label: "Quote",
+    description: "Highlighted quotation",
+    icon: <Quote size={16} />,
+  },
+];
+
+const sizeOptions: SizeOption[] = [
+  {
+    value: "2",
+    label: "Small",
+    description: "Compact text",
+  },
+  {
+    value: "3",
+    label: "Normal",
+    description: "Standard body text",
+  },
+  {
+    value: "5",
+    label: "Large",
+    description: "Larger emphasis",
+  },
+  {
+    value: "6",
+    label: "Huge",
+    description: "Extra large text",
+  },
+];
+
 export default function RichTextEditor({
   value,
   onChange,
 }: RichTextEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const savedRangeRef = useRef<Range | null>(null);
+
+  const headingDropdownRef = useRef<HTMLDivElement>(null);
+  const sizeDropdownRef = useRef<HTMLDivElement>(null);
+
+  const [showHeadingDropdown, setShowHeadingDropdown] = useState(false);
+  const [showSizeDropdown, setShowSizeDropdown] = useState(false);
+
+  const [selectedHeading, setSelectedHeading] = useState("p");
+  const [selectedSize, setSelectedSize] = useState("3");
 
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [showLinkDialog, setShowLinkDialog] = useState(false);
@@ -59,6 +144,32 @@ export default function RichTextEditor({
       editorRef.current.innerHTML = value;
     }
   }, [value]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      if (
+        headingDropdownRef.current &&
+        !headingDropdownRef.current.contains(target)
+      ) {
+        setShowHeadingDropdown(false);
+      }
+
+      if (
+        sizeDropdownRef.current &&
+        !sizeDropdownRef.current.contains(target)
+      ) {
+        setShowSizeDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const saveSelection = () => {
     const selection = window.getSelection();
@@ -120,12 +231,13 @@ export default function RichTextEditor({
     updateEditor();
   };
 
-  const escapeAttribute = (value: string) =>
+  const escapeHtml = (value: string) =>
     value
       .replace(/&/g, "&amp;")
-      .replace(/"/g, "&quot;")
       .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 
   const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -144,11 +256,11 @@ export default function RichTextEditor({
       .map((paragraph) => {
         const lines = paragraph.split("\n");
 
-        const content = lines
-          .map((line) => escapeAttribute(line))
-          .join("<br />");
-
-        return `<p>${content}</p>`;
+        return `
+          <p>
+            ${lines.map((line) => escapeHtml(line)).join("<br />")}
+          </p>
+        `;
       })
       .join("");
 
@@ -157,6 +269,36 @@ export default function RichTextEditor({
     updateEditor();
     saveSelection();
   };
+
+  const applyHeading = (value: string) => {
+    restoreSelection();
+
+    document.execCommand("formatBlock", false, value);
+
+    setSelectedHeading(value);
+    setShowHeadingDropdown(false);
+
+    updateEditor();
+  };
+
+  const currentHeading =
+    headingOptions.find((option) => option.value === selectedHeading) ??
+    headingOptions[0];
+
+  const applySize = (value: string) => {
+    restoreSelection();
+
+    document.execCommand("fontSize", false, value);
+
+    setSelectedSize(value);
+    setShowSizeDropdown(false);
+
+    updateEditor();
+  };
+
+  const currentSize =
+    sizeOptions.find((option) => option.value === selectedSize) ??
+    sizeOptions[1];
 
   const openImageDialog = () => {
     saveSelection();
@@ -170,6 +312,7 @@ export default function RichTextEditor({
 
   const closeImageDialog = () => {
     setShowImageDialog(false);
+
     setImageUrl("");
     setImageAlt("");
     setImageError("");
@@ -205,14 +348,15 @@ export default function RichTextEditor({
 
     const imageHtml = `
       <img
-        src="${escapeAttribute(url)}"
-        alt="${escapeAttribute(alt)}"
+        src="${escapeHtml(url)}"
+        alt="${escapeHtml(alt)}"
       />
     `;
 
     document.execCommand("insertHTML", false, imageHtml);
 
     updateEditor();
+
     closeImageDialog();
   };
 
@@ -232,6 +376,7 @@ export default function RichTextEditor({
 
   const closeLinkDialog = () => {
     setShowLinkDialog(false);
+
     setLinkUrl("");
     setLinkText("");
     setLinkError("");
@@ -287,10 +432,10 @@ export default function RichTextEditor({
     } else {
       const linkHtml = `
         <a
-          href="${escapeAttribute(url)}"
+          href="${escapeHtml(url)}"
           ${openInNewTab ? 'target="_blank" rel="noopener noreferrer"' : ""}
         >
-          ${escapeAttribute(text)}
+          ${escapeHtml(text)}
         </a>
       `;
 
@@ -298,22 +443,43 @@ export default function RichTextEditor({
     }
 
     updateEditor();
+
     closeLinkDialog();
   };
 
   return (
     <>
-      <div className="mt-2 overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
+      <div
+        className="
+          mt-2
+          overflow-clip
+          rounded-2xl
+          border border-border
+          bg-surface
+          shadow-sm
+        "
+      >
         <div
           className="
-            sticky top-0 z-30
-            flex flex-wrap items-center gap-1
-            border-b border-border
+            sticky
+            top-0
+            z-40
+
+            flex
+            flex-wrap
+            items-center
+            gap-1
+
+            border-b
+            border-border
+
             bg-surface/95
             p-2.5
+
             backdrop-blur-md
           "
         >
+          {/* Bold */}
           <ToolbarButton
             label="Bold"
             onMouseDown={saveSelection}
@@ -322,6 +488,7 @@ export default function RichTextEditor({
             <Bold size={16} />
           </ToolbarButton>
 
+          {/* Italic */}
           <ToolbarButton
             label="Italic"
             onMouseDown={saveSelection}
@@ -330,6 +497,7 @@ export default function RichTextEditor({
             <Italic size={16} />
           </ToolbarButton>
 
+          {/* Underline */}
           <ToolbarButton
             label="Underline"
             onMouseDown={saveSelection}
@@ -338,69 +506,321 @@ export default function RichTextEditor({
             <Underline size={16} />
           </ToolbarButton>
 
-          <div className="mx-1.5 h-6 w-px bg-border" />
+          <ToolbarDivider />
 
-          {/* Text style */}
-          <select
-            aria-label="Text style"
-            defaultValue="p"
-            onMouseDown={saveSelection}
-            onChange={(e) => {
-              exec("formatBlock", e.target.value);
-            }}
-            className="
-              h-9
-              rounded-xl
-              border border-border
-              bg-surface
-              px-3
-              text-xs
-              text-text-muted
-              outline-none
-              transition-colors
-              hover:border-green-bright/40
-              focus:border-green-bright
-            "
-          >
-            <option value="p">Paragraph</option>
-            <option value="h1">Heading 1</option>
-            <option value="h2">Heading 2</option>
-            <option value="h3">Heading 3</option>
-            <option value="h4">Heading 4</option>
-            <option value="blockquote">Quote</option>
-          </select>
+          <div ref={headingDropdownRef} className="relative">
+            <button
+              type="button"
+              onMouseDown={(event) => {
+                event.preventDefault();
+                saveSelection();
+              }}
+              onClick={() => {
+                setShowHeadingDropdown((previous) => !previous);
+                setShowSizeDropdown(false);
+              }}
+              className="
+                group
+                flex
+                h-9
+                min-w-36.25
+                items-center
+                justify-between
+                gap-3
+                rounded-xl
+                border
+                border-border
+                bg-surface
+                px-3
 
-          {/* Font size */}
-          <select
-            aria-label="Text size"
-            defaultValue="3"
-            onMouseDown={saveSelection}
-            onChange={(e) => {
-              exec("fontSize", e.target.value);
-            }}
-            className="
-              h-9
-              rounded-xl
-              border border-border
-              bg-surface
-              px-3
-              text-xs
-              text-text-muted
-              outline-none
-              transition-colors
-              hover:border-green-bright/40
-              focus:border-green-bright
-            "
-          >
-            <option value="2">Small</option>
-            <option value="3">Normal</option>
-            <option value="5">Large</option>
-            <option value="6">Huge</option>
-          </select>
+                text-xs
+                text-text-muted
 
-          <div className="mx-1.5 h-6 w-px bg-border" />
+                transition-all
 
-          {/* Lists */}
+                hover:border-green-bright/40
+                hover:bg-bg
+                hover:text-text
+
+                focus:outline-none
+                focus:border-green-bright
+              "
+            >
+              <span className="flex items-center gap-2">
+                <span className="text-green-bright">{currentHeading.icon}</span>
+
+                <span className="font-medium">{currentHeading.label}</span>
+              </span>
+
+              <ChevronDown
+                size={14}
+                className={`
+                  transition-transform
+                  ${showHeadingDropdown ? "rotate-180 text-green-bright" : ""}
+                `}
+              />
+            </button>
+
+            {showHeadingDropdown && (
+              <div
+                className="
+                  absolute
+                  left-0
+                  top-[calc(100%+8px)]
+                  z-50
+                  w-64
+
+                  overflow-hidden
+                  rounded-2xl
+                  border
+                  border-border
+
+                  bg-surface
+                  p-1.5
+
+                  shadow-2xl
+                "
+              >
+                <div className="px-3 py-2">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-text-faint">
+                    Text style
+                  </p>
+                </div>
+
+                {headingOptions.map((option) => {
+                  const active = selectedHeading === option.value;
+
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => applyHeading(option.value)}
+                      className={`
+                        flex
+                        w-full
+                        items-center
+                        gap-3
+                        rounded-xl
+                        px-3
+                        py-2.5
+                        text-left
+
+                        transition-colors
+
+                        ${
+                          active
+                            ? "bg-green/10 text-green-bright"
+                            : "text-text-muted hover:bg-bg hover:text-text"
+                        }
+                      `}
+                    >
+                      <span
+                        className={`
+                          flex
+                          h-8
+                          w-8
+                          shrink-0
+                          items-center
+                          justify-center
+                          rounded-lg
+                          border
+
+                          ${
+                            active
+                              ? "border-green-bright/20 bg-green/10"
+                              : "border-border bg-bg"
+                          }
+                        `}
+                      >
+                        {option.icon}
+                      </span>
+
+                      <span className="min-w-0">
+                        <span className="block text-sm font-medium">
+                          {option.label}
+                        </span>
+
+                        <span className="mt-0.5 block truncate text-[11px] text-text-faint">
+                          {option.description}
+                        </span>
+                      </span>
+
+                      {active && (
+                        <span className="ml-auto text-xs text-green-bright">
+                          ✓
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <div ref={sizeDropdownRef} className="relative">
+            <button
+              type="button"
+              onMouseDown={(event) => {
+                event.preventDefault();
+                saveSelection();
+              }}
+              onClick={() => {
+                setShowSizeDropdown((previous) => !previous);
+                setShowHeadingDropdown(false);
+              }}
+              className="
+                group
+                flex
+                h-9
+                min-w-33.75
+                items-center
+                justify-between
+                gap-3
+                rounded-xl
+                border
+                border-border
+                bg-surface
+                px-3
+
+                text-xs
+                text-text-muted
+
+                transition-all
+
+                hover:border-green-bright/40
+                hover:bg-bg
+                hover:text-text
+
+                focus:outline-none
+                focus:border-green-bright
+              "
+            >
+              <span className="flex items-center gap-2">
+                <Type size={15} className="text-green-bright" />
+
+                <span className="font-medium">{currentSize.label}</span>
+              </span>
+
+              <ChevronDown
+                size={14}
+                className={`
+                  transition-transform
+                  ${showSizeDropdown ? "rotate-180 text-green-bright" : ""}
+                `}
+              />
+            </button>
+
+            {showSizeDropdown && (
+              <div
+                className="
+                  absolute
+                  left-0
+                  top-[calc(100%+8px)]
+                  z-50
+                  w-56
+
+                  overflow-hidden
+                  rounded-2xl
+                  border
+                  border-border
+
+                  bg-surface
+                  p-1.5
+
+                  shadow-2xl
+                "
+              >
+                <div className="px-3 py-2">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-text-faint">
+                    Text size
+                  </p>
+                </div>
+
+                {sizeOptions.map((option) => {
+                  const active = selectedSize === option.value;
+
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => applySize(option.value)}
+                      className={`
+                        flex
+                        w-full
+                        items-center
+                        gap-3
+                        rounded-xl
+                        px-3
+                        py-2.5
+                        text-left
+
+                        transition-colors
+
+                        ${
+                          active
+                            ? "bg-green/10 text-green-bright"
+                            : "text-text-muted hover:bg-bg hover:text-text"
+                        }
+                      `}
+                    >
+                      <span
+                        className={`
+                          flex
+                          h-8
+                          w-8
+                          shrink-0
+                          items-center
+                          justify-center
+                          rounded-lg
+                          border
+
+                          ${
+                            active
+                              ? "border-green-bright/20 bg-green/10"
+                              : "border-border bg-bg"
+                          }
+                        `}
+                      >
+                        <Type
+                          size={
+                            option.value === "2"
+                              ? 13
+                              : option.value === "5"
+                                ? 17
+                                : option.value === "6"
+                                  ? 19
+                                  : 15
+                          }
+                        />
+                      </span>
+
+                      <span className="min-w-0">
+                        <span className="block text-sm font-medium">
+                          {option.label}
+                        </span>
+
+                        <span className="mt-0.5 block text-[11px] text-text-faint">
+                          {option.description}
+                        </span>
+                      </span>
+
+                      {active && (
+                        <span className="ml-auto text-xs text-green-bright">
+                          ✓
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <ToolbarDivider />
+
+          {/* Bullet list */}
           <ToolbarButton
             label="Bulleted list"
             onMouseDown={saveSelection}
@@ -409,6 +829,7 @@ export default function RichTextEditor({
             <List size={16} />
           </ToolbarButton>
 
+          {/* Number list */}
           <ToolbarButton
             label="Numbered list"
             onMouseDown={saveSelection}
@@ -435,7 +856,7 @@ export default function RichTextEditor({
             <ImageIcon size={16} />
           </ToolbarButton>
 
-          <div className="mx-1.5 h-6 w-px bg-border" />
+          <ToolbarDivider />
 
           {/* Undo */}
           <ToolbarButton
@@ -476,10 +897,14 @@ export default function RichTextEditor({
           onFocus={saveSelection}
           className="
             min-h-105
-            px-6 py-5
+
+            px-6
+            py-5
+
             text-sm
             leading-7
             text-text-primary
+
             outline-none
 
             [&_p]:my-3
@@ -546,8 +971,6 @@ export default function RichTextEditor({
             [&_img]:border
             [&_img]:border-border
 
-            [&_br]:leading-7
-
             [&_font]:text-inherit
             [&_font]:bg-transparent
           "
@@ -557,14 +980,35 @@ export default function RichTextEditor({
 
       {showLinkDialog && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+          className="
+            fixed
+            inset-0
+            z-100
+            flex
+            items-center
+            justify-center
+            bg-black/60
+            px-4
+            backdrop-blur-sm
+          "
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) {
               closeLinkDialog();
             }
           }}
         >
-          <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl">
+          <div
+            className="
+              w-full
+              max-w-lg
+              overflow-hidden
+              rounded-2xl
+              border
+              border-border
+              bg-surface
+              shadow-2xl
+            "
+          >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div>
@@ -579,14 +1023,25 @@ export default function RichTextEditor({
                 </div>
 
                 <p className="mt-1 pl-10 text-xs text-text-faint">
-                  Add a link to selected text or insert linked text.
+                  Add a link to your blog content.
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={closeLinkDialog}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-bg hover:text-text"
+                className="
+                  flex
+                  h-8
+                  w-8
+                  items-center
+                  justify-center
+                  rounded-lg
+                  text-text-muted
+                  transition-colors
+                  hover:bg-bg
+                  hover:text-text
+                "
                 aria-label="Close dialog"
               >
                 <X size={17} />
@@ -607,7 +1062,14 @@ export default function RichTextEditor({
                 <div className="relative mt-2">
                   <LinkIcon
                     size={16}
-                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text-faint"
+                    className="
+                      pointer-events-none
+                      absolute
+                      left-3
+                      top-1/2
+                      -translate-y-1/2
+                      text-text-faint
+                    "
                   />
 
                   <input
@@ -622,10 +1084,14 @@ export default function RichTextEditor({
                     className="
                       w-full
                       rounded-xl
-                      border border-border
+                      border
+                      border-border
                       bg-bg
-                      py-3 pl-10 pr-4
-                      text-sm text-text
+                      py-3
+                      pl-10
+                      pr-4
+                      text-sm
+                      text-text
                       outline-none
                       transition-colors
                       placeholder:text-text-faint
@@ -660,10 +1126,13 @@ export default function RichTextEditor({
                     mt-2
                     w-full
                     rounded-xl
-                    border border-border
+                    border
+                    border-border
                     bg-bg
-                    px-4 py-3
-                    text-sm text-text
+                    px-4
+                    py-3
+                    text-sm
+                    text-text
                     outline-none
                     transition-colors
                     placeholder:text-text-faint
@@ -674,7 +1143,7 @@ export default function RichTextEditor({
                 />
 
                 <p className="mt-2 text-[11px] text-text-faint">
-                  Selected editor text will be used automatically.
+                  Selected text will be used automatically.
                 </p>
               </div>
 
@@ -693,7 +1162,7 @@ export default function RichTextEditor({
                     <p className="text-sm text-text">Open in new tab</p>
 
                     <p className="text-[11px] text-text-faint">
-                      Opens the link without leaving your blog.
+                      Opens the link without leaving the blog.
                     </p>
                   </div>
                 </div>
@@ -711,7 +1180,18 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={closeLinkDialog}
-                className="rounded-xl border border-border px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-surface hover:text-text"
+                className="
+                  rounded-xl
+                  border
+                  border-border
+                  px-4
+                  py-2.5
+                  text-sm
+                  text-text-muted
+                  transition-colors
+                  hover:bg-surface
+                  hover:text-text
+                "
               >
                 Cancel
               </button>
@@ -719,7 +1199,20 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={insertLink}
-                className="inline-flex items-center gap-2 rounded-xl bg-green px-5 py-2.5 text-sm font-medium text-[#04140b] transition-colors hover:bg-green-bright"
+                className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-xl
+                  bg-green
+                  px-5
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-[#04140b]
+                  transition-colors
+                  hover:bg-green-bright
+                "
               >
                 <LinkIcon size={15} />
                 Insert link
@@ -731,14 +1224,35 @@ export default function RichTextEditor({
 
       {showImageDialog && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+          className="
+            fixed
+            inset-0
+            z-100
+            flex
+            items-center
+            justify-center
+            bg-black/60
+            px-4
+            backdrop-blur-sm
+          "
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) {
               closeImageDialog();
             }
           }}
         >
-          <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl">
+          <div
+            className="
+              w-full
+              max-w-lg
+              overflow-hidden
+              rounded-2xl
+              border
+              border-border
+              bg-surface
+              shadow-2xl
+            "
+          >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div>
@@ -760,7 +1274,18 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={closeImageDialog}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-bg hover:text-text"
+                className="
+                  flex
+                  h-8
+                  w-8
+                  items-center
+                  justify-center
+                  rounded-lg
+                  text-text-muted
+                  transition-colors
+                  hover:bg-bg
+                  hover:text-text
+                "
                 aria-label="Close dialog"
               >
                 <X size={17} />
@@ -781,7 +1306,14 @@ export default function RichTextEditor({
                 <div className="relative mt-2">
                   <ImageIcon
                     size={16}
-                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text-faint"
+                    className="
+                      pointer-events-none
+                      absolute
+                      left-3
+                      top-1/2
+                      -translate-y-1/2
+                      text-text-faint
+                    "
                   />
 
                   <input
@@ -796,10 +1328,14 @@ export default function RichTextEditor({
                     className="
                       w-full
                       rounded-xl
-                      border border-border
+                      border
+                      border-border
                       bg-bg
-                      py-3 pl-10 pr-4
-                      text-sm text-text
+                      py-3
+                      pl-10
+                      pr-4
+                      text-sm
+                      text-text
                       outline-none
                       transition-colors
                       placeholder:text-text-faint
@@ -838,10 +1374,13 @@ export default function RichTextEditor({
                     mt-2
                     w-full
                     rounded-xl
-                    border border-border
+                    border
+                    border-border
                     bg-bg
-                    px-4 py-3
-                    text-sm text-text
+                    px-4
+                    py-3
+                    text-sm
+                    text-text
                     outline-none
                     transition-colors
                     placeholder:text-text-faint
@@ -898,7 +1437,18 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={closeImageDialog}
-                className="rounded-xl border border-border px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-surface hover:text-text"
+                className="
+                  rounded-xl
+                  border
+                  border-border
+                  px-4
+                  py-2.5
+                  text-sm
+                  text-text-muted
+                  transition-colors
+                  hover:bg-surface
+                  hover:text-text
+                "
               >
                 Cancel
               </button>
@@ -906,7 +1456,20 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={insertImage}
-                className="inline-flex items-center gap-2 rounded-xl bg-green px-5 py-2.5 text-sm font-medium text-[#04140b] transition-colors hover:bg-green-bright"
+                className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-xl
+                  bg-green
+                  px-5
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-[#04140b]
+                  transition-colors
+                  hover:bg-green-bright
+                "
               >
                 <ImageIcon size={15} />
                 Insert image
@@ -941,19 +1504,32 @@ function ToolbarButton({
       }}
       onClick={onClick}
       className="
-        flex h-9 w-9
-        items-center justify-center
+        flex
+        h-9
+        w-9
+        items-center
+        justify-center
+
         rounded-xl
-        border border-transparent
+        border
+        border-transparent
+
         text-text-muted
+
         transition-all
+
         hover:border-border
         hover:bg-bg
         hover:text-green-bright
+
         active:scale-95
       "
     >
       {children}
     </button>
   );
+}
+
+function ToolbarDivider() {
+  return <div className="mx-1.5 h-6 w-px bg-border" />;
 }
