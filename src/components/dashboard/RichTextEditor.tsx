@@ -29,7 +29,6 @@ type Command =
   | "insertOrderedList"
   | "formatBlock"
   | "fontSize"
-  | "createLink"
   | "removeFormat"
   | "undo"
   | "redo";
@@ -98,18 +97,22 @@ export default function RichTextEditor({
     editorRef.current?.focus();
   };
 
-  const updateEditor = () => {
-    if (editorRef.current) {
-      onChange(editorRef.current.innerHTML);
-    }
-  };
-
   const exec = (command: Command, commandValue?: string) => {
-    focusEditor();
+    restoreSelection();
+
+    if (!savedRangeRef.current) {
+      focusEditor();
+    }
 
     document.execCommand(command, false, commandValue);
 
     updateEditor();
+  };
+
+  const updateEditor = () => {
+    if (editorRef.current) {
+      onChange(editorRef.current.innerHTML);
+    }
   };
 
   const handleInput = () => {
@@ -124,87 +127,35 @@ export default function RichTextEditor({
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
 
-  const openLinkDialog = () => {
-    saveSelection();
+  const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    event.preventDefault();
 
-    const selection = window.getSelection();
-    const selectedText = selection?.toString() ?? "";
+    const text = event.clipboardData.getData("text/plain");
 
-    setLinkText(selectedText);
-    setLinkUrl("");
-    setLinkError("");
-    setOpenInNewTab(true);
-
-    setShowLinkDialog(true);
-  };
-
-  const closeLinkDialog = () => {
-    setShowLinkDialog(false);
-    setLinkUrl("");
-    setLinkText("");
-    setLinkError("");
-    setOpenInNewTab(true);
-  };
-
-  const insertLink = () => {
-    const url = linkUrl.trim();
-    const text = linkText.trim();
-
-    if (!url) {
-      setLinkError("Please enter a URL.");
-      return;
-    }
-
-    try {
-      const parsedUrl = new URL(url);
-
-      if (!["http:", "https:"].includes(parsedUrl.protocol)) {
-        setLinkError("Please enter a valid HTTP or HTTPS URL.");
-        return;
-      }
-    } catch {
-      setLinkError("Please enter a valid URL.");
-      return;
-    }
-
-    if (!text) {
-      setLinkError("Please enter the text for the link.");
-      return;
-    }
+    if (!text) return;
 
     restoreSelection();
 
-    const selection = window.getSelection();
+    const normalizedText = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
-    if (selection && !selection.isCollapsed) {
-      document.execCommand("createLink", false, url);
+    const paragraphs = normalizedText.split(/\n{2,}/);
 
-      const anchor =
-        selection.anchorNode?.parentElement?.closest("a") ??
-        selection.focusNode?.parentElement?.closest("a");
+    const html = paragraphs
+      .map((paragraph) => {
+        const lines = paragraph.split("\n");
 
-      if (anchor) {
-        if (openInNewTab) {
-          anchor.setAttribute("target", "_blank");
-          anchor.setAttribute("rel", "noopener noreferrer");
-        } else {
-          anchor.removeAttribute("target");
-          anchor.removeAttribute("rel");
-        }
-      }
-    } else {
-      const linkHtml = `
-        <a
-          href="${escapeAttribute(url)}"
-          ${openInNewTab ? 'target="_blank" rel="noopener noreferrer"' : ""}
-        >${escapeAttribute(text)}</a>
-      `;
+        const content = lines
+          .map((line) => escapeAttribute(line))
+          .join("<br />");
 
-      document.execCommand("insertHTML", false, linkHtml);
-    }
+        return `<p>${content}</p>`;
+      })
+      .join("");
+
+    document.execCommand("insertHTML", false, html);
 
     updateEditor();
-    closeLinkDialog();
+    saveSelection();
   };
 
   const openImageDialog = () => {
@@ -262,36 +213,154 @@ export default function RichTextEditor({
     document.execCommand("insertHTML", false, imageHtml);
 
     updateEditor();
-
     closeImageDialog();
+  };
+
+  const openLinkDialog = () => {
+    saveSelection();
+
+    const selection = window.getSelection();
+    const selectedText = selection?.toString() ?? "";
+
+    setLinkText(selectedText);
+    setLinkUrl("");
+    setLinkError("");
+    setOpenInNewTab(true);
+
+    setShowLinkDialog(true);
+  };
+
+  const closeLinkDialog = () => {
+    setShowLinkDialog(false);
+    setLinkUrl("");
+    setLinkText("");
+    setLinkError("");
+    setOpenInNewTab(true);
+  };
+
+  const insertLink = () => {
+    const url = linkUrl.trim();
+    const text = linkText.trim();
+
+    if (!url) {
+      setLinkError("Please enter a URL.");
+      return;
+    }
+
+    if (!text) {
+      setLinkError("Please enter the link text.");
+      return;
+    }
+
+    try {
+      const parsedUrl = new URL(url);
+
+      if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+        setLinkError("Only HTTP and HTTPS URLs are supported.");
+        return;
+      }
+    } catch {
+      setLinkError("Please enter a valid URL.");
+      return;
+    }
+
+    restoreSelection();
+
+    const selection = window.getSelection();
+
+    if (selection && !selection.isCollapsed) {
+      document.execCommand("createLink", false, url);
+
+      const anchor =
+        selection.anchorNode?.parentElement?.closest("a") ??
+        selection.focusNode?.parentElement?.closest("a");
+
+      if (anchor) {
+        if (openInNewTab) {
+          anchor.setAttribute("target", "_blank");
+          anchor.setAttribute("rel", "noopener noreferrer");
+        } else {
+          anchor.removeAttribute("target");
+          anchor.removeAttribute("rel");
+        }
+      }
+    } else {
+      const linkHtml = `
+        <a
+          href="${escapeAttribute(url)}"
+          ${openInNewTab ? 'target="_blank" rel="noopener noreferrer"' : ""}
+        >
+          ${escapeAttribute(text)}
+        </a>
+      `;
+
+      document.execCommand("insertHTML", false, linkHtml);
+    }
+
+    updateEditor();
+    closeLinkDialog();
   };
 
   return (
     <>
-      <div className="mt-2 overflow-visible rounded-xl border border-border bg-surface">
-        {/* Toolbar */}
-        <div className="sticky top-0 z-30 flex flex-wrap items-center gap-1 border-b border-border bg-surface/95 p-2 backdrop-blur-md">
-          <ToolbarButton label="Bold" onClick={() => exec("bold")}>
+      <div className="mt-2 overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
+        <div
+          className="
+            sticky top-0 z-30
+            flex flex-wrap items-center gap-1
+            border-b border-border
+            bg-surface/95
+            p-2.5
+            backdrop-blur-md
+          "
+        >
+          <ToolbarButton
+            label="Bold"
+            onMouseDown={saveSelection}
+            onClick={() => exec("bold")}
+          >
             <Bold size={16} />
           </ToolbarButton>
 
-          <ToolbarButton label="Italic" onClick={() => exec("italic")}>
+          <ToolbarButton
+            label="Italic"
+            onMouseDown={saveSelection}
+            onClick={() => exec("italic")}
+          >
             <Italic size={16} />
           </ToolbarButton>
 
-          <ToolbarButton label="Underline" onClick={() => exec("underline")}>
+          <ToolbarButton
+            label="Underline"
+            onMouseDown={saveSelection}
+            onClick={() => exec("underline")}
+          >
             <Underline size={16} />
           </ToolbarButton>
 
-          <div className="mx-1 h-6 w-px bg-border" />
+          <div className="mx-1.5 h-6 w-px bg-border" />
 
+          {/* Text style */}
           <select
             aria-label="Text style"
             defaultValue="p"
+            onMouseDown={saveSelection}
             onChange={(e) => {
               exec("formatBlock", e.target.value);
             }}
-            className="h-8 rounded-md border border-border bg-surface px-2 text-xs text-text-muted outline-none focus:border-green-bright"
+            className="
+              h-9
+              rounded-xl
+              border border-border
+              bg-surface
+              px-3
+              text-xs
+              text-text-muted
+              outline-none
+              transition-colors
+              hover:border-green-bright/40
+              focus:border-green-bright
+            "
           >
             <option value="p">Paragraph</option>
             <option value="h1">Heading 1</option>
@@ -301,13 +370,27 @@ export default function RichTextEditor({
             <option value="blockquote">Quote</option>
           </select>
 
+          {/* Font size */}
           <select
             aria-label="Text size"
             defaultValue="3"
+            onMouseDown={saveSelection}
             onChange={(e) => {
               exec("fontSize", e.target.value);
             }}
-            className="h-8 rounded-md border border-border bg-surface px-2 text-xs text-text-muted outline-none focus:border-green-bright"
+            className="
+              h-9
+              rounded-xl
+              border border-border
+              bg-surface
+              px-3
+              text-xs
+              text-text-muted
+              outline-none
+              transition-colors
+              hover:border-green-bright/40
+              focus:border-green-bright
+            "
           >
             <option value="2">Small</option>
             <option value="3">Normal</option>
@@ -315,10 +398,12 @@ export default function RichTextEditor({
             <option value="6">Huge</option>
           </select>
 
-          <div className="mx-1 h-6 w-px bg-border" />
+          <div className="mx-1.5 h-6 w-px bg-border" />
 
+          {/* Lists */}
           <ToolbarButton
             label="Bulleted list"
+            onMouseDown={saveSelection}
             onClick={() => exec("insertUnorderedList")}
           >
             <List size={16} />
@@ -326,49 +411,146 @@ export default function RichTextEditor({
 
           <ToolbarButton
             label="Numbered list"
+            onMouseDown={saveSelection}
             onClick={() => exec("insertOrderedList")}
           >
             <ListOrdered size={16} />
           </ToolbarButton>
 
           {/* Link */}
-          <ToolbarButton label="Insert link" onClick={openLinkDialog}>
+          <ToolbarButton
+            label="Insert link"
+            onMouseDown={saveSelection}
+            onClick={openLinkDialog}
+          >
             <LinkIcon size={16} />
           </ToolbarButton>
 
           {/* Image */}
-          <ToolbarButton label="Insert image" onClick={openImageDialog}>
+          <ToolbarButton
+            label="Insert image"
+            onMouseDown={saveSelection}
+            onClick={openImageDialog}
+          >
             <ImageIcon size={16} />
           </ToolbarButton>
 
-          <div className="mx-1 h-6 w-px bg-border" />
+          <div className="mx-1.5 h-6 w-px bg-border" />
 
-          <ToolbarButton label="Undo" onClick={() => exec("undo")}>
+          {/* Undo */}
+          <ToolbarButton
+            label="Undo"
+            onMouseDown={saveSelection}
+            onClick={() => exec("undo")}
+          >
             <Undo2 size={16} />
           </ToolbarButton>
 
-          <ToolbarButton label="Redo" onClick={() => exec("redo")}>
+          {/* Redo */}
+          <ToolbarButton
+            label="Redo"
+            onMouseDown={saveSelection}
+            onClick={() => exec("redo")}
+          >
             <Redo2 size={16} />
           </ToolbarButton>
 
+          {/* Remove formatting */}
           <ToolbarButton
             label="Remove formatting"
+            onMouseDown={saveSelection}
             onClick={() => exec("removeFormat")}
           >
             <RemoveFormatting size={16} />
           </ToolbarButton>
         </div>
 
-        {/* Editor */}
         <div
           ref={editorRef}
           contentEditable
           suppressContentEditableWarning
           onInput={handleInput}
+          onPaste={handlePaste}
           onKeyUp={saveSelection}
           onMouseUp={saveSelection}
           onFocus={saveSelection}
-          className="min-h-105 px-5 py-4 text-sm leading-7 text-text-primary outline-none"
+          className="
+            min-h-105
+            px-6 py-5
+            text-sm
+            leading-7
+            text-text-primary
+            outline-none
+
+            [&_p]:my-3
+            [&_p:first-child]:mt-0
+            [&_p:last-child]:mb-0
+
+            [&_strong]:font-bold
+            [&_b]:font-bold
+
+            [&_em]:italic
+            [&_i]:italic
+
+            [&_u]:underline
+            [&_u]:underline-offset-2
+
+            [&_h1]:mb-4
+            [&_h1]:mt-7
+            [&_h1]:text-3xl
+            [&_h1]:font-bold
+            [&_h1]:leading-tight
+
+            [&_h2]:mb-3
+            [&_h2]:mt-6
+            [&_h2]:text-2xl
+            [&_h2]:font-bold
+            [&_h2]:leading-tight
+
+            [&_h3]:mb-3
+            [&_h3]:mt-5
+            [&_h3]:text-xl
+            [&_h3]:font-semibold
+            [&_h3]:leading-tight
+
+            [&_h4]:mb-2
+            [&_h4]:mt-4
+            [&_h4]:text-lg
+            [&_h4]:font-semibold
+
+            [&_ul]:my-4
+            [&_ul]:list-disc
+            [&_ul]:pl-7
+
+            [&_ol]:my-4
+            [&_ol]:list-decimal
+            [&_ol]:pl-7
+
+            [&_li]:my-1
+            [&_li]:pl-1
+
+            [&_blockquote]:my-5
+            [&_blockquote]:border-l-2
+            [&_blockquote]:border-green-bright
+            [&_blockquote]:pl-4
+            [&_blockquote]:italic
+            [&_blockquote]:text-text-muted
+
+            [&_a]:text-green-bright
+            [&_a]:underline
+            [&_a]:underline-offset-2
+
+            [&_img]:my-5
+            [&_img]:max-w-full
+            [&_img]:rounded-xl
+            [&_img]:border
+            [&_img]:border-border
+
+            [&_br]:leading-7
+
+            [&_font]:text-inherit
+            [&_font]:bg-transparent
+          "
           data-placeholder="Write your blog post here..."
         />
       </div>
@@ -376,8 +558,8 @@ export default function RichTextEditor({
       {showLinkDialog && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
-          onMouseDown={(e) => {
-            if (e.target === e.currentTarget) {
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
               closeLinkDialog();
             }
           }}
@@ -397,7 +579,7 @@ export default function RichTextEditor({
                 </div>
 
                 <p className="mt-1 pl-10 text-xs text-text-faint">
-                  Add a link to the selected text or insert linked text.
+                  Add a link to selected text or insert linked text.
                 </p>
               </div>
 
@@ -411,9 +593,8 @@ export default function RichTextEditor({
               </button>
             </div>
 
-            {/* Form */}
+            {/* Body */}
             <div className="space-y-5 p-6">
-              {/* URL */}
               <div>
                 <label
                   htmlFor="blog-link-url"
@@ -433,22 +614,30 @@ export default function RichTextEditor({
                     id="blog-link-url"
                     type="url"
                     value={linkUrl}
-                    onChange={(e) => {
-                      setLinkUrl(e.target.value);
+                    onChange={(event) => {
+                      setLinkUrl(event.target.value);
                       setLinkError("");
                     }}
                     placeholder="https://example.com"
-                    className="w-full rounded-lg border border-border bg-bg py-3 pl-10 pr-4 text-sm text-text outline-none transition-colors placeholder:text-text-faint focus:border-green-bright focus:ring-1 focus:ring-green-bright/20"
+                    className="
+                      w-full
+                      rounded-xl
+                      border border-border
+                      bg-bg
+                      py-3 pl-10 pr-4
+                      text-sm text-text
+                      outline-none
+                      transition-colors
+                      placeholder:text-text-faint
+                      focus:border-green-bright
+                      focus:ring-1
+                      focus:ring-green-bright/20
+                    "
                     autoFocus
                   />
                 </div>
-
-                <p className="mt-2 text-[11px] leading-5 text-text-faint">
-                  Use a publicly accessible HTTPS URL.
-                </p>
               </div>
 
-              {/* Link text */}
               <div>
                 <label
                   htmlFor="blog-link-text"
@@ -462,26 +651,38 @@ export default function RichTextEditor({
                   id="blog-link-text"
                   type="text"
                   value={linkText}
-                  onChange={(e) => {
-                    setLinkText(e.target.value);
+                  onChange={(event) => {
+                    setLinkText(event.target.value);
                     setLinkError("");
                   }}
                   placeholder="Example: Learn more about AWS"
-                  className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-text-faint focus:border-green-bright focus:ring-1 focus:ring-green-bright/20"
+                  className="
+                    mt-2
+                    w-full
+                    rounded-xl
+                    border border-border
+                    bg-bg
+                    px-4 py-3
+                    text-sm text-text
+                    outline-none
+                    transition-colors
+                    placeholder:text-text-faint
+                    focus:border-green-bright
+                    focus:ring-1
+                    focus:ring-green-bright/20
+                  "
                 />
 
-                <p className="mt-2 text-[11px] leading-5 text-text-faint">
-                  If you selected text in the editor, it will be used
-                  automatically.
+                <p className="mt-2 text-[11px] text-text-faint">
+                  Selected editor text will be used automatically.
                 </p>
               </div>
 
-              {/* New tab */}
-              <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-bg px-4 py-3 transition-colors hover:border-green-bright/40">
+              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-bg px-4 py-3 transition-colors hover:border-green-bright/40">
                 <input
                   type="checkbox"
                   checked={openInNewTab}
-                  onChange={(e) => setOpenInNewTab(e.target.checked)}
+                  onChange={(event) => setOpenInNewTab(event.target.checked)}
                   className="h-4 w-4 accent-green-bright"
                 />
 
@@ -498,20 +699,19 @@ export default function RichTextEditor({
                 </div>
               </label>
 
-              {/* Error */}
               {linkError && (
-                <div className="rounded-lg border border-red-400/20 bg-red-400/5 px-4 py-3 text-xs text-red-400">
+                <div className="rounded-xl border border-red-400/20 bg-red-400/5 px-4 py-3 text-xs text-red-400">
                   {linkError}
                 </div>
               )}
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-end gap-3 border-t border-border bg-bg-alt px-6 py-4">
+            <div className="flex items-center justify-end gap-3 border-t border-border bg-bg px-6 py-4">
               <button
                 type="button"
                 onClick={closeLinkDialog}
-                className="rounded-lg border border-border px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-surface hover:text-text"
+                className="rounded-xl border border-border px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-surface hover:text-text"
               >
                 Cancel
               </button>
@@ -519,7 +719,7 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={insertLink}
-                className="inline-flex items-center gap-2 rounded-lg bg-green px-5 py-2.5 text-sm font-medium text-[#04140b] transition-colors hover:bg-green-bright"
+                className="inline-flex items-center gap-2 rounded-xl bg-green px-5 py-2.5 text-sm font-medium text-[#04140b] transition-colors hover:bg-green-bright"
               >
                 <LinkIcon size={15} />
                 Insert link
@@ -532,8 +732,8 @@ export default function RichTextEditor({
       {showImageDialog && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
-          onMouseDown={(e) => {
-            if (e.target === e.currentTarget) {
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
               closeImageDialog();
             }
           }}
@@ -567,9 +767,8 @@ export default function RichTextEditor({
               </button>
             </div>
 
-            {/* Form */}
+            {/* Body */}
             <div className="space-y-5 p-6">
-              {/* URL */}
               <div>
                 <label
                   htmlFor="blog-image-url"
@@ -589,22 +788,34 @@ export default function RichTextEditor({
                     id="blog-image-url"
                     type="url"
                     value={imageUrl}
-                    onChange={(e) => {
-                      setImageUrl(e.target.value);
+                    onChange={(event) => {
+                      setImageUrl(event.target.value);
                       setImageError("");
                     }}
                     placeholder="https://res.cloudinary.com/..."
-                    className="w-full rounded-lg border border-border bg-bg py-3 pl-10 pr-4 text-sm text-text outline-none transition-colors placeholder:text-text-faint focus:border-green-bright focus:ring-1 focus:ring-green-bright/20"
+                    className="
+                      w-full
+                      rounded-xl
+                      border border-border
+                      bg-bg
+                      py-3 pl-10 pr-4
+                      text-sm text-text
+                      outline-none
+                      transition-colors
+                      placeholder:text-text-faint
+                      focus:border-green-bright
+                      focus:ring-1
+                      focus:ring-green-bright/20
+                    "
                     autoFocus
                   />
                 </div>
 
-                <p className="mt-2 text-[11px] leading-5 text-text-faint">
+                <p className="mt-2 text-[11px] text-text-faint">
                   Use a publicly accessible HTTPS image URL.
                 </p>
               </div>
 
-              {/* Alt */}
               <div>
                 <label
                   htmlFor="blog-image-alt"
@@ -618,12 +829,26 @@ export default function RichTextEditor({
                   id="blog-image-alt"
                   type="text"
                   value={imageAlt}
-                  onChange={(e) => {
-                    setImageAlt(e.target.value);
+                  onChange={(event) => {
+                    setImageAlt(event.target.value);
                     setImageError("");
                   }}
                   placeholder="Describe the image briefly"
-                  className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-text-faint focus:border-green-bright focus:ring-1 focus:ring-green-bright/20"
+                  className="
+                    mt-2
+                    w-full
+                    rounded-xl
+                    border border-border
+                    bg-bg
+                    px-4 py-3
+                    text-sm text-text
+                    outline-none
+                    transition-colors
+                    placeholder:text-text-faint
+                    focus:border-green-bright
+                    focus:ring-1
+                    focus:ring-green-bright/20
+                  "
                 />
 
                 <div className="mt-2 flex items-start gap-2">
@@ -662,18 +887,18 @@ export default function RichTextEditor({
               )}
 
               {imageError && (
-                <div className="rounded-lg border border-red-400/20 bg-red-400/5 px-4 py-3 text-xs text-red-400">
+                <div className="rounded-xl border border-red-400/20 bg-red-400/5 px-4 py-3 text-xs text-red-400">
                   {imageError}
                 </div>
               )}
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-end gap-3 border-t border-border bg-bg-alt px-6 py-4">
+            <div className="flex items-center justify-end gap-3 border-t border-border bg-bg px-6 py-4">
               <button
                 type="button"
                 onClick={closeImageDialog}
-                className="rounded-lg border border-border px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-surface hover:text-text"
+                className="rounded-xl border border-border px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-surface hover:text-text"
               >
                 Cancel
               </button>
@@ -681,7 +906,7 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={insertImage}
-                className="inline-flex items-center gap-2 rounded-lg bg-green px-5 py-2.5 text-sm font-medium text-[#04140b] transition-colors hover:bg-green-bright"
+                className="inline-flex items-center gap-2 rounded-xl bg-green px-5 py-2.5 text-sm font-medium text-[#04140b] transition-colors hover:bg-green-bright"
               >
                 <ImageIcon size={15} />
                 Insert image
@@ -698,19 +923,35 @@ function ToolbarButton({
   children,
   label,
   onClick,
+  onMouseDown,
 }: {
   children: React.ReactNode;
   label: string;
   onClick: () => void;
+  onMouseDown?: () => void;
 }) {
   return (
     <button
       type="button"
       title={label}
       aria-label={label}
-      onMouseDown={(e) => e.preventDefault()}
+      onMouseDown={(event) => {
+        event.preventDefault();
+        onMouseDown?.();
+      }}
       onClick={onClick}
-      className="flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface-hover hover:text-green-bright"
+      className="
+        flex h-9 w-9
+        items-center justify-center
+        rounded-xl
+        border border-transparent
+        text-text-muted
+        transition-all
+        hover:border-border
+        hover:bg-bg
+        hover:text-green-bright
+        active:scale-95
+      "
     >
       {children}
     </button>
