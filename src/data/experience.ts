@@ -8,27 +8,19 @@ export interface ExperienceItem {
 
 export const experience: ExperienceItem[] = [
   {
-    role: "Senior Backend Engineer",
-    company: "Company Name",
-    period: "2023 — Present",
+    role: "Project Manager, FSD",
+    company: "Scaleup Ads Agency",
+    period: "2025 — 2026",
     description:
-      "Leading the design of internal APIs and event-driven services, cutting p95 latency by 40% while scaling to 10x traffic.",
-    stack: ["Node.js", "PostgreSQL", "Docker", "AWS"],
+      "Led a team of 65+ engineers (Full Stack and Mobile) to deliver scalable software solutions, ensuring KPI growth from $0 to $50K+ revenue. Deployed and managed applications on AWS (EC2) and VPS servers with focus on scalability, security and uptime. Built and maintained backend systems for web and mobile applications with emphasis on performance and reliability. Ensured end-to-end project delivery including testing, deployment and client handover with high satisfaction.",
+    stack: ["Node.js", "PostgreSQL", "Docker", "AWS", "Project Management"],
   },
   {
-    role: "Full-Stack Engineer",
-    company: "Previous Company",
-    period: "2021 — 2023",
+    role: "Bankend Developer",
+    company: "Scaleup Ads Agency",
+    period: "2024 - 2025",
     description:
-      "Built and shipped customer-facing features end to end, from database schema to production UI, across a Next.js + Express stack.",
-    stack: ["React", "Next.js", "Express", "MongoDB"],
-  },
-  {
-    role: "Software Engineer Intern",
-    company: "Earlier Company",
-    period: "2020 — 2021",
-    description:
-      "Automated deployment pipelines and reduced release time from an hour to under ten minutes.",
-    stack: ["Python", "CI/CD", "Linux"],
+      "Develop and handle backend services with the MERN stack (MongoDB, Express, React, and Node.js) for web and mobile apps. Develop and enhance database queries and schemas to provide high performance data operations.",
+    stack: ["Node.js", "Next.js", "MongoDB", "Redis"],
   },
 ];

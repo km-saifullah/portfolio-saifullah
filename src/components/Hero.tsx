@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "./Icons";
 
 const cards = [
   {
@@ -43,6 +44,19 @@ const cards = [
   },
 ];
 
+const SOCIAL_LINKS = [
+  {
+    href: "https://github.com/km-saifullah",
+    label: "GitHub",
+    icon: GithubIcon,
+  },
+  {
+    href: "https://www.linkedin.com/in/kmsaifullah/",
+    label: "LinkedIn",
+    icon: LinkedinIcon,
+  },
+];
+
 export default function Hero() {
   const [activeCard, setActiveCard] = useState(0);
 
@@ -62,8 +76,9 @@ export default function Hero() {
       className="relative flex min-h-screen items-center overflow-hidden bg-bg"
     >
       {/* Subtle editorial background detail */}
-      <div className="pointer-events-none absolute right-[-8rem] top-1/2 hidden h-[34rem] w-[34rem] -translate-y-1/2 rounded-full border border-border opacity-60 lg:block" />
-      <div className="pointer-events-none absolute right-[-2rem] top-1/2 hidden h-[22rem] w-[22rem] -translate-y-1/2 rounded-full border border-green-bright/20 lg:block" />
+      <div className="pointer-events-none absolute -right-32 top-1/2 hidden h-136 w-136 -translate-y-1/2 rounded-full border border-border opacity-60 lg:block" />
+
+      <div className="pointer-events-none absolute -right-8 top-1/2 hidden h-88 w-88 -translate-y-1/2 rounded-full border border-green-bright/20 lg:block" />
 
       <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-6 py-28 lg:grid-cols-[1fr_0.48fr] lg:gap-20">
         <div>
@@ -76,8 +91,9 @@ export default function Hero() {
             <span className="flex h-8 w-8 items-center justify-center rounded-full border border-green-bright/40 font-mono text-xs text-green-bright">
               K
             </span>
+
             <span className="font-mono text-xs uppercase tracking-[0.18em] text-text-faint">
-              Full-stack Engineer · Dhaka
+              Software Engineer · Dhaka
             </span>
           </motion.div>
 
@@ -100,9 +116,9 @@ export default function Hero() {
             className="mt-9 max-w-xl"
           >
             <p className="text-lg leading-8 text-text-muted">
-              I am <span className="text-text">Khaled Md Saifullah</span>, a
-              Full-stack Engineer who enjoys turning complex ideas into simple,
-              reliable products.
+              I&apos;m <span className="text-text">Khaled Md Saifullah</span>, a
+              backend and full-stack developer who enjoys turning complex ideas
+              into simple, reliable products.
             </p>
           </motion.div>
 
@@ -130,6 +146,31 @@ export default function Hero() {
               Start a conversation
             </a>
           </motion.div>
+
+          {/* Social links */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.36 }}
+            className="mt-7 flex items-center gap-3"
+          >
+            <span className="mr-1 font-mono text-[10px] uppercase tracking-[0.16em] text-text-faint">
+              Find me
+            </span>
+
+            {SOCIAL_LINKS.map(({ href, label, icon: Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text-muted transition-all hover:border-green-bright hover:bg-green-dim hover:text-green-bright"
+              >
+                <Icon size={17} />
+              </a>
+            ))}
+          </motion.div>
         </div>
 
         {/* Three-card automatic carousel */}
@@ -139,12 +180,13 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.22 }}
           className="relative lg:justify-self-end"
         >
-          <div className="relative w-full max-w-[22rem]">
-            {/* Background cards create a layered carousel feel */}
-            <div className="absolute inset-x-4 top-3 h-full rounded-[2rem] border border-border bg-surface/50" />
-            <div className="absolute inset-x-2 top-1 h-full rounded-[2rem] border border-border bg-surface/80" />
+          <div className="relative w-full max-w-88">
+            {/* Background cards */}
+            <div className="absolute inset-x-4 top-3 h-full rounded-4xl border border-border bg-surface/50" />
 
-            <div className="relative overflow-hidden rounded-[2rem] border border-border bg-surface p-7 shadow-2xl shadow-black/10">
+            <div className="absolute inset-x-2 top-1 h-full rounded-4xl border border-border bg-surface/80" />
+
+            <div className="relative overflow-hidden rounded-4xl border border-border bg-surface p-7 shadow-2xl shadow-black/10">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeCard}
@@ -157,10 +199,11 @@ export default function Hero() {
                     <span className="font-mono text-xs text-text-faint">
                       {card.number}
                     </span>
+
                     <span className="h-2 w-2 rounded-full bg-green-bright" />
                   </div>
 
-                  <p className="min-h-[7rem] font-display text-3xl font-medium leading-tight tracking-[-0.03em]">
+                  <p className="min-h-28 font-display text-3xl font-medium leading-tight tracking-[-0.03em]">
                     {card.title}
                   </p>
 
@@ -168,6 +211,7 @@ export default function Hero() {
                     <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-text-faint">
                       {card.label}
                     </p>
+
                     <p className="mt-2 text-sm text-text-muted">{card.value}</p>
                   </div>
                 </motion.div>
@@ -199,8 +243,8 @@ export default function Hero() {
       </div>
 
       <motion.a
-        href="#experience"
-        aria-label="Scroll to experience section"
+        href="#skills"
+        aria-label="Scroll to skills section"
         className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-text-faint transition-colors hover:text-green-bright"
         animate={{ y: [0, 5, 0] }}
         transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
