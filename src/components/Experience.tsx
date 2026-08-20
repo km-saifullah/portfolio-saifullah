@@ -14,7 +14,7 @@ export default function Experience() {
         </Reveal>
 
         <div className="mt-16 relative">
-          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-gradient-to-b from-green-bright/60 via-border-strong to-transparent" />
+          <div className="absolute left-1.75 top-2 bottom-2 w-px bg-linear-to-b from-green-bright/60 via-border-strong to-transparent" />
 
           <ol className="space-y-14">
             {experience.map((item, i) => (
@@ -29,9 +29,21 @@ export default function Experience() {
                     {item.role}{" "}
                     <span className="text-green-bright">@ {item.company}</span>
                   </h3>
-                  <p className="mt-3 max-w-2xl text-text-muted leading-relaxed">
-                    {item.description}
-                  </p>
+                  <ul className="mt-4 max-w-2xl space-y-3 text-text-muted leading-relaxed">
+                    {item.description
+                      .split(". ")
+                      .filter((point) => point.trim())
+                      .map((point, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-green-bright" />
+
+                          <span>
+                            {point.trim()}
+                            {!point.trim().endsWith(".") && "."}
+                          </span>
+                        </li>
+                      ))}
+                  </ul>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {item.stack.map((tech) => (
                       <span
