@@ -32,6 +32,9 @@ const allowedTags = [
   "hr",
 
   "font",
+
+  "pre",
+  "code",
 ];
 
 const allowedAttributes = {
@@ -40,6 +43,10 @@ const allowedAttributes = {
   img: ["src", "alt", "width", "height"],
 
   font: ["size"],
+
+  pre: ["class"],
+
+  code: ["class"],
 };
 
 export function sanitizeBlogHtml(html: string) {

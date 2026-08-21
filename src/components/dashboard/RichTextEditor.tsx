@@ -12,15 +12,8 @@ import {
   Undo2,
   Redo2,
   RemoveFormatting,
+  Code2,
   X,
-  ExternalLink,
-  ChevronDown,
-  Type,
-  Heading1,
-  Heading2,
-  Heading3,
-  Pilcrow,
-  Quote,
 } from "lucide-react";
 
 interface RichTextEditorProps {
@@ -36,78 +29,10 @@ type Command =
   | "insertOrderedList"
   | "formatBlock"
   | "fontSize"
+  | "createLink"
   | "removeFormat"
   | "undo"
   | "redo";
-
-type HeadingOption = {
-  value: string;
-  label: string;
-  description: string;
-  icon: React.ReactNode;
-};
-
-type SizeOption = {
-  value: string;
-  label: string;
-  description: string;
-};
-
-const headingOptions: HeadingOption[] = [
-  {
-    value: "p",
-    label: "Paragraph",
-    description: "Regular body text",
-    icon: <Pilcrow size={16} />,
-  },
-  {
-    value: "h1",
-    label: "Heading 1",
-    description: "Main heading",
-    icon: <Heading1 size={17} />,
-  },
-  {
-    value: "h2",
-    label: "Heading 2",
-    description: "Section heading",
-    icon: <Heading2 size={17} />,
-  },
-  {
-    value: "h3",
-    label: "Heading 3",
-    description: "Subsection heading",
-    icon: <Heading3 size={17} />,
-  },
-  {
-    value: "blockquote",
-    label: "Quote",
-    description: "Highlighted quotation",
-    icon: <Quote size={16} />,
-  },
-];
-
-const sizeOptions: SizeOption[] = [
-  {
-    value: "2",
-    label: "Small",
-    description: "Compact text",
-  },
-  {
-    value: "3",
-    label: "Normal",
-    description: "Standard body text",
-  },
-  {
-    value: "5",
-    label: "Large",
-    description: "Larger emphasis",
-  },
-  {
-    value: "6",
-    label: "Huge",
-    description: "Extra large text",
-  },
-];
 
 export default function RichTextEditor({
   value,
@@ -116,26 +41,11 @@ export default function RichTextEditor({
   const editorRef = useRef<HTMLDivElement>(null);
   const savedRangeRef = useRef<Range | null>(null);
 
-  const headingDropdownRef = useRef<HTMLDivElement>(null);
-  const sizeDropdownRef = useRef<HTMLDivElement>(null);
-
-  const [showHeadingDropdown, setShowHeadingDropdown] = useState(false);
-  const [showSizeDropdown, setShowSizeDropdown] = useState(false);
-
-  const [selectedHeading, setSelectedHeading] = useState("p");
-  const [selectedSize, setSelectedSize] = useState("3");
-
   const [showImageDialog, setShowImageDialog] = useState(false);
-  const [showLinkDialog, setShowLinkDialog] = useState(false);
 
   const [imageUrl, setImageUrl] = useState("");
   const [imageAlt, setImageAlt] = useState("");
   const [imageError, setImageError] = useState("");
-
-  const [linkUrl, setLinkUrl] = useState("");
-  const [linkText, setLinkText] = useState("");
-  const [linkError, setLinkError] = useState("");
-  const [openInNewTab, setOpenInNewTab] = useState(true);
 
   useEffect(() => {
     if (!editorRef.current) return;
@@ -144,32 +54,6 @@ export default function RichTextEditor({
       editorRef.current.innerHTML = value;
     }
   }, [value]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      if (
-        headingDropdownRef.current &&
-        !headingDropdownRef.current.contains(target)
-      ) {
-        setShowHeadingDropdown(false);
-      }
-
-      if (
-        sizeDropdownRef.current &&
-        !sizeDropdownRef.current.contains(target)
-      ) {
-        setShowSizeDropdown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const saveSelection = () => {
     const selection = window.getSelection();
@@ -209,18 +93,25 @@ export default function RichTextEditor({
   };
 
   const exec = (command: Command, commandValue?: string) => {
-    restoreSelection();
+    if (command === "createLink") {
+      saveSelection();
 
-    if (!savedRangeRef.current) {
+      const url = window.prompt("Enter the URL:");
+
+      if (!url) {
+        restoreSelection();
+        return;
+      }
+
+      restoreSelection();
+
+      document.execCommand("createLink", false, url);
+    } else {
       focusEditor();
+
+      document.execCommand(command, false, commandValue);
     }
 
-    document.execCommand(command, false, commandValue);
-
-    updateEditor();
-  };
-
-  const updateEditor = () => {
     if (editorRef.current) {
       onChange(editorRef.current.innerHTML);
     }
@@ -228,7 +119,10 @@ export default function RichTextEditor({
 
   const handleInput = () => {
     saveSelection();
-    updateEditor();
+
+    if (editorRef.current) {
+      onChange(editorRef.current.innerHTML);
+    }
   };
 
   const escapeHtml = (value: string) =>
@@ -239,66 +133,64 @@ export default function RichTextEditor({
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
 
-  const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
-    event.preventDefault();
-
-    const text = event.clipboardData.getData("text/plain");
-
-    if (!text) return;
-
+  const insertCodeBlock = () => {
     restoreSelection();
 
-    const normalizedText = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    const selection = window.getSelection();
 
-    const paragraphs = normalizedText.split(/\n{2,}/);
+    if (!selection || selection.rangeCount === 0) {
+      return;
+    }
 
-    const html = paragraphs
-      .map((paragraph) => {
-        const lines = paragraph.split("\n");
+    const range = selection.getRangeAt(0);
 
-        return `
-          <p>
-            ${lines.map((line) => escapeHtml(line)).join("<br />")}
-          </p>
-        `;
-      })
-      .join("");
+    if (
+      !editorRef.current ||
+      !editorRef.current.contains(range.commonAncestorContainer)
+    ) {
+      return;
+    }
 
-    document.execCommand("insertHTML", false, html);
+    const selectedText = selection.toString();
 
-    updateEditor();
+    const escapedCode = escapeHtml(selectedText);
+
+    const codeHtml = `
+      <pre><code>${escapedCode || "Write your code here..."}</code></pre>
+    `;
+
+    document.execCommand("insertHTML", false, codeHtml);
+
+    if (!selectedText) {
+      const editor = editorRef.current;
+
+      const codeBlocks = editor.querySelectorAll("pre code");
+
+      const codeElement = codeBlocks[codeBlocks.length - 1] as
+        | HTMLElement
+        | undefined;
+
+      if (codeElement) {
+        if (codeElement.textContent === "Write your code here...") {
+          codeElement.textContent = "";
+        }
+
+        const newRange = document.createRange();
+
+        newRange.selectNodeContents(codeElement);
+        newRange.collapse(true);
+
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+      }
+    }
+
     saveSelection();
+
+    if (editorRef.current) {
+      onChange(editorRef.current.innerHTML);
+    }
   };
-
-  const applyHeading = (value: string) => {
-    restoreSelection();
-
-    document.execCommand("formatBlock", false, value);
-
-    setSelectedHeading(value);
-    setShowHeadingDropdown(false);
-
-    updateEditor();
-  };
-
-  const currentHeading =
-    headingOptions.find((option) => option.value === selectedHeading) ??
-    headingOptions[0];
-
-  const applySize = (value: string) => {
-    restoreSelection();
-
-    document.execCommand("fontSize", false, value);
-
-    setSelectedSize(value);
-    setShowSizeDropdown(false);
-
-    updateEditor();
-  };
-
-  const currentSize =
-    sizeOptions.find((option) => option.value === selectedSize) ??
-    sizeOptions[1];
 
   const openImageDialog = () => {
     saveSelection();
@@ -306,13 +198,11 @@ export default function RichTextEditor({
     setImageUrl("");
     setImageAlt("");
     setImageError("");
-
     setShowImageDialog(true);
   };
 
   const closeImageDialog = () => {
     setShowImageDialog(false);
-
     setImageUrl("");
     setImageAlt("");
     setImageError("");
@@ -355,564 +245,161 @@ export default function RichTextEditor({
 
     document.execCommand("insertHTML", false, imageHtml);
 
-    updateEditor();
+    if (editorRef.current) {
+      onChange(editorRef.current.innerHTML);
+    }
 
     closeImageDialog();
   };
 
-  const openLinkDialog = () => {
-    saveSelection();
-
-    const selection = window.getSelection();
-    const selectedText = selection?.toString() ?? "";
-
-    setLinkText(selectedText);
-    setLinkUrl("");
-    setLinkError("");
-    setOpenInNewTab(true);
-
-    setShowLinkDialog(true);
-  };
-
-  const closeLinkDialog = () => {
-    setShowLinkDialog(false);
-
-    setLinkUrl("");
-    setLinkText("");
-    setLinkError("");
-    setOpenInNewTab(true);
-  };
-
-  const insertLink = () => {
-    const url = linkUrl.trim();
-    const text = linkText.trim();
-
-    if (!url) {
-      setLinkError("Please enter a URL.");
-      return;
-    }
-
-    if (!text) {
-      setLinkError("Please enter the link text.");
-      return;
-    }
-
-    try {
-      const parsedUrl = new URL(url);
-
-      if (!["http:", "https:"].includes(parsedUrl.protocol)) {
-        setLinkError("Only HTTP and HTTPS URLs are supported.");
-        return;
-      }
-    } catch {
-      setLinkError("Please enter a valid URL.");
-      return;
-    }
-
-    restoreSelection();
-
-    const selection = window.getSelection();
-
-    if (selection && !selection.isCollapsed) {
-      document.execCommand("createLink", false, url);
-
-      const anchor =
-        selection.anchorNode?.parentElement?.closest("a") ??
-        selection.focusNode?.parentElement?.closest("a");
-
-      if (anchor) {
-        if (openInNewTab) {
-          anchor.setAttribute("target", "_blank");
-          anchor.setAttribute("rel", "noopener noreferrer");
-        } else {
-          anchor.removeAttribute("target");
-          anchor.removeAttribute("rel");
-        }
-      }
-    } else {
-      const linkHtml = `
-        <a
-          href="${escapeHtml(url)}"
-          ${openInNewTab ? 'target="_blank" rel="noopener noreferrer"' : ""}
-        >
-          ${escapeHtml(text)}
-        </a>
-      `;
-
-      document.execCommand("insertHTML", false, linkHtml);
-    }
-
-    updateEditor();
-
-    closeLinkDialog();
-  };
-
   return (
     <>
-      <div
-        className="
-          mt-2
-          overflow-clip
-          rounded-2xl
-          border border-border
-          bg-surface
-          shadow-sm
-        "
-      >
-        <div
-          className="
-            sticky
-            top-0
-            z-40
-
-            flex
-            flex-wrap
-            items-center
-            gap-1
-
-            border-b
-            border-border
-
-            bg-surface/95
-            p-2.5
-
-            backdrop-blur-md
-          "
-        >
-          {/* Bold */}
-          <ToolbarButton
-            label="Bold"
-            onMouseDown={saveSelection}
-            onClick={() => exec("bold")}
-          >
+      <div className="mt-2 overflow-visible rounded-xl border border-border bg-surface">
+        {/* Toolbar */}
+        <div className="sticky top-0 z-30 flex flex-wrap items-center gap-1 border-b border-border bg-surface/95 p-2 backdrop-blur-md">
+          <ToolbarButton label="Bold" onClick={() => exec("bold")}>
             <Bold size={16} />
           </ToolbarButton>
 
-          {/* Italic */}
-          <ToolbarButton
-            label="Italic"
-            onMouseDown={saveSelection}
-            onClick={() => exec("italic")}
-          >
+          <ToolbarButton label="Italic" onClick={() => exec("italic")}>
             <Italic size={16} />
           </ToolbarButton>
 
-          {/* Underline */}
-          <ToolbarButton
-            label="Underline"
-            onMouseDown={saveSelection}
-            onClick={() => exec("underline")}
-          >
+          <ToolbarButton label="Underline" onClick={() => exec("underline")}>
             <Underline size={16} />
           </ToolbarButton>
 
-          <ToolbarDivider />
+          <div className="mx-1 h-6 w-px bg-border" />
 
-          <div ref={headingDropdownRef} className="relative">
-            <button
-              type="button"
-              onMouseDown={(event) => {
-                event.preventDefault();
-                saveSelection();
-              }}
-              onClick={() => {
-                setShowHeadingDropdown((previous) => !previous);
-                setShowSizeDropdown(false);
-              }}
-              className="
-                group
-                flex
-                h-9
-                min-w-36.25
-                items-center
-                justify-between
-                gap-3
-                rounded-xl
-                border
-                border-border
-                bg-surface
-                px-3
+          {/* Text style */}
+          <select
+            aria-label="Text style"
+            defaultValue="p"
+            onChange={(e) => {
+              exec("formatBlock", e.target.value);
+            }}
+            className="h-8 rounded-md border border-border bg-surface px-2 text-xs text-text-muted outline-none transition-colors hover:border-green-bright focus:border-green-bright"
+          >
+            <option value="p">Paragraph</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+            <option value="h4">Heading 4</option>
+            <option value="blockquote">Quote</option>
+          </select>
 
-                text-xs
-                text-text-muted
+          {/* Text size */}
+          <select
+            aria-label="Text size"
+            defaultValue="3"
+            onChange={(e) => {
+              exec("fontSize", e.target.value);
+            }}
+            className="h-8 rounded-md border border-border bg-surface px-2 text-xs text-text-muted outline-none transition-colors hover:border-green-bright focus:border-green-bright"
+          >
+            <option value="2">Small</option>
+            <option value="3">Normal</option>
+            <option value="5">Large</option>
+            <option value="6">Huge</option>
+          </select>
 
-                transition-all
+          <div className="mx-1 h-6 w-px bg-border" />
 
-                hover:border-green-bright/40
-                hover:bg-bg
-                hover:text-text
-
-                focus:outline-none
-                focus:border-green-bright
-              "
-            >
-              <span className="flex items-center gap-2">
-                <span className="text-green-bright">{currentHeading.icon}</span>
-
-                <span className="font-medium">{currentHeading.label}</span>
-              </span>
-
-              <ChevronDown
-                size={14}
-                className={`
-                  transition-transform
-                  ${showHeadingDropdown ? "rotate-180 text-green-bright" : ""}
-                `}
-              />
-            </button>
-
-            {showHeadingDropdown && (
-              <div
-                className="
-                  absolute
-                  left-0
-                  top-[calc(100%+8px)]
-                  z-50
-                  w-64
-
-                  overflow-hidden
-                  rounded-2xl
-                  border
-                  border-border
-
-                  bg-surface
-                  p-1.5
-
-                  shadow-2xl
-                "
-              >
-                <div className="px-3 py-2">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-text-faint">
-                    Text style
-                  </p>
-                </div>
-
-                {headingOptions.map((option) => {
-                  const active = selectedHeading === option.value;
-
-                  return (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onMouseDown={(event) => event.preventDefault()}
-                      onClick={() => applyHeading(option.value)}
-                      className={`
-                        flex
-                        w-full
-                        items-center
-                        gap-3
-                        rounded-xl
-                        px-3
-                        py-2.5
-                        text-left
-
-                        transition-colors
-
-                        ${
-                          active
-                            ? "bg-green/10 text-green-bright"
-                            : "text-text-muted hover:bg-bg hover:text-text"
-                        }
-                      `}
-                    >
-                      <span
-                        className={`
-                          flex
-                          h-8
-                          w-8
-                          shrink-0
-                          items-center
-                          justify-center
-                          rounded-lg
-                          border
-
-                          ${
-                            active
-                              ? "border-green-bright/20 bg-green/10"
-                              : "border-border bg-bg"
-                          }
-                        `}
-                      >
-                        {option.icon}
-                      </span>
-
-                      <span className="min-w-0">
-                        <span className="block text-sm font-medium">
-                          {option.label}
-                        </span>
-
-                        <span className="mt-0.5 block truncate text-[11px] text-text-faint">
-                          {option.description}
-                        </span>
-                      </span>
-
-                      {active && (
-                        <span className="ml-auto text-xs text-green-bright">
-                          ✓
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          <div ref={sizeDropdownRef} className="relative">
-            <button
-              type="button"
-              onMouseDown={(event) => {
-                event.preventDefault();
-                saveSelection();
-              }}
-              onClick={() => {
-                setShowSizeDropdown((previous) => !previous);
-                setShowHeadingDropdown(false);
-              }}
-              className="
-                group
-                flex
-                h-9
-                min-w-33.75
-                items-center
-                justify-between
-                gap-3
-                rounded-xl
-                border
-                border-border
-                bg-surface
-                px-3
-
-                text-xs
-                text-text-muted
-
-                transition-all
-
-                hover:border-green-bright/40
-                hover:bg-bg
-                hover:text-text
-
-                focus:outline-none
-                focus:border-green-bright
-              "
-            >
-              <span className="flex items-center gap-2">
-                <Type size={15} className="text-green-bright" />
-
-                <span className="font-medium">{currentSize.label}</span>
-              </span>
-
-              <ChevronDown
-                size={14}
-                className={`
-                  transition-transform
-                  ${showSizeDropdown ? "rotate-180 text-green-bright" : ""}
-                `}
-              />
-            </button>
-
-            {showSizeDropdown && (
-              <div
-                className="
-                  absolute
-                  left-0
-                  top-[calc(100%+8px)]
-                  z-50
-                  w-56
-
-                  overflow-hidden
-                  rounded-2xl
-                  border
-                  border-border
-
-                  bg-surface
-                  p-1.5
-
-                  shadow-2xl
-                "
-              >
-                <div className="px-3 py-2">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-text-faint">
-                    Text size
-                  </p>
-                </div>
-
-                {sizeOptions.map((option) => {
-                  const active = selectedSize === option.value;
-
-                  return (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onMouseDown={(event) => event.preventDefault()}
-                      onClick={() => applySize(option.value)}
-                      className={`
-                        flex
-                        w-full
-                        items-center
-                        gap-3
-                        rounded-xl
-                        px-3
-                        py-2.5
-                        text-left
-
-                        transition-colors
-
-                        ${
-                          active
-                            ? "bg-green/10 text-green-bright"
-                            : "text-text-muted hover:bg-bg hover:text-text"
-                        }
-                      `}
-                    >
-                      <span
-                        className={`
-                          flex
-                          h-8
-                          w-8
-                          shrink-0
-                          items-center
-                          justify-center
-                          rounded-lg
-                          border
-
-                          ${
-                            active
-                              ? "border-green-bright/20 bg-green/10"
-                              : "border-border bg-bg"
-                          }
-                        `}
-                      >
-                        <Type
-                          size={
-                            option.value === "2"
-                              ? 13
-                              : option.value === "5"
-                                ? 17
-                                : option.value === "6"
-                                  ? 19
-                                  : 15
-                          }
-                        />
-                      </span>
-
-                      <span className="min-w-0">
-                        <span className="block text-sm font-medium">
-                          {option.label}
-                        </span>
-
-                        <span className="mt-0.5 block text-[11px] text-text-faint">
-                          {option.description}
-                        </span>
-                      </span>
-
-                      {active && (
-                        <span className="ml-auto text-xs text-green-bright">
-                          ✓
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          <ToolbarDivider />
-
-          {/* Bullet list */}
+          {/* Lists */}
           <ToolbarButton
             label="Bulleted list"
-            onMouseDown={saveSelection}
             onClick={() => exec("insertUnorderedList")}
           >
             <List size={16} />
           </ToolbarButton>
 
-          {/* Number list */}
           <ToolbarButton
             label="Numbered list"
-            onMouseDown={saveSelection}
             onClick={() => exec("insertOrderedList")}
           >
             <ListOrdered size={16} />
           </ToolbarButton>
 
           {/* Link */}
-          <ToolbarButton
-            label="Insert link"
-            onMouseDown={saveSelection}
-            onClick={openLinkDialog}
-          >
+          <ToolbarButton label="Link" onClick={() => exec("createLink")}>
             <LinkIcon size={16} />
           </ToolbarButton>
 
+          {/* Code */}
+          <ToolbarButton label="Code block" onClick={insertCodeBlock}>
+            <Code2 size={16} />
+          </ToolbarButton>
+
           {/* Image */}
-          <ToolbarButton
-            label="Insert image"
-            onMouseDown={saveSelection}
-            onClick={openImageDialog}
-          >
+          <ToolbarButton label="Insert image" onClick={openImageDialog}>
             <ImageIcon size={16} />
           </ToolbarButton>
 
-          <ToolbarDivider />
+          <div className="mx-1 h-6 w-px bg-border" />
 
-          {/* Undo */}
-          <ToolbarButton
-            label="Undo"
-            onMouseDown={saveSelection}
-            onClick={() => exec("undo")}
-          >
+          {/* History */}
+          <ToolbarButton label="Undo" onClick={() => exec("undo")}>
             <Undo2 size={16} />
           </ToolbarButton>
 
-          {/* Redo */}
-          <ToolbarButton
-            label="Redo"
-            onMouseDown={saveSelection}
-            onClick={() => exec("redo")}
-          >
+          <ToolbarButton label="Redo" onClick={() => exec("redo")}>
             <Redo2 size={16} />
           </ToolbarButton>
 
-          {/* Remove formatting */}
           <ToolbarButton
             label="Remove formatting"
-            onMouseDown={saveSelection}
             onClick={() => exec("removeFormat")}
           >
             <RemoveFormatting size={16} />
           </ToolbarButton>
         </div>
 
+        {/* Editor */}
         <div
           ref={editorRef}
           contentEditable
           suppressContentEditableWarning
           onInput={handleInput}
-          onPaste={handlePaste}
           onKeyUp={saveSelection}
           onMouseUp={saveSelection}
           onFocus={saveSelection}
           className="
             min-h-105
-
-            px-6
-            py-5
-
+            px-5
+            py-4
             text-sm
             leading-7
             text-text-primary
-
             outline-none
 
-            [&_p]:my-3
-            [&_p:first-child]:mt-0
-            [&_p:last-child]:mb-0
+            [&_p]:my-4
+            [&_p]:leading-7
 
-            [&_strong]:font-bold
-            [&_b]:font-bold
+            [&_h1]:mb-4
+            [&_h1]:mt-8
+            [&_h1]:text-3xl
+            [&_h1]:font-semibold
+            [&_h1]:leading-tight
+
+            [&_h2]:mb-3
+            [&_h2]:mt-7
+            [&_h2]:text-2xl
+            [&_h2]:font-semibold
+            [&_h2]:leading-tight
+
+            [&_h3]:mb-2
+            [&_h3]:mt-6
+            [&_h3]:text-xl
+            [&_h3]:font-semibold
+            [&_h3]:leading-tight
+
+            [&_h4]:mb-2
+            [&_h4]:mt-5
+            [&_h4]:text-lg
+            [&_h4]:font-semibold
+
+            [&_strong]:font-semibold
+            [&_b]:font-semibold
 
             [&_em]:italic
             [&_i]:italic
@@ -920,44 +407,20 @@ export default function RichTextEditor({
             [&_u]:underline
             [&_u]:underline-offset-2
 
-            [&_h1]:mb-4
-            [&_h1]:mt-7
-            [&_h1]:text-3xl
-            [&_h1]:font-bold
-            [&_h1]:leading-tight
-
-            [&_h2]:mb-3
-            [&_h2]:mt-6
-            [&_h2]:text-2xl
-            [&_h2]:font-bold
-            [&_h2]:leading-tight
-
-            [&_h3]:mb-3
-            [&_h3]:mt-5
-            [&_h3]:text-xl
-            [&_h3]:font-semibold
-            [&_h3]:leading-tight
-
-            [&_h4]:mb-2
-            [&_h4]:mt-4
-            [&_h4]:text-lg
-            [&_h4]:font-semibold
-
-            [&_ul]:my-4
+            [&_ul]:my-5
             [&_ul]:list-disc
-            [&_ul]:pl-7
+            [&_ul]:pl-6
 
-            [&_ol]:my-4
+            [&_ol]:my-5
             [&_ol]:list-decimal
-            [&_ol]:pl-7
+            [&_ol]:pl-6
 
             [&_li]:my-1
-            [&_li]:pl-1
 
-            [&_blockquote]:my-5
+            [&_blockquote]:my-6
             [&_blockquote]:border-l-2
             [&_blockquote]:border-green-bright
-            [&_blockquote]:pl-4
+            [&_blockquote]:pl-5
             [&_blockquote]:italic
             [&_blockquote]:text-text-muted
 
@@ -965,294 +428,55 @@ export default function RichTextEditor({
             [&_a]:underline
             [&_a]:underline-offset-2
 
-            [&_img]:my-5
+            [&_img]:my-7
+            [&_img]:block
+            [&_img]:h-auto
             [&_img]:max-w-full
             [&_img]:rounded-xl
             [&_img]:border
             [&_img]:border-border
 
-            [&_font]:text-inherit
-            [&_font]:bg-transparent
+            [&_pre]:my-6
+            [&_pre]:overflow-hidden
+            [&_pre]:rounded-xl
+            [&_pre]:border
+            [&_pre]:border-border
+            [&_pre]:bg-bg
+            [&_pre]:p-0
+
+            [&_pre_code]:block
+            [&_pre_code]:overflow-x-auto
+            [&_pre_code]:px-5
+            [&_pre_code]:py-5
+            [&_pre_code]:font-mono
+            [&_pre_code]:text-sm
+            [&_pre_code]:leading-7
+            [&_pre_code]:text-text-primary
+            [&_pre_code]:whitespace-pre
+
+            [&_hr]:my-8
+            [&_hr]:border-border
+
+            [&_font[size='2']]:text-sm
+            [&_font[size='3']]:text-base
+            [&_font[size='5']]:text-xl
+            [&_font[size='6']]:text-2xl
           "
           data-placeholder="Write your blog post here..."
         />
       </div>
 
-      {showLinkDialog && (
-        <div
-          className="
-            fixed
-            inset-0
-            z-100
-            flex
-            items-center
-            justify-center
-            bg-black/60
-            px-4
-            backdrop-blur-sm
-          "
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              closeLinkDialog();
-            }
-          }}
-        >
-          <div
-            className="
-              w-full
-              max-w-lg
-              overflow-hidden
-              rounded-2xl
-              border
-              border-border
-              bg-surface
-              shadow-2xl
-            "
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-border px-6 py-4">
-              <div>
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green/10 text-green-bright">
-                    <LinkIcon size={16} />
-                  </div>
-
-                  <h2 className="font-display text-base font-semibold">
-                    Insert link
-                  </h2>
-                </div>
-
-                <p className="mt-1 pl-10 text-xs text-text-faint">
-                  Add a link to your blog content.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={closeLinkDialog}
-                className="
-                  flex
-                  h-8
-                  w-8
-                  items-center
-                  justify-center
-                  rounded-lg
-                  text-text-muted
-                  transition-colors
-                  hover:bg-bg
-                  hover:text-text
-                "
-                aria-label="Close dialog"
-              >
-                <X size={17} />
-              </button>
-            </div>
-
-            {/* Body */}
-            <div className="space-y-5 p-6">
-              <div>
-                <label
-                  htmlFor="blog-link-url"
-                  className="font-mono text-xs font-medium text-text-muted"
-                >
-                  Link URL
-                  <span className="ml-1 text-green-bright">*</span>
-                </label>
-
-                <div className="relative mt-2">
-                  <LinkIcon
-                    size={16}
-                    className="
-                      pointer-events-none
-                      absolute
-                      left-3
-                      top-1/2
-                      -translate-y-1/2
-                      text-text-faint
-                    "
-                  />
-
-                  <input
-                    id="blog-link-url"
-                    type="url"
-                    value={linkUrl}
-                    onChange={(event) => {
-                      setLinkUrl(event.target.value);
-                      setLinkError("");
-                    }}
-                    placeholder="https://example.com"
-                    className="
-                      w-full
-                      rounded-xl
-                      border
-                      border-border
-                      bg-bg
-                      py-3
-                      pl-10
-                      pr-4
-                      text-sm
-                      text-text
-                      outline-none
-                      transition-colors
-                      placeholder:text-text-faint
-                      focus:border-green-bright
-                      focus:ring-1
-                      focus:ring-green-bright/20
-                    "
-                    autoFocus
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="blog-link-text"
-                  className="font-mono text-xs font-medium text-text-muted"
-                >
-                  Link text
-                  <span className="ml-1 text-green-bright">*</span>
-                </label>
-
-                <input
-                  id="blog-link-text"
-                  type="text"
-                  value={linkText}
-                  onChange={(event) => {
-                    setLinkText(event.target.value);
-                    setLinkError("");
-                  }}
-                  placeholder="Example: Learn more about AWS"
-                  className="
-                    mt-2
-                    w-full
-                    rounded-xl
-                    border
-                    border-border
-                    bg-bg
-                    px-4
-                    py-3
-                    text-sm
-                    text-text
-                    outline-none
-                    transition-colors
-                    placeholder:text-text-faint
-                    focus:border-green-bright
-                    focus:ring-1
-                    focus:ring-green-bright/20
-                  "
-                />
-
-                <p className="mt-2 text-[11px] text-text-faint">
-                  Selected text will be used automatically.
-                </p>
-              </div>
-
-              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-bg px-4 py-3 transition-colors hover:border-green-bright/40">
-                <input
-                  type="checkbox"
-                  checked={openInNewTab}
-                  onChange={(event) => setOpenInNewTab(event.target.checked)}
-                  className="h-4 w-4 accent-green-bright"
-                />
-
-                <div className="flex items-center gap-2">
-                  <ExternalLink size={14} className="text-text-faint" />
-
-                  <div>
-                    <p className="text-sm text-text">Open in new tab</p>
-
-                    <p className="text-[11px] text-text-faint">
-                      Opens the link without leaving the blog.
-                    </p>
-                  </div>
-                </div>
-              </label>
-
-              {linkError && (
-                <div className="rounded-xl border border-red-400/20 bg-red-400/5 px-4 py-3 text-xs text-red-400">
-                  {linkError}
-                </div>
-              )}
-            </div>
-
-            {/* Footer */}
-            <div className="flex items-center justify-end gap-3 border-t border-border bg-bg px-6 py-4">
-              <button
-                type="button"
-                onClick={closeLinkDialog}
-                className="
-                  rounded-xl
-                  border
-                  border-border
-                  px-4
-                  py-2.5
-                  text-sm
-                  text-text-muted
-                  transition-colors
-                  hover:bg-surface
-                  hover:text-text
-                "
-              >
-                Cancel
-              </button>
-
-              <button
-                type="button"
-                onClick={insertLink}
-                className="
-                  inline-flex
-                  items-center
-                  gap-2
-                  rounded-xl
-                  bg-green
-                  px-5
-                  py-2.5
-                  text-sm
-                  font-medium
-                  text-[#04140b]
-                  transition-colors
-                  hover:bg-green-bright
-                "
-              >
-                <LinkIcon size={15} />
-                Insert link
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
+      {/* Image dialog */}
       {showImageDialog && (
         <div
-          className="
-            fixed
-            inset-0
-            z-100
-            flex
-            items-center
-            justify-center
-            bg-black/60
-            px-4
-            backdrop-blur-sm
-          "
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
               closeImageDialog();
             }
           }}
         >
-          <div
-            className="
-              w-full
-              max-w-lg
-              overflow-hidden
-              rounded-2xl
-              border
-              border-border
-              bg-surface
-              shadow-2xl
-            "
-          >
+          <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div>
@@ -1274,26 +498,16 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={closeImageDialog}
-                className="
-                  flex
-                  h-8
-                  w-8
-                  items-center
-                  justify-center
-                  rounded-lg
-                  text-text-muted
-                  transition-colors
-                  hover:bg-bg
-                  hover:text-text
-                "
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-bg hover:text-text"
                 aria-label="Close dialog"
               >
                 <X size={17} />
               </button>
             </div>
 
-            {/* Body */}
+            {/* Form */}
             <div className="space-y-5 p-6">
+              {/* URL */}
               <div>
                 <label
                   htmlFor="blog-image-url"
@@ -1306,52 +520,29 @@ export default function RichTextEditor({
                 <div className="relative mt-2">
                   <ImageIcon
                     size={16}
-                    className="
-                      pointer-events-none
-                      absolute
-                      left-3
-                      top-1/2
-                      -translate-y-1/2
-                      text-text-faint
-                    "
+                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text-faint"
                   />
 
                   <input
                     id="blog-image-url"
                     type="url"
                     value={imageUrl}
-                    onChange={(event) => {
-                      setImageUrl(event.target.value);
+                    onChange={(e) => {
+                      setImageUrl(e.target.value);
                       setImageError("");
                     }}
                     placeholder="https://res.cloudinary.com/..."
-                    className="
-                      w-full
-                      rounded-xl
-                      border
-                      border-border
-                      bg-bg
-                      py-3
-                      pl-10
-                      pr-4
-                      text-sm
-                      text-text
-                      outline-none
-                      transition-colors
-                      placeholder:text-text-faint
-                      focus:border-green-bright
-                      focus:ring-1
-                      focus:ring-green-bright/20
-                    "
+                    className="w-full rounded-lg border border-border bg-bg py-3 pl-10 pr-4 text-sm text-text outline-none transition-colors placeholder:text-text-faint focus:border-green-bright focus:ring-1 focus:ring-green-bright/20"
                     autoFocus
                   />
                 </div>
 
-                <p className="mt-2 text-[11px] text-text-faint">
+                <p className="mt-2 text-[11px] leading-5 text-text-faint">
                   Use a publicly accessible HTTPS image URL.
                 </p>
               </div>
 
+              {/* Alt */}
               <div>
                 <label
                   htmlFor="blog-image-alt"
@@ -1365,29 +556,12 @@ export default function RichTextEditor({
                   id="blog-image-alt"
                   type="text"
                   value={imageAlt}
-                  onChange={(event) => {
-                    setImageAlt(event.target.value);
+                  onChange={(e) => {
+                    setImageAlt(e.target.value);
                     setImageError("");
                   }}
                   placeholder="Describe the image briefly"
-                  className="
-                    mt-2
-                    w-full
-                    rounded-xl
-                    border
-                    border-border
-                    bg-bg
-                    px-4
-                    py-3
-                    text-sm
-                    text-text
-                    outline-none
-                    transition-colors
-                    placeholder:text-text-faint
-                    focus:border-green-bright
-                    focus:ring-1
-                    focus:ring-green-bright/20
-                  "
+                  className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-text-faint focus:border-green-bright focus:ring-1 focus:ring-green-bright/20"
                 />
 
                 <div className="mt-2 flex items-start gap-2">
@@ -1426,29 +600,18 @@ export default function RichTextEditor({
               )}
 
               {imageError && (
-                <div className="rounded-xl border border-red-400/20 bg-red-400/5 px-4 py-3 text-xs text-red-400">
+                <div className="rounded-lg border border-red-400/20 bg-red-400/5 px-4 py-3 text-xs text-red-400">
                   {imageError}
                 </div>
               )}
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-end gap-3 border-t border-border bg-bg px-6 py-4">
+            <div className="flex items-center justify-end gap-3 border-t border-border bg-bg-alt px-6 py-4">
               <button
                 type="button"
                 onClick={closeImageDialog}
-                className="
-                  rounded-xl
-                  border
-                  border-border
-                  px-4
-                  py-2.5
-                  text-sm
-                  text-text-muted
-                  transition-colors
-                  hover:bg-surface
-                  hover:text-text
-                "
+                className="rounded-lg border border-border px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-surface hover:text-text"
               >
                 Cancel
               </button>
@@ -1456,20 +619,7 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={insertImage}
-                className="
-                  inline-flex
-                  items-center
-                  gap-2
-                  rounded-xl
-                  bg-green
-                  px-5
-                  py-2.5
-                  text-sm
-                  font-medium
-                  text-[#04140b]
-                  transition-colors
-                  hover:bg-green-bright
-                "
+                className="inline-flex items-center gap-2 rounded-lg bg-green px-5 py-2.5 text-sm font-medium text-[#04140b] transition-colors hover:bg-green-bright"
               >
                 <ImageIcon size={15} />
                 Insert image
@@ -1486,50 +636,21 @@ function ToolbarButton({
   children,
   label,
   onClick,
-  onMouseDown,
 }: {
   children: React.ReactNode;
   label: string;
   onClick: () => void;
-  onMouseDown?: () => void;
 }) {
   return (
     <button
       type="button"
       title={label}
       aria-label={label}
-      onMouseDown={(event) => {
-        event.preventDefault();
-        onMouseDown?.();
-      }}
+      onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
-      className="
-        flex
-        h-9
-        w-9
-        items-center
-        justify-center
-
-        rounded-xl
-        border
-        border-transparent
-
-        text-text-muted
-
-        transition-all
-
-        hover:border-border
-        hover:bg-bg
-        hover:text-green-bright
-
-        active:scale-95
-      "
+      className="flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface-hover hover:text-green-bright"
     >
       {children}
     </button>
   );
-}
-
-function ToolbarDivider() {
-  return <div className="mx-1.5 h-6 w-px bg-border" />;
 }

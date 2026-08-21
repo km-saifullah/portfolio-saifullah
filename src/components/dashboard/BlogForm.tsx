@@ -6,7 +6,9 @@ import { Loader2, Save, Eye, X } from "lucide-react";
 import ImageUploader from "./ImageUploader";
 import TagInput from "./TagInput";
 import RichTextEditor from "./RichTextEditor";
+import BlogContent from "@/components/BlogContent";
 import type { IBlog } from "@/models/Blog";
+import Image from "next/image";
 
 function slugify(str: string) {
   return str
@@ -19,6 +21,7 @@ function slugify(str: string) {
 
 export default function BlogForm({ blog }: { blog?: IBlog }) {
   const router = useRouter();
+
   const isEdit = Boolean(blog);
 
   const [title, setTitle] = useState(blog?.title ?? "");
@@ -234,7 +237,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
       {/* Preview modal */}
       {showPreview && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-sm"
+          className="fixed inset-0 z-100 flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-sm"
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) {
               setShowPreview(false);
@@ -271,7 +274,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
             {/* Preview content */}
             <div className="min-h-0 flex-1 overflow-y-auto">
               <article className="mx-auto max-w-3xl px-6 py-10 md:px-10 md:py-14">
-                {/* Date placeholder */}
+                {/* Date */}
                 <p className="font-mono text-xs text-text-faint">
                   {blog?.createdAt
                     ? new Date(blog.createdAt).toLocaleDateString("en-US", {
@@ -283,7 +286,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
                 </p>
 
                 {/* Title */}
-                <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-text md:text-4xl">
+                <h1 className="mt-3 max-w-3xl font-display text-3xl font-semibold leading-[1.15] tracking-tight text-text md:text-4xl">
                   {title || "Your blog title"}
                 </h1>
 
@@ -303,11 +306,13 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
 
                 {/* Cover image */}
                 {cover?.url && (
-                  <div className="mt-8 overflow-hidden rounded-2xl border border-border">
-                    <img
+                  <div className="relative mt-8 h-56 w-full overflow-hidden rounded-2xl border border-border sm:h-72 md:h-95">
+                    <Image
                       src={cover.url}
                       alt={title || "Blog cover"}
-                      className="block max-h-105 w-full object-cover"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 768px, 900px"
+                      className="object-cover"
                     />
                   </div>
                 )}
@@ -320,87 +325,9 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
                 )}
 
                 {/* Article */}
-                <div
-                  className="
-                    mt-8
-                    text-[15px]
-                    leading-7
-                    text-text-primary
-
-                    [&_p]:my-4
-                    [&_p]:leading-7
-
-                    [&_h1]:mb-4
-                    [&_h1]:mt-9
-                    [&_h1]:text-3xl
-                    [&_h1]:font-semibold
-                    [&_h1]:leading-tight
-
-                    [&_h2]:mb-3
-                    [&_h2]:mt-8
-                    [&_h2]:text-2xl
-                    [&_h2]:font-semibold
-                    [&_h2]:leading-tight
-
-                    [&_h3]:mb-2
-                    [&_h3]:mt-7
-                    [&_h3]:text-xl
-                    [&_h3]:font-semibold
-
-                    [&_h4]:mb-2
-                    [&_h4]:mt-6
-                    [&_h4]:text-lg
-                    [&_h4]:font-semibold
-
-                    [&_strong]:font-semibold
-                    [&_b]:font-semibold
-
-                    [&_em]:italic
-                    [&_i]:italic
-
-                    [&_u]:underline
-                    [&_u]:underline-offset-2
-
-                    [&_ul]:my-5
-                    [&_ul]:list-disc
-                    [&_ul]:pl-6
-
-                    [&_ol]:my-5
-                    [&_ol]:list-decimal
-                    [&_ol]:pl-6
-
-                    [&_li]:my-1
-
-                    [&_blockquote]:my-6
-                    [&_blockquote]:border-l-2
-                    [&_blockquote]:border-green-bright
-                    [&_blockquote]:pl-5
-                    [&_blockquote]:italic
-                    [&_blockquote]:text-text-muted
-
-                    [&_a]:text-green-bright
-                    [&_a]:underline
-                    [&_a]:underline-offset-2
-
-                    [&_img]:my-7
-                    [&_img]:block
-                    [&_img]:h-auto
-                    [&_img]:max-w-full
-                    [&_img]:rounded-xl
-                    [&_img]:border
-                    [&_img]:border-border
-
-                    [&_hr]:my-8
-                    [&_hr]:border-border
-
-                    [&_font[size='2']]:text-sm
-                    [&_font[size='3']]:text-base
-                    [&_font[size='5']]:text-xl
-                    [&_font[size='6']]:text-2xl
-                  "
-                  dangerouslySetInnerHTML={{
-                    __html: content || "<p>Start writing your article...</p>",
-                  }}
+                <BlogContent
+                  content={content || "<p>Start writing your article...</p>"}
+                  className="mt-8"
                 />
               </article>
             </div>
