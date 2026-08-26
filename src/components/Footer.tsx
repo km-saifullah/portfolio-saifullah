@@ -1,6 +1,5 @@
-import { Mail } from "lucide-react";
+import { Mail, MonitorPlay } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "./Icons";
-
 const BLOG_LINKS = [
   {
     href: "https://dev.to/kmsaifullah",
@@ -11,10 +10,8 @@ const BLOG_LINKS = [
     label: "Medium",
   },
 ];
-
 export default function Footer() {
   const year = new Date().getFullYear();
-
   return (
     <footer className="border-t border-border py-10">
       <div className="mx-auto flex max-w-6xl flex-col gap-7 px-6">
@@ -22,7 +19,6 @@ export default function Footer() {
           <p className="font-mono text-xs text-text-faint">
             © {year} Khaled Md Saifullah.
           </p>
-
           <div className="flex flex-wrap items-center gap-5">
             {/* GitHub */}
             <a
@@ -34,7 +30,6 @@ export default function Footer() {
             >
               <GithubIcon size={18} />
             </a>
-
             {/* LinkedIn */}
             <a
               href="https://www.linkedin.com/in/kmsaifullah/"
@@ -45,9 +40,17 @@ export default function Footer() {
             >
               <LinkedinIcon size={18} />
             </a>
-
+            {/* YouTube */}
+            <a
+              href="https://youtube.com/@kmSaifullah"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="text-text-muted transition-colors hover:text-green-bright"
+            >
+              <MonitorPlay size={18} />
+            </a>
             <span className="h-5 w-px bg-border" />
-
             {/* DEV.to and Medium */}
             {BLOG_LINKS.map((link) => (
               <a
@@ -60,7 +63,6 @@ export default function Footer() {
                 {link.label}
               </a>
             ))}
-
             {/* Email */}
             <a
               href="mailto:kmsaifullah16@gmail.com"
