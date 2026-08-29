@@ -12,9 +12,10 @@ import type { IProject, ProjectCategory } from "@/models/Project";
 
 const CATEGORIES: { key: ProjectCategory | "all"; label: string }[] = [
   { key: "all", label: "All" },
+  { key: "aws", label: "AWS" },
+  { key: "devops", label: "DevOps" },
   { key: "backend", label: "Backend" },
   { key: "full-stack", label: "Full-Stack" },
-  { key: "devops", label: "DevOps" },
   { key: "other", label: "Other" },
 ];
 

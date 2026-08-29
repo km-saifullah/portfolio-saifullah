@@ -21,7 +21,7 @@ export const projectSchema = z.object({
     ),
   description: z.string().trim().min(10).max(500),
   content: z.string().trim().max(20000).optional().default(""),
-  category: z.enum(["backend", "full-stack", "devops", "other"]),
+  category: z.enum(["aws", "backend", "full-stack", "devops", "other"]),
   techStack: z.array(z.string().trim().min(1).max(40)).max(20).default([]),
   imageUrl: z.string().url().optional().or(z.literal("")).default(""),
   imagePublicId: z.string().optional().default(""),

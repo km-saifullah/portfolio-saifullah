@@ -1,6 +1,11 @@
 import { Schema, models, model } from "mongoose";
 
-export type ProjectCategory = "backend" | "full-stack" | "devops" | "other";
+export type ProjectCategory =
+  | "aws"
+  | "devops"
+  | "backend"
+  | "full-stack"
+  | "other";
 
 export interface IProject {
   _id: string;
@@ -35,7 +40,7 @@ const ProjectSchema = new Schema<IProject>(
     category: {
       type: String,
       required: true,
-      enum: ["backend", "full-stack", "devops", "other"],
+      enum: ["aws", "devops", "backend", "full-stack", "other"],
       default: "other",
     },
     techStack: { type: [String], default: [] },

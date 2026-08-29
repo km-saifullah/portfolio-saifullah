@@ -8,9 +8,10 @@ import TagInput from "./TagInput";
 import type { IProject, ProjectCategory } from "@/models/Project";
 
 const CATEGORIES: ProjectCategory[] = [
+  "aws",
+  "devops",
   "backend",
   "full-stack",
-  "devops",
   "other",
 ];
 
