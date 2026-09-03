@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { contactSchema } from "@/lib/validation";
 import { sendContactEmail } from "@/lib/mailer";
 import { contactRateLimit } from "@/lib/rateLimit";
+import { connectDB } from "@/lib/mongodb";
+import Message from "@/models/Message";
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,6 +32,10 @@ export async function POST(req: NextRequest) {
     }
 
     const { name, email, subject, message } = parsed.data;
+
+    await connectDB();
+    await Message.create({ name, email, subject, message });
+
     await sendContactEmail({ name, email, subject, message });
 
     return NextResponse.json({ ok: true });

@@ -41,3 +41,8 @@ export function contactRateLimit(ip: string): boolean {
 export function apiWriteRateLimit(ip: string): boolean {
   return hit(`write:${ip}`, 30, 10 * 60 * 1000);
 }
+
+/** 20 blog view pings per IP per 5 minutes. */
+export function viewRateLimit(ip: string): boolean {
+  return hit(`view:${ip}`, 20, 5 * 60 * 1000);
+}

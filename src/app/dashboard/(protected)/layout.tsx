@@ -4,9 +4,12 @@ import {
   LayoutDashboard,
   FolderKanban,
   Newspaper,
+  Mail,
   ExternalLink,
 } from "lucide-react";
 import { auth } from "@/lib/auth";
+import { connectDB } from "@/lib/mongodb";
+import Message from "@/models/Message";
 import SignOutButton from "@/components/dashboard/SignOutButton";
 
 export default async function DashboardLayout({
@@ -21,6 +24,9 @@ export default async function DashboardLayout({
   if (!isAdmin) {
     redirect("/dashboard/login");
   }
+
+  await connectDB();
+  const unreadCount = await Message.countDocuments({ read: false });
 
   return (
     <div className="min-h-screen flex bg-bg">
@@ -47,6 +53,19 @@ export default async function DashboardLayout({
               className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-text-muted hover:text-green-bright hover:bg-surface transition-colors"
             >
               <Newspaper size={16} /> Blogs
+            </Link>
+            <Link
+              href="/dashboard/messages"
+              className="flex items-center justify-between gap-2.5 rounded-lg px-3 py-2.5 text-text-muted hover:text-green-bright hover:bg-surface transition-colors"
+            >
+              <span className="flex items-center gap-2.5">
+                <Mail size={16} /> Messages
+              </span>
+              {unreadCount > 0 && (
+                <span className="rounded-full bg-green-bright px-1.5 py-0.5 text-[10px] font-semibold text-[#04140b]">
+                  {unreadCount}
+                </span>
+              )}
             </Link>
           </nav>
         </div>

@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 import { sanitizeBlogHtml } from "@/lib/sanitizeHtml";
 import BlogContent from "@/components/BlogContent";
+import BlogViewTracker from "@/components/BlogViewTracker";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -58,6 +59,9 @@ export default async function BlogPost({ params }: Props) {
   return (
     <>
       <Navbar />
+
+      {/* Records one unique read for this post — renders nothing visible */}
+      <BlogViewTracker slug={blog.slug} />
 
       <main className="flex-1 pt-28 pb-20">
         <article className="mx-auto max-w-3xl px-6">
