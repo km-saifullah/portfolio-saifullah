@@ -18,11 +18,13 @@ export async function POST(
     return NextResponse.json({ counted: false }, { status: 429 });
   }
 
-  const { id } = await params;
+  const { id: slug } = await params;
 
   await connectDB();
 
-  const blog = await Blog.findOne({ id, published: true }).select("_id").lean();
+  const blog = await Blog.findOne({ slug, published: true })
+    .select("_id")
+    .lean();
 
   if (!blog) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
