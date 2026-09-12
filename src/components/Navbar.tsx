@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const LINKS = [
-  { href: "#skills", label: "Skills" },
-  { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
-  { href: "#blogs", label: "Blogs" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#skills", label: "Skills" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#blogs", label: "Blogs" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export default function Navbar() {
@@ -35,17 +36,17 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a
-          href="#top"
+        <Link
+          href="/"
           className="font-display text-lg font-semibold tracking-tight text-text-primary"
         >
           <span className="text-green-bright">/</span>kmsaifullah
-        </a>
+        </Link>
 
         <ul className="hidden items-center gap-7 font-mono text-sm text-text-muted md:flex">
           {LINKS.map((link, i) => (
             <li key={link.href}>
-              <a
+              <Link
                 href={link.href}
                 className="transition-colors hover:text-green-bright"
               >
@@ -53,17 +54,17 @@ export default function Navbar() {
                   {String(i + 1).padStart(2, "0")}.
                 </span>{" "}
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
 
-        <a
-          href="#contact"
+        <Link
+          href="/#contact"
           className="hidden items-center rounded-full border border-border-strong px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-green-bright hover:text-green-bright md:inline-flex"
         >
           Let&apos;s talk
-        </a>
+        </Link>
 
         <button
           aria-label={open ? "Close menu" : "Open menu"}
@@ -86,13 +87,13 @@ export default function Navbar() {
             <ul className="flex flex-col gap-1 px-6 py-4 font-mono text-sm">
               {LINKS.map((link) => (
                 <li key={link.href}>
-                  <a
+                  <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
                     className="block py-2.5 text-text-muted hover:text-green-bright"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
