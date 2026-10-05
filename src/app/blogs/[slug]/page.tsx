@@ -11,6 +11,8 @@ import type { Metadata } from "next";
 import { sanitizeBlogHtml } from "@/lib/sanitizeHtml";
 import BlogContent from "@/components/BlogContent";
 import BlogViewTracker from "@/components/BlogViewTracker";
+import JsonLd from "@/components/JsonLd";
+import { SITE_URL, blogPostingJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -36,13 +38,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
   const blog = await getBlog(slug);
+  const url = `${SITE_URL}/blogs/${blog.slug}`;
 
   if (!blog) return {};
 
   return {
     title: blog.title,
     description: blog.excerpt,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
+      title: blog.title,
+      description: blog.excerpt,
+      url,
+    },
+    twitter: {
+      card: "summary_large_image",
       title: blog.title,
       description: blog.excerpt,
     },
@@ -62,6 +74,8 @@ export default async function BlogPost({ params }: Props) {
 
       {/* Records one unique read for this post — renders nothing visible */}
       <BlogViewTracker slug={blog.slug} />
+
+      <JsonLd data={blogPostingJsonLd(blog)} />
 
       <main className="flex-1 pt-28 pb-20">
         <article className="mx-auto max-w-3xl px-6">

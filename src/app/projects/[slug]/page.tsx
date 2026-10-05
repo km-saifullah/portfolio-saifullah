@@ -8,6 +8,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { GithubIcon } from "@/components/Icons";
 import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
+import { SITE_URL, projectJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -27,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
   const project = await getProject(slug);
+  const url = `${SITE_URL}/projects/${project.slug}`;
 
   if (!project) {
     return {};
@@ -35,9 +38,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: project.title,
     description: project.description,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
       title: project.title,
       description: project.description,
+      url,
       ...(project.imageUrl
         ? {
             images: [
@@ -48,6 +55,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             ],
           }
         : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.description,
     },
   };
 }
@@ -64,7 +76,7 @@ export default async function ProjectDetailsPage({ params }: Props) {
   return (
     <>
       <Navbar />
-
+      <JsonLd data={projectJsonLd(project)} />
       <main className="flex-1 pt-28 pb-24">
         <article className="mx-auto max-w-5xl px-6">
           {/* Back to projects */}

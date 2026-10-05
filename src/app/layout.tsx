@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import JsonLd from "@/components/JsonLd";
+import { personAndWebsiteJsonLd } from "@/lib/seo";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -20,7 +22,7 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://kmsaifullah.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -30,6 +32,9 @@ export const metadata: Metadata = {
   },
   description:
     "Portfolio of Khaled Md Saifullah, a software engineer building backend, full-stack, and DevOps projects.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Khaled Md Saifullah — Software Engineer",
     description:
@@ -37,6 +42,12 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Khaled Md Saifullah",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Khaled Md Saifullah — Software Engineer",
+    description:
+      "Portfolio of Khaled Md Saifullah, a software engineer building backend, full-stack, and DevOps projects.",
   },
 };
 
@@ -52,6 +63,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-bg text-text-primary">
+        <JsonLd data={personAndWebsiteJsonLd()} />
         {children}
       </body>
     </html>
