@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   FolderKanban,
   Newspaper,
+  Award,
   Mail,
   ExternalLink,
 } from "lucide-react";
@@ -53,6 +54,12 @@ export default async function DashboardLayout({
               className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-text-muted hover:text-green-bright hover:bg-surface transition-colors"
             >
               <Newspaper size={16} /> Blogs
+            </Link>
+            <Link
+              href="/dashboard/certifications"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-text-muted hover:text-green-bright hover:bg-surface transition-colors"
+            >
+              <Award size={16} /> Certifications
             </Link>
             <Link
               href="/dashboard/messages"
