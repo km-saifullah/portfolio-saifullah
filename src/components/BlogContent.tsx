@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
+import { wrapTablesForScroll } from "@/lib/tableMarkup";
 
 interface BlogContentProps {
   content: string;
@@ -12,6 +13,7 @@ export default function BlogContent({
   className = "",
 }: BlogContentProps) {
   const contentRef = useRef<HTMLDivElement>(null);
+  const html = useMemo(() => wrapTablesForScroll(content), [content]);
 
   useEffect(() => {
     const container = contentRef.current;
@@ -289,7 +291,7 @@ export default function BlogContent({
         ${className}
       `}
       dangerouslySetInnerHTML={{
-        __html: content,
+        __html: html,
       }}
     />
   );

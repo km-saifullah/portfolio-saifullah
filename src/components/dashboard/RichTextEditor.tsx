@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Bold,
   Italic,
@@ -13,8 +13,25 @@ import {
   Redo2,
   RemoveFormatting,
   Code2,
+  Table as TableIcon,
   X,
 } from "lucide-react";
+import {
+  MAX_TABLE_COLUMNS,
+  MAX_TABLE_ROWS,
+  buildTableHtml,
+  parseTableSize,
+} from "@/lib/tableMarkup";
+import {
+  addColumn,
+  addRow,
+  deleteColumn,
+  deleteRow,
+  deleteTable,
+  getAdjacentCell,
+  getTableContext,
+  placeCaretIn,
+} from "@/lib/tableEditing";
 
 interface RichTextEditorProps {
   value: string;
@@ -33,6 +50,33 @@ type Command =
   | "removeFormat"
   | "undo"
   | "redo";
+
+type TableAction =
+  | "rowAbove"
+  | "rowBelow"
+  | "deleteRow"
+  | "columnLeft"
+  | "columnRight"
+  | "deleteColumn"
+  | "deleteTable";
+
+interface TableInfo {
+  rowIndex: number;
+  columnIndex: number;
+  rowCount: number;
+  columnCount: number;
+  inHeader: boolean;
+}
+
+const sameTableInfo = (a: TableInfo | null, b: TableInfo | null) =>
+  a === b ||
+  (a !== null &&
+    b !== null &&
+    a.rowIndex === b.rowIndex &&
+    a.columnIndex === b.columnIndex &&
+    a.rowCount === b.rowCount &&
+    a.columnCount === b.columnCount &&
+    a.inHeader === b.inHeader);
 
 export default function RichTextEditor({
   value,
@@ -252,6 +296,230 @@ export default function RichTextEditor({
     closeImageDialog();
   };
 
+  // ---- Tables -------------------------------------------------------------
+
+  const [showTableDialog, setShowTableDialog] = useState(false);
+  const [tableRows, setTableRows] = useState("3");
+  const [tableColumns, setTableColumns] = useState("3");
+  const [tableHeader, setTableHeader] = useState(true);
+  const [tableError, setTableError] = useState("");
+
+  // Where the caret currently is inside a table (null when it isn't in one).
+  const [tableInfo, setTableInfo] = useState<TableInfo | null>(null);
+
+  const getCurrentTableContext = () => {
+    const editor = editorRef.current;
+    const selection = window.getSelection();
+
+    if (!editor || !selection || selection.rangeCount === 0) return null;
+
+    return getTableContext(selection.anchorNode, editor);
+  };
+
+  const refreshTableInfo = useCallback(() => {
+    const editor = editorRef.current;
+    const selection = window.getSelection();
+
+    const ctx =
+      editor && selection && selection.rangeCount > 0
+        ? getTableContext(selection.anchorNode, editor)
+        : null;
+
+    const next: TableInfo | null = ctx
+      ? {
+          rowIndex: ctx.rowIndex,
+          columnIndex: ctx.columnIndex,
+          rowCount: ctx.rowCount,
+          columnCount: ctx.columnCount,
+          inHeader: ctx.inHeader,
+        }
+      : null;
+
+    setTableInfo((previous) =>
+      sameTableInfo(previous, next) ? previous : next,
+    );
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("selectionchange", refreshTableInfo);
+
+    return () => {
+      document.removeEventListener("selectionchange", refreshTableInfo);
+    };
+  }, [refreshTableInfo]);
+
+  const commitTableChange = () => {
+    const editor = editorRef.current;
+
+    if (!editor) return;
+
+    saveSelection();
+    onChange(editor.innerHTML);
+    refreshTableInfo();
+  };
+
+  const openTableDialog = () => {
+    saveSelection();
+
+    setTableRows("3");
+    setTableColumns("3");
+    setTableHeader(true);
+    setTableError("");
+    setShowTableDialog(true);
+  };
+
+  const closeTableDialog = () => {
+    setShowTableDialog(false);
+    setTableError("");
+  };
+
+  const insertTable = () => {
+    const size = parseTableSize(tableRows, tableColumns);
+
+    if (!size.ok) {
+      setTableError(size.error);
+      return;
+    }
+
+    const editor = editorRef.current;
+
+    if (!editor) return;
+
+    const selection = window.getSelection();
+
+    if (!selection) return;
+
+    const saved = savedRangeRef.current;
+
+    if (saved && editor.contains(saved.commonAncestorContainer)) {
+      restoreSelection();
+    } else {
+      editor.focus();
+
+      const endRange = document.createRange();
+
+      endRange.selectNodeContents(editor);
+      endRange.collapse(false);
+
+      selection.removeAllRanges();
+      selection.addRange(endRange);
+    }
+
+    // Never nest a table inside another one: insert after the current table.
+    const existing = getTableContext(selection.anchorNode, editor);
+
+    if (existing) {
+      const afterRange = document.createRange();
+
+      afterRange.setStartAfter(existing.table);
+      afterRange.collapse(true);
+
+      selection.removeAllRanges();
+      selection.addRange(afterRange);
+    }
+
+    const html = buildTableHtml({
+      rows: size.rows,
+      columns: size.columns,
+      header: tableHeader,
+    }).replace("<table>", '<table data-new-table="true">');
+
+    const inserted = document.execCommand("insertHTML", false, html);
+    const created = editor.querySelector('table[data-new-table="true"]');
+
+    if (!inserted || !created) {
+      setTableError(
+        "Couldn't insert the table. Click inside the editor where you want it, then try again.",
+      );
+      return;
+    }
+
+    created.removeAttribute("data-new-table");
+
+    const firstCell = created.querySelector("th, td");
+
+    if (firstCell) {
+      placeCaretIn(firstCell, { selectContents: tableHeader });
+    }
+
+    commitTableChange();
+    closeTableDialog();
+  };
+
+  const runTableAction = (action: TableAction) => {
+    const editor = editorRef.current;
+    const ctx = getCurrentTableContext();
+
+    if (!editor || !ctx) return;
+
+    if (action === "deleteTable") {
+      const neighbour = deleteTable(ctx);
+
+      if (neighbour) {
+        placeCaretIn(neighbour);
+      } else {
+        editor.focus();
+      }
+
+      commitTableChange();
+      return;
+    }
+
+    const target =
+      action === "rowAbove"
+        ? addRow(ctx, "above")
+        : action === "rowBelow"
+          ? addRow(ctx, "below")
+          : action === "deleteRow"
+            ? deleteRow(ctx)
+            : action === "columnLeft"
+              ? addColumn(ctx, "left")
+              : action === "columnRight"
+                ? addColumn(ctx, "right")
+                : deleteColumn(ctx);
+
+    if (target) {
+      placeCaretIn(target);
+    }
+
+    commitTableChange();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== "Tab" || e.altKey || e.ctrlKey || e.metaKey) return;
+
+    const ctx = getCurrentTableContext();
+
+    if (!ctx) return;
+
+    e.preventDefault();
+
+    let target = getAdjacentCell(ctx, e.shiftKey ? -1 : 1);
+
+    if (!target && !e.shiftKey) {
+      // Last cell: start a new row, with the caret in its first cell.
+      const added = addRow(ctx, "below");
+      target = added
+        ? ((added.parentElement as HTMLTableRowElement).cells[0] ?? added)
+        : null;
+    }
+
+    if (target) {
+      placeCaretIn(target, { selectContents: true });
+      commitTableChange();
+    }
+  };
+
+  const handleTableDialogFieldKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    // Without this, Enter would submit the whole blog form behind the dialog.
+    if (e.key === "Enter") {
+      e.preventDefault();
+      insertTable();
+    }
+  };
+
   return (
     <>
       <div className="mt-2 overflow-visible rounded-xl border border-border bg-surface">
@@ -335,6 +603,19 @@ export default function RichTextEditor({
             <ImageIcon size={16} />
           </ToolbarButton>
 
+          {/* Table */}
+          <ToolbarButton
+            label={
+              tableInfo
+                ? "Move the cursor outside the table to insert another"
+                : "Insert table"
+            }
+            onClick={openTableDialog}
+            disabled={tableInfo !== null}
+          >
+            <TableIcon size={16} />
+          </ToolbarButton>
+
           <div className="mx-1 h-6 w-px bg-border" />
 
           {/* History */}
@@ -352,6 +633,63 @@ export default function RichTextEditor({
           >
             <RemoveFormatting size={16} />
           </ToolbarButton>
+
+          {/* Table controls — only while the cursor is inside a table */}
+          {tableInfo && (
+            <>
+              <div className="mx-1 h-6 w-px bg-border" />
+
+              <span className="px-1 font-mono text-[11px] text-text-faint">
+                Row {tableInfo.rowIndex + 1} · Col {tableInfo.columnIndex + 1}
+              </span>
+
+              <TableActionButton
+                label="Row above"
+                onClick={() => runTableAction("rowAbove")}
+                disabled={
+                  tableInfo.inHeader || tableInfo.rowCount >= MAX_TABLE_ROWS
+                }
+              />
+
+              <TableActionButton
+                label="Row below"
+                onClick={() => runTableAction("rowBelow")}
+                disabled={tableInfo.rowCount >= MAX_TABLE_ROWS}
+              />
+
+              <TableActionButton
+                label="Delete row"
+                onClick={() => runTableAction("deleteRow")}
+                disabled={tableInfo.rowCount <= 1}
+                danger
+              />
+
+              <TableActionButton
+                label="Column left"
+                onClick={() => runTableAction("columnLeft")}
+                disabled={tableInfo.columnCount >= MAX_TABLE_COLUMNS}
+              />
+
+              <TableActionButton
+                label="Column right"
+                onClick={() => runTableAction("columnRight")}
+                disabled={tableInfo.columnCount >= MAX_TABLE_COLUMNS}
+              />
+
+              <TableActionButton
+                label="Delete column"
+                onClick={() => runTableAction("deleteColumn")}
+                disabled={tableInfo.columnCount <= 1}
+                danger
+              />
+
+              <TableActionButton
+                label="Delete table"
+                onClick={() => runTableAction("deleteTable")}
+                danger
+              />
+            </>
+          )}
         </div>
 
         {/* Editor */}
@@ -363,6 +701,7 @@ export default function RichTextEditor({
           onKeyUp={saveSelection}
           onMouseUp={saveSelection}
           onFocus={saveSelection}
+          onKeyDown={handleKeyDown}
           className="
             min-h-105
             px-5
@@ -456,6 +795,32 @@ export default function RichTextEditor({
 
             [&_hr]:my-8
             [&_hr]:border-border
+
+            [&_table]:my-6
+            [&_table]:w-full
+            [&_table]:table-fixed
+            [&_table]:border-collapse
+            [&_table]:text-sm
+
+            [&_th]:border
+            [&_th]:border-border
+            [&_th]:bg-bg
+            [&_th]:px-3
+            [&_th]:py-2
+            [&_th]:text-left
+            [&_th]:align-top
+            [&_th]:font-semibold
+            [&_th]:wrap-break-word
+
+            [&_td]:border
+            [&_td]:border-border
+            [&_td]:px-3
+            [&_td]:py-2
+            [&_td]:align-top
+            [&_td]:wrap-break-word
+
+            [&_td_p]:my-0
+            [&_th_p]:my-0
 
             [&_font[size='2']]:text-sm
             [&_font[size='3']]:text-base
@@ -628,6 +993,157 @@ export default function RichTextEditor({
           </div>
         </div>
       )}
+
+      {/* Table dialog */}
+      {showTableDialog && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              closeTableDialog();
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              closeTableDialog();
+            }
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="table-dialog-title"
+            className="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green/10 text-green-bright">
+                    <TableIcon size={16} />
+                  </div>
+
+                  <h2
+                    id="table-dialog-title"
+                    className="font-display text-base font-semibold"
+                  >
+                    Insert table
+                  </h2>
+                </div>
+
+                <p className="mt-1 pl-10 text-xs text-text-faint">
+                  Choose the size. You can add or remove rows and columns later.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={closeTableDialog}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-bg hover:text-text"
+                aria-label="Close dialog"
+              >
+                <X size={17} />
+              </button>
+            </div>
+
+            {/* Fields */}
+            <div className="space-y-5 p-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="blog-table-rows"
+                    className="font-mono text-xs font-medium text-text-muted"
+                  >
+                    Rows
+                  </label>
+
+                  <input
+                    id="blog-table-rows"
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={MAX_TABLE_ROWS}
+                    value={tableRows}
+                    onChange={(e) => {
+                      setTableRows(e.target.value);
+                      setTableError("");
+                    }}
+                    onKeyDown={handleTableDialogFieldKeyDown}
+                    className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-sm text-text outline-none transition-colors focus:border-green-bright focus:ring-1 focus:ring-green-bright/20"
+                    autoFocus
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="blog-table-columns"
+                    className="font-mono text-xs font-medium text-text-muted"
+                  >
+                    Columns
+                  </label>
+
+                  <input
+                    id="blog-table-columns"
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={MAX_TABLE_COLUMNS}
+                    value={tableColumns}
+                    onChange={(e) => {
+                      setTableColumns(e.target.value);
+                      setTableError("");
+                    }}
+                    onKeyDown={handleTableDialogFieldKeyDown}
+                    className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-sm text-text outline-none transition-colors focus:border-green-bright focus:ring-1 focus:ring-green-bright/20"
+                  />
+                </div>
+              </div>
+
+              <label className="flex items-center gap-2.5 font-mono text-xs text-text-muted">
+                <input
+                  type="checkbox"
+                  checked={tableHeader}
+                  onChange={(e) => setTableHeader(e.target.checked)}
+                  className="h-4 w-4 accent-green-bright"
+                />
+                First row is a header
+              </label>
+
+              <p className="text-[11px] leading-5 text-text-faint">
+                Up to {MAX_TABLE_ROWS} rows and {MAX_TABLE_COLUMNS} columns.
+                Rows count includes the header row. Use Tab to move between
+                cells.
+              </p>
+
+              {tableError && (
+                <div className="rounded-lg border border-red-400/20 bg-red-400/5 px-4 py-3 text-xs text-red-400">
+                  {tableError}
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 border-t border-border bg-bg-alt px-6 py-4">
+              <button
+                type="button"
+                onClick={closeTableDialog}
+                className="rounded-lg border border-border px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-surface hover:text-text"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                onClick={insertTable}
+                className="inline-flex items-center gap-2 rounded-lg bg-green px-5 py-2.5 text-sm font-medium text-[#04140b] transition-colors hover:bg-green-bright"
+              >
+                <TableIcon size={15} />
+                Insert table
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
@@ -636,21 +1152,53 @@ function ToolbarButton({
   children,
   label,
   onClick,
+  disabled = false,
 }: {
   children: React.ReactNode;
   label: string;
   onClick: () => void;
+  disabled?: boolean;
 }) {
   return (
     <button
       type="button"
       title={label}
       aria-label={label}
+      disabled={disabled}
       onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
-      className="flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface-hover hover:text-green-bright"
+      className="flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface-hover hover:text-green-bright disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-text-muted"
     >
       {children}
+    </button>
+  );
+}
+
+function TableActionButton({
+  label,
+  onClick,
+  disabled = false,
+  danger = false,
+}: {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  danger?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      // Keep the caret in the table while clicking.
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
+      className={`h-8 rounded-md px-2 font-mono text-[11px] text-text-muted transition-colors disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-text-muted ${
+        danger
+          ? "hover:bg-red-400/10 hover:text-red-400"
+          : "hover:bg-surface-hover hover:text-green-bright"
+      }`}
+    >
+      {label}
     </button>
   );
 }
