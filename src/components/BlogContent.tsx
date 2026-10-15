@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { wrapTablesForScroll } from "@/lib/tableMarkup";
 
 interface BlogContentProps {
@@ -13,6 +13,7 @@ export default function BlogContent({
   className = "",
 }: BlogContentProps) {
   const contentRef = useRef<HTMLDivElement>(null);
+
   const html = useMemo(() => wrapTablesForScroll(content), [content]);
 
   useEffect(() => {
@@ -282,6 +283,43 @@ export default function BlogContent({
 
         [&_hr]:my-8
         [&_hr]:border-border
+
+        [&_.blog-table-scroll]:my-7
+        [&_.blog-table-scroll]:overflow-x-auto
+        [&_.blog-table-scroll]:rounded-xl
+        [&_.blog-table-scroll]:border
+        [&_.blog-table-scroll]:border-border
+
+        [&_table]:w-full
+        [&_table]:border-collapse
+        [&_table]:text-sm
+        [&_table]:leading-6
+
+        [&_thead]:bg-surface
+
+        [&_th]:min-w-28
+        [&_th]:border-b
+        [&_th]:border-border
+        [&_th]:px-4
+        [&_th]:py-3
+        [&_th]:text-left
+        [&_th]:align-top
+        [&_th]:font-semibold
+        [&_th]:text-text-primary
+
+        [&_td]:min-w-28
+        [&_td]:border-t
+        [&_td]:border-border
+        [&_td]:px-4
+        [&_td]:py-3
+        [&_td]:align-top
+        [&_td]:text-text-muted
+
+        [&_tbody_tr:first-child_td]:border-t-0
+        [&_tbody_tr:nth-child(even)]:bg-surface/40
+
+        [&_td_p]:my-0
+        [&_th_p]:my-0
 
         [&_font[size='2']]:text-sm
         [&_font[size='3']]:text-base
