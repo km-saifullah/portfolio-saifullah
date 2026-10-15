@@ -50,9 +50,6 @@ export default function Navbar() {
                 href={link.href}
                 className="transition-colors hover:text-green-bright"
               >
-                <span className="text-text-faint">
-                  {String(i + 1).padStart(2, "0")}.
-                </span>{" "}
                 {link.label}
               </Link>
             </li>
